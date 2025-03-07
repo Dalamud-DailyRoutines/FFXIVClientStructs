@@ -34,18 +34,18 @@ public unsafe partial struct RaptureAtkModule {
 
     [FieldOffset(0x87F7)] public AgentUpdateFlags AgentUpdateFlag; // reset happens in RaptureAtkModule_OnUpdate
     [FieldOffset(0x87F8)] internal fixed byte AddonAllocators[0x28 * 889];
-    [FieldOffset(0x112E0)] public StdVector<Utf8String> AddonNames;
-    [FieldOffset(0x112F8)] public AddonConfig* AddonConfigPtr;
+    [FieldOffset(0x112E0 - 0x10)] public StdVector<Utf8String> AddonNames;
+    [FieldOffset(0x112F8 - 0x10)] public AddonConfig* AddonConfigPtr;
 
-    [FieldOffset(0x113B0)] public UIModule* UIModulePtr;
-    [FieldOffset(0x113B8)] public RaptureLogModule* RaptureLogModulePtr;
-    [FieldOffset(0x113C0)] public AgentModule AgentModule;
-    [FieldOffset(0x12210)] public RaptureHotbarModule* RaptureHotbarModulePtr;
-    [FieldOffset(0x12218)] public RaptureAtkUnitManager RaptureAtkUnitManager;
-    [FieldOffset(0x1BF30)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
+    [FieldOffset(0x113B0 - 0x10)] public UIModule* UIModulePtr;
+    [FieldOffset(0x113B8 - 0x10)] public RaptureLogModule* RaptureLogModulePtr;
+    [FieldOffset(0x113C0 - 0x10)] public AgentModule AgentModule;
+    [FieldOffset(0x12210 - 0x10)] public RaptureHotbarModule* RaptureHotbarModulePtr;
+    [FieldOffset(0x12218 - 0x10)] public RaptureAtkUnitManager RaptureAtkUnitManager;
+    [FieldOffset(0x1BF30 - 0x10)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
 
-    [FieldOffset(0x1C1B0)] public int NameplateInfoCount;
-    [FieldOffset(0x1C1B8), FixedSizeArray] internal FixedSizeArray50<NamePlateInfo> _namePlateInfoEntries;
+    [FieldOffset(0x1C1B0 - 0x10)] public int NameplateInfoCount;
+    [FieldOffset(0x1C1B8 - 0x10), FixedSizeArray] internal FixedSizeArray50<NamePlateInfo> _namePlateInfoEntries;
 
     [FieldOffset(0x23630), FixedSizeArray] internal FixedSizeArray18<CrystalCache> _crystalItemCache;
     [FieldOffset(0x240E0)] public ItemCache* KeyItemCache; // ptr to 120 entries
