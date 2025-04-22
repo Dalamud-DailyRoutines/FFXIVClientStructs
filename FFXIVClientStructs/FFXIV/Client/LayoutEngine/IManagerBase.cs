@@ -9,7 +9,7 @@ public unsafe partial struct IManagerBase {
     [FieldOffset(0x10)] public uint Id;
 
     [VirtualFunction(0)]
-    public partial IManagerBase* Dtor(byte freeFlags);
+    public partial void Dtor(byte freeFlags);
 
     [VirtualFunction(1)]
     public partial void Initialize();
