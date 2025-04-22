@@ -36,7 +36,7 @@ public unsafe partial struct BannerModule {
     /// </summary>
     /// <returns>Data->NextId</returns>
     [MemberFunction("E8 ?? ?? ?? ?? 83 F8 6E 7D 58")]
-    public partial int GetNextId();
+    public partial byte GetNextId(); // TODO: returns int
 
     /// <summary>
     /// Get the Banner entry by Id.

@@ -28,7 +28,7 @@ public unsafe partial struct SharedGroupLayoutInstance {
         [FieldOffset(0x20)] public Transform Transform;
 
         [VirtualFunction(0)]
-        public partial InstanceData* Dtor(byte freeFlags);
+        public partial void Dtor(byte freeFlags);
     }
 
     [GenerateInterop]
@@ -38,6 +38,6 @@ public unsafe partial struct SharedGroupLayoutInstance {
         [FieldOffset(0x10)] public StdVector<Pointer<InstanceData>> Instances;
 
         [VirtualFunction(0)]
-        public partial InstanceList* Dtor(byte freeFlags);
+        public partial void Dtor(byte freeFlags);
     }
 }

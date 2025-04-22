@@ -2,8 +2,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
 namespace FFXIVClientStructs.FFXIV.Client.Game.Object;
 
-// Client::Game::Object::Aetheryte
-//   Client::Game::Object::GameObject
 [GenerateInterop]
 [Inherits<GameObject>]
 [StructLayout(LayoutKind.Explicit, Size = 0x1B0)]

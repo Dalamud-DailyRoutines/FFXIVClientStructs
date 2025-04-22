@@ -6,7 +6,7 @@ namespace FFXIVClientStructs.FFXIV.Component.GUI;
 [StructLayout(LayoutKind.Explicit, Size = 0x8)]
 public unsafe partial struct AtkEventListener {
     [VirtualFunction(0)]
-    public partial AtkEventListener* Dtor(byte freeFlags);
+    public partial void Dtor(byte flags);
 
     [VirtualFunction(1)]
     public partial void ReceiveGlobalEvent(AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData = null);
