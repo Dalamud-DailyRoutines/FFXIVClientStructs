@@ -5,7 +5,7 @@ namespace FFXIVClientStructs.FFXIV.Client.Game;
 [GenerateInterop]
 [StructLayout(LayoutKind.Explicit, Size = 0xE0)]
 public unsafe partial struct HousingManager {
-    [MemberFunction("E8 ?? ?? ?? ?? 4C 8D 60 60")]
+    [StaticAddress("48 89 1D ?? ?? ?? ?? EB 07", 3, isPointer: true)]
     public static partial HousingManager* Instance();
 
     [FieldOffset(0x00)] public HousingTerritory* CurrentTerritory;
@@ -13,7 +13,7 @@ public unsafe partial struct HousingManager {
     [FieldOffset(0x10)] public IndoorTerritory* IndoorTerritory;
     [FieldOffset(0x18)] public WorkshopTerritory* WorkshopTerritory;
 
-    [MemberFunction("E8 ?? ?? ?? ?? 0F B6 C0 48 8D 4C 24")]
+    [MemberFunction("E8 ?? ?? ?? ?? 41 BE 05 00 00 00 8D 53")]
     private partial byte GetInvertedBrightness();
     public byte GetBrightness() => (byte)(5 - GetInvertedBrightness());
 
@@ -37,10 +37,6 @@ public unsafe partial struct HousingManager {
     // -128 for Apartments in Main Division, -127 for Apartments in Subdivision
     [MemberFunction("E8 ?? ?? ?? ?? 0F B6 D8 3C FF")]
     public partial sbyte GetCurrentPlot();
-
-    // Unique Identifier
-    [Obsolete("Renamed to GetCurrentIndoorHouseId, as this only returns the HouseId of IndoorTerritory")]
-    public long GetCurrentHouseId() => GetCurrentIndoorHouseId();
 
     [MemberFunction("E8 ?? ?? ?? ?? BA ?? ?? ?? ?? 48 8B F8 8D 4A 02")]
     public partial long GetCurrentIndoorHouseId();
@@ -138,6 +134,45 @@ public unsafe partial struct HousingManager {
 
     public HousingTerritoryType GetCurrentHousingTerritoryType()
         => CurrentTerritory != null ? CurrentTerritory->GetTerritoryType() : HousingTerritoryType.None;
+}
+
+[StructLayout(LayoutKind.Explicit, Size = 0x8)]
+public struct HouseId : IEquatable<HouseId>, IComparable<HouseId> {
+    [FieldOffset(0x0), CExportIgnore] public long Id;
+    /// <remarks>
+    /// Masked data:<br/>
+    /// - <c>0b1000_0000</c> (<c>0x80</c>) = Apartment Flag<br/>
+    /// - <c>0b0111_1111</c> (<c>0x7F</c>) = Apartment Division (only if Apartment Flag is <c>true</c>)<br/>
+    /// - <c>0b0111_1111</c> (<c>0x7F</c>) = PlotIndex (only if Apartment Flag is <c>false</c>)
+    /// </remarks>
+    [FieldOffset(0x0)] public byte Data0;
+    [FieldOffset(0x1)] public byte Unk1;
+    /// <remarks>
+    /// Masked data:<br/>
+    /// - <c>0b0000_0000_0011_1111</c> (<c>0x0003F</c>) = WardIndex<br/>
+    /// - <c>0b1111_1111_1100_0000</c> (<c>0xFFC06</c>) = Room
+    /// </remarks>
+    [FieldOffset(0x2)] public ushort Data2;
+    [FieldOffset(0x4)] public ushort TerritoryTypeId;
+    [FieldOffset(0x6)] public ushort WorldId;
+
+    public bool IsApartment => (Data0 & 0x80) != 0 && (byte)(Data0 & 0x7F) < 2;
+    public byte ApartmentDivision => (byte)(Data0 & 0x7F);
+
+    public byte PlotIndex => (byte)(Data0 & 0x7F);
+    public byte WardIndex => (byte)(Data2 & 0x3F);
+    public short RoomNumber => (short)(Data2 >> 6);
+    public bool IsWorkshop => RoomNumber == 0x3FF;
+
+    public static implicit operator long(HouseId id) => id.Id;
+    public static unsafe implicit operator HouseId(long id) => *(HouseId*)&id;
+
+    public bool Equals(HouseId other) => Id == other.Id;
+    public override bool Equals(object? obj) => obj is HouseId other && Equals(other);
+    public override int GetHashCode() => Id.GetHashCode();
+    public static bool operator ==(HouseId left, HouseId right) => left.Id == right.Id;
+    public static bool operator !=(HouseId left, HouseId right) => left.Id != right.Id;
+    public int CompareTo(HouseId other) => Id.CompareTo(other);
 }
 
 public enum EstateType {
