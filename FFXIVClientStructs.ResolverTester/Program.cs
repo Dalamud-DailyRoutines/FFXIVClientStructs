@@ -8,7 +8,7 @@ using FFXIVClientStructs.ResolverTester;
 using InteropGenerator.Runtime;
 using YamlDotNet.Serialization.NamingConventions;
 
-var gamePath = args.Length > 0 ? args[0] : @"D:\FFXIV\game\ffxiv_dx11.exe";
+var gamePath = args.Length > 0 ? args[0] : @"D:\Personal\Download\ffxiv_dx11_cn7.2.exe";
 
 using PEReader reader = new PEReader(File.OpenRead(gamePath));
 SectionHeader textHeader = reader.PEHeaders.SectionHeaders[0];
@@ -43,8 +43,8 @@ unsafe {
         foreach (var sig in unresolvedSigs)
             Console.WriteLine($"[FAIL] {sig.Name}: {sig.String}");
 
-        foreach (Address address in Resolver.GetInstance.Addresses)
-            Console.WriteLine($"{address.Name} {address.Value:X}");
+        // foreach (Address address in Resolver.GetInstance.Addresses)
+        //     Console.WriteLine($"{address.Name} {address.Value:X}");
     }
 }
 /*
