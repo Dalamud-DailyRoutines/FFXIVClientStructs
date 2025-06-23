@@ -32,20 +32,20 @@ public unsafe partial struct RaptureAtkModule {
     [FieldOffset(0x86E0)] public Utf8String BoldOn; // <bold(1)>
     [FieldOffset(0x8748)] public Utf8String BoldOff; // <bold(0)>
 
-    [FieldOffset(0x87F7)] public AgentUpdateFlags AgentUpdateFlag; // reset happens in RaptureAtkModule_OnUpdate
-    [FieldOffset(0x87F8)] internal fixed byte AddonAllocators[0x28 * 917];
-    [FieldOffset(0x11740)] public StdVector<Utf8String> AddonNames;
-    [FieldOffset(0x11758)] public AddonConfig* AddonConfigPtr;
+    [FieldOffset(0x87F7 - 0x10)] public AgentUpdateFlags AgentUpdateFlag; // reset happens in RaptureAtkModule_OnUpdate
+    [FieldOffset(0x87F8 - 0x10)] internal fixed byte AddonAllocators[0x28 * 917];
+    [FieldOffset(0x11740 - 0x10)] public StdVector<Utf8String> AddonNames;
+    [FieldOffset(0x11758 - 0x10)] public AddonConfig* AddonConfigPtr;
 
-    [FieldOffset(0x11810)] public UIModule* UIModulePtr;
-    [FieldOffset(0x11818)] public RaptureLogModule* RaptureLogModulePtr;
-    [FieldOffset(0x11820)] public AgentModule AgentModule;
-    [FieldOffset(0x12718)] public RaptureHotbarModule* RaptureHotbarModulePtr;
-    [FieldOffset(0x12720)] public RaptureAtkUnitManager RaptureAtkUnitManager;
-    [FieldOffset(0x1C438)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
+    [FieldOffset(0x11810 - 0x10)] public UIModule* UIModulePtr;
+    [FieldOffset(0x11818 - 0x10)] public RaptureLogModule* RaptureLogModulePtr;
+    [FieldOffset(0x11820 - 0x10)] public AgentModule AgentModule;
+    [FieldOffset(0x12718 - 0x10)] public RaptureHotbarModule* RaptureHotbarModulePtr;
+    [FieldOffset(0x12720 - 0x10)] public RaptureAtkUnitManager RaptureAtkUnitManager;
+    [FieldOffset(0x1C438 - 0x10)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
 
-    [FieldOffset(0x1C6B8)] public int NameplateInfoCount;
-    [FieldOffset(0x1C6C0), FixedSizeArray] internal FixedSizeArray50<NamePlateInfo> _namePlateInfoEntries;
+    [FieldOffset(0x1C6B8 - 0x10)] public int NameplateInfoCount;
+    [FieldOffset(0x1C6C0 - 0x10), FixedSizeArray] internal FixedSizeArray50<NamePlateInfo> _namePlateInfoEntries;
 
     [FieldOffset(0x23B38), FixedSizeArray] internal FixedSizeArray18<CrystalCache> _crystalItemCache;
     [FieldOffset(0x245E8)] public ItemCache* KeyItemCache; // ptr to 120 entries
