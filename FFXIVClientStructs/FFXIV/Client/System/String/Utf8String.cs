@@ -90,10 +90,9 @@ public unsafe partial struct Utf8String : ICreatable, IDisposable, IStaticNative
 
     void IDisposable.Dispose() => Dispose(false);
 
-    // TODO: 修复 free
     private void Dispose(bool free) {
         Dtor();
-        // if (free) IMemorySpace.Free((Utf8String*)Unsafe.AsPointer(ref this));
+        if (free) IMemorySpace.Free((Utf8String*)Unsafe.AsPointer(ref this));
     }
 
     public int ToInteger(int fromBase = 0) {
