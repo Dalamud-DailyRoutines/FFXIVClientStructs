@@ -44,7 +44,7 @@ public unsafe partial struct AtkComponentDragDrop : ICreatable {
     [MemberFunction("E8 ?? ?? ?? ?? 48 8B 03 49 8B CF")]
     public partial void DetachTooltip();
 
-    [MemberFunction("E8 ?? ?? ?? ?? 8D 46 0B")]
+    [MemberFunction("E8 ?? ?? ?? ?? EB 04 4C 89 73 20")]
     public partial void SetIconDisableState(bool disabled); // if true, sets MultiplyRed/Green/Blue to 50. 100 otherwise
 
     [MemberFunction("E8 ?? ?? ?? ?? EB 18 66 C7 44 24")]
