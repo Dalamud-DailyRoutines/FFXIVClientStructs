@@ -6,6 +6,7 @@ namespace FFXIVClientStructs.FFXIV.Client.Game.Object;
 //   Client::Game::Object::GameObject
 [GenerateInterop]
 [Inherits<GameObject>]
+[Obsolete("Renamed to ReactionEventObject")]
 [StructLayout(LayoutKind.Explicit, Size = 0x230)]
 public unsafe partial struct MJIObject {
     [FieldOffset(0x1A8)] public Utf8String SgbPath;

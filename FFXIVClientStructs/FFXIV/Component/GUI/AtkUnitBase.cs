@@ -1,6 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.System.Memory;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using static FFXIVClientStructs.FFXIV.Component.GUI.AtkEventData;
 
 namespace FFXIVClientStructs.FFXIV.Component.GUI;
 
@@ -157,7 +156,10 @@ public unsafe partial struct AtkUnitBase : ICreatable {
     [FieldOffset(0x1F8)] public uint CollisionNodeListCount;
     [FieldOffset(0x1FC), FixedSizeArray] internal FixedSizeArray5<OperationGuide> _operationGuides; // the little button hints in controller mode
 
-    public uint DepthLayer => (Flags198 >> 16) & 0xF;
+    public uint DepthLayer {
+        get => (Flags198 >> 16) & 0xF;
+        set => SetDepthLayer(value);
+    }
 
     public bool IsVisible {
         get => (Flags198 & 0x200000) != 0;
@@ -327,8 +329,14 @@ public unsafe partial struct AtkUnitBase : ICreatable {
     [VirtualFunction(30)]
     public partial void GetRootBounds(Bounds* outBounds);
 
+    [VirtualFunction(31)]
+    public partial bool SetDepthLayer(uint depthLayerIndex);
+
     [VirtualFunction(32)]
     public partial bool ShouldAllowCursorFocus();
+
+    [VirtualFunction(35)]
+    public partial AtkUnitBase* GetUnitBaseForFocus(); // this basically always returns the addon itself, except for in ChatLogPanel where it returns ChatLog
 
     [VirtualFunction(37)]
     public partial void Focus();
@@ -368,7 +376,7 @@ public unsafe partial struct AtkUnitBase : ICreatable {
     public partial void FireCloseCallback();
 
     [VirtualFunction(57)]
-    public partial bool HandleCustomInput(AtkInputData* inputData);
+    public partial bool HandleCustomInput(AtkEventData.AtkInputData* inputData);
 
     [VirtualFunction(60)]
     public partial void OnScreenSizeChange(int width, int height);

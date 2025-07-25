@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using InteropGenerator.Extensions;
 using InteropGenerator.Helpers;
 using InteropGenerator.Models;
 
@@ -147,7 +146,7 @@ public sealed partial class InteropGenerator {
     }
 
     private static void RenderDelegateTypes(StructInfo structInfo, IndentedTextWriter writer) {
-        writer.WriteLine($"public static partial class Delegates");
+        writer.WriteLine("public static partial class Delegates");
         using (writer.WriteBlock()) {
             foreach (MemberFunctionInfo memberFunctionInfo in structInfo.MemberFunctions) {
                 RenderDelegateTypeForMethod(structInfo.Name, memberFunctionInfo.MethodInfo, writer);
@@ -250,8 +249,10 @@ public sealed partial class InteropGenerator {
             string paramNames = methodInfo.GetParameterNamesStringForStringOverload(paramsToOverload);
 
             // "string" overload
-            if (methodInfo.ObsoleteInfo is not null) {
-                writer.WriteLine($"""[global::System.ObsoleteAttribute("{methodInfo.ObsoleteInfo.Message}", {methodInfo.ObsoleteInfo.IsError.ToLowercaseString()})]""");
+            if (stringOverloadInfo.InheritableAttributes is not null) {
+                foreach (string inheritedAttribute in stringOverloadInfo.InheritableAttributes) {
+                    writer.WriteLine(inheritedAttribute);
+                }
             }
             writer.WriteLine(methodInfo.GetDeclarationStringForStringOverload("string", paramsToOverload));
             using (writer.WriteBlock()) {
@@ -279,8 +280,10 @@ public sealed partial class InteropGenerator {
                 }
             }
             // "ReadOnlySpan<byte>" overload
-            if (methodInfo.ObsoleteInfo is not null) {
-                writer.WriteLine($"""[global::System.ObsoleteAttribute("{methodInfo.ObsoleteInfo.Message}", {methodInfo.ObsoleteInfo.IsError.ToLowercaseString()})]""");
+            if (stringOverloadInfo.InheritableAttributes is not null) {
+                foreach (string inheritedAttribute in stringOverloadInfo.InheritableAttributes) {
+                    writer.WriteLine(inheritedAttribute);
+                }
             }
             writer.WriteLine(methodInfo.GetDeclarationStringForStringOverload("ReadOnlySpan<byte>", paramsToOverload));
             using (writer.WriteBlock()) {
@@ -303,15 +306,15 @@ public sealed partial class InteropGenerator {
     private static void RenderFixedSizeArrayAccessors(StructInfo structInfo, IndentedTextWriter writer) {
         foreach (FixedSizeArrayInfo fixedSizeArrayInfo in structInfo.FixedSizeArrays) {
             writer.WriteLine($"""/// <inheritdoc cref="{fixedSizeArrayInfo.FieldName}" />""");
-            if (fixedSizeArrayInfo.ObsoleteInfo is not null) {
-                writer.WriteLine($"""[global::System.ObsoleteAttribute("{fixedSizeArrayInfo.ObsoleteInfo.Message}", {fixedSizeArrayInfo.ObsoleteInfo.IsError.ToLowercaseString()})]""");
+            foreach (string inheritedAttribute in fixedSizeArrayInfo.InheritableAttributes) {
+                writer.WriteLine(inheritedAttribute);
             }
             // [UnscopedRef] public Span<T> FieldName => _fieldName;
             writer.WriteLine($"[global::System.Diagnostics.CodeAnalysis.UnscopedRefAttribute] public Span<{fixedSizeArrayInfo.Type}> {fixedSizeArrayInfo.GetPublicFieldName()} => {fixedSizeArrayInfo.FieldName};");
             if (fixedSizeArrayInfo.IsString) {
                 writer.WriteLine($"""/// <inheritdoc cref="{fixedSizeArrayInfo.FieldName}" />""");
-                if (fixedSizeArrayInfo.ObsoleteInfo is not null) {
-                    writer.WriteLine($"""[global::System.ObsoleteAttribute("{fixedSizeArrayInfo.ObsoleteInfo.Message}", {fixedSizeArrayInfo.ObsoleteInfo.IsError.ToLowercaseString()})]""");
+                foreach (string inheritedAttribute in fixedSizeArrayInfo.InheritableAttributes) {
+                    writer.WriteLine(inheritedAttribute);
                 }
                 writer.WriteLine($"public string {fixedSizeArrayInfo.GetPublicFieldName()}String");
                 using (writer.WriteBlock()) {
