@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace FFXIVClientStructs.FFXIV.Client.System.Framework;
 
 // Client::System::Framework::GameWindow
@@ -21,4 +23,17 @@ public unsafe partial struct GameWindow {
     [FieldOffset(0x5C)] public int MinHeight;
 
     public string GetArgument(ulong idx) => Marshal.PtrToStringUTF8(idx >= ArgumentCount ? nint.Zero : (nint)Arguments[idx]) ?? string.Empty;
+
+    public ulong GetAid() {
+        const ulong min9Digit = 100000000;
+        const ulong max12Digit = 999999999999;
+        
+        var randomBytes = new byte[8];
+        RandomNumberGenerator.Create().GetBytes(randomBytes);
+
+        var randomNumber = BitConverter.ToUInt64(randomBytes, 0);
+
+        var result = min9Digit + randomNumber % (max12Digit - min9Digit + 1);
+        return result;
+    }
 }
