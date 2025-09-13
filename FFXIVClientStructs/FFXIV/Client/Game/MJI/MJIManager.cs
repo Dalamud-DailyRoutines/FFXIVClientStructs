@@ -23,7 +23,7 @@ public unsafe partial struct MJIManager {
     /// </summary>
     // Not actually sure about the accuracy of this name. It's a guess based on the fact that the map system and target
     // system appear to change their behavior when this is set to 1, plus verification with how it looks in game.
-    [FieldOffset(0x06)] public byte IsPlayerInSanctuary;
+    [FieldOffset(0x06)] public bool IsPlayerInSanctuary;
 
     /// <summary>
     /// Represents the currently allowed visitors to the Island Sanctuary.
@@ -221,7 +221,7 @@ public unsafe partial struct MJIManager {
     /// <param name="startingHour">(slot + 17) % 24, where slot 0 is first hour of the cycle.</param>
     /// <param name="cycle">0-13 range, this/next week in order.</param>
     /// <param name="workshop">0-3 range.</param>
-    [MemberFunction("E8 ?? ?? ?? ?? 48 8B 46 28 41 8D 4E FF")]
+    [MemberFunction("E8 ?? ?? ?? ?? 48 8B 47 ?? 8D 4B ?? 48 69 D1")]
     public partial void ScheduleCraft(ushort craftObjectId, byte startingHour, byte cycle, byte workshop);
 
     /// <summary>

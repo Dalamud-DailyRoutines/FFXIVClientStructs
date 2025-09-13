@@ -338,24 +338,32 @@ public class Exporter {
             _processType.Add(fixedType);
             if (fixedType.IsBaseType())
                 size /= fixedType.SizeOf();
+            var fieldOverrideType = fixedType == typeof(nint) ? field.GetCustomAttribute<CExporterExcelAttribute>()?.SheetName ?? null : null;
+            if (fieldOverrideType != null)
+                fieldOverrideType = $"Component::Exd::Sheets::{fieldOverrideType}*";
             return new ProcessedFixedField {
                 FieldType = fixedType,
                 FieldOffset = field.GetFieldOffset() - offset,
                 FieldName = field.Name,
-                FixedSize = size
+                FixedSize = size,
+                FieldTypeOverride = fieldOverrideType
             };
         }
         if (field.FieldType.GetCustomAttribute<InlineArrayAttribute>() != null) {
             var arrLength = field.FieldType.GetCustomAttribute<InlineArrayAttribute>()!.Length;
             var elementType = field.FieldType.GetGenericArguments()[0];
             var isString = field.GetCustomAttribute<FixedSizeArrayAttribute>()?.IsString ?? false;
+            var fieldOverrideType = elementType == typeof(nint) ? field.GetCustomAttribute<CExporterExcelAttribute>()?.SheetName ?? null : null;
+            if (fieldOverrideType != null)
+                fieldOverrideType = $"Component::Exd::Sheets::{fieldOverrideType}*";
             _processType.Add(elementType);
             return new ProcessedFixedField {
                 FieldType = elementType,
                 FieldOffset = field.GetFieldOffset() - offset,
                 FieldName = field.Name[1].ToString().ToUpper() + field.Name[2..],
                 FixedSize = arrLength,
-                FixedString = isString
+                FixedString = isString,
+                FieldTypeOverride = fieldOverrideType
             };
         }
         if (field.GetCustomAttribute<CExporterExcelBeginAttribute>() != null) {
@@ -500,7 +508,7 @@ public class Exporter {
             if (vtable != null) {
                 vtable = vtable.GetElementType()!;
                 var memberFunctions = type.GetMethods(ExporterStatics.BindingFlags).Select(t => Tuple.Create(t.Name, t.GetParameters(), t.ReturnType)).ToArray();
-                virtualFunctions = vtable.GetFields(ExporterStatics.BindingFlags).Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExportIgnoreAttribute>() == null).Select(f => {
+                virtualFunctions = vtable.GetFields(ExporterStatics.BindingFlags).Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExporterIgnoreAttribute>() == null).Select(f => {
                     var parameterTypes = f.FieldType.GetFunctionPointerParameterTypes();
                     var memberFunction = memberFunctions.FirstOrDefault(t => t.Item1 == f.Name && t.Item2.Length == parameterTypes.Length - 1);
                     var returnType = f.FieldType.GetFunctionPointerReturnType();
@@ -519,7 +527,7 @@ public class Exporter {
             var memberFunctionClass = type.GetMember("MemberFunctionPointers", ExporterStatics.BindingFlags).FirstOrDefault()?.DeclaringType;
             ProcessedMemberFunction[] memberFunctionsArray = [];
             if (memberFunctionClass != null) {
-                var memberFunctions = memberFunctionClass.GetMethods(ExporterStatics.BindingFlags).Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExportIgnoreAttribute>() == null).ToArray();
+                var memberFunctions = memberFunctionClass.GetMethods(ExporterStatics.BindingFlags).Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExporterIgnoreAttribute>() == null).ToArray();
                 foreach (var memberFunction in memberFunctions) {
                     var memberFunctionAddress = memberFunction.GetCustomAttribute<MemberFunctionAttribute>();
                     if (memberFunctionAddress == null) continue;
@@ -550,7 +558,7 @@ public class Exporter {
             }
 
             var fields = type.GetFields(ExporterStatics.BindingFlags).Where(t => !type.IsInheritance(t)).ToArray();
-            var unionFields = fields.Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExportIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() != null).ToArray();
+            var unionFields = fields.Where(t => t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExporterIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() != null).ToArray();
 
             var unionOffsets = new Dictionary<CExporterUnionAttribute, FieldInfo>(new CExporterUnionCompare());
 
@@ -643,12 +651,12 @@ public class Exporter {
     }
 
     public static ProcessedField[] ProcessFields(FieldInfo[] fields) {
-        FieldInfo[] fieldsToProcess = fields.Where(t => !ExporterStatics.IgnoredTypeNames.Contains(t.Name) && t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExportIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() == null).ToArray();
+        FieldInfo[] fieldsToProcess = fields.Where(t => !ExporterStatics.IgnoredTypeNames.Contains(t.Name) && t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExporterIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() == null).ToArray();
         int[][] fieldsToUse = [];
         bool isExcel = false;
         int currentField = 0;
         while (fieldsToProcess is [{ Name: "WithOps" }] or [{ Name: "Tree" }]) {
-            fieldsToProcess = fieldsToProcess[0].FieldType.GetFields(ExporterStatics.BindingFlags).Where(t => !ExporterStatics.IgnoredTypeNames.Contains(t.Name) && t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExportIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() == null).ToArray();
+            fieldsToProcess = fieldsToProcess[0].FieldType.GetFields(ExporterStatics.BindingFlags).Where(t => !ExporterStatics.IgnoredTypeNames.Contains(t.Name) && t.GetCustomAttribute<ObsoleteAttribute>() == null && t.GetCustomAttribute<CExporterIgnoreAttribute>() == null && t.GetCustomAttribute<CExporterUnionAttribute>() == null).ToArray();
         }
         for (var i = 0; i < fieldsToProcess.Length; i++) {
             var field = fieldsToProcess[i];

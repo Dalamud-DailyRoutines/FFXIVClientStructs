@@ -25,7 +25,7 @@ public unsafe partial struct AtkTooltipManager {
     [MemberFunction("E8 ?? ?? ?? ?? 45 33 C9 45 8D 44 24")]
     public partial void DetachTooltipByAddonId(ushort addonId, bool removeEvents = true);
 
-    [MemberFunction("E8 ?? ?? ?? ?? 33 D2 EB 02")]
+    [MemberFunction("E8 ?? ?? ?? ?? 49 63 47 ?? BB")]
     public partial void ShowTooltip(
         AtkTooltipType type,
         ushort parentId,
@@ -65,12 +65,6 @@ public unsafe partial struct AtkTooltipManager {
         [FieldOffset(0), CExporterUnion("Args")] public AtkTooltipLovmActionArgs LovmActionArgs;
         /// <remarks> Args for <see cref="AtkTooltipType.MiragePrismPrismItem"/> / AddonMiragePrismPrismItemDetail. </remarks>
         [FieldOffset(0), CExporterUnion("Args")] public AtkTooltipMiragePrismPrismItemArgs MiragePrismPrismItemArgs;
-
-        [FieldOffset(0x00), Obsolete("Use TextArgs.Text")] public CStringPointer Text;
-        [FieldOffset(0x08), Obsolete("Use type-specific sub-structs")] public ulong TypeSpecificId;
-        [FieldOffset(0x10), Obsolete("Use type-specific sub-structs")] public uint Flags;
-        [FieldOffset(0x14), Obsolete("Use type-specific sub-structs")] public short Unk_14;
-        [FieldOffset(0x16), Obsolete("Use type-specific sub-structs")] public byte Unk_16;
 
         [MemberFunction("E8 ?? ?? ?? ?? C1 FB 04")]
         public partial void Ctor();
@@ -183,8 +177,6 @@ public unsafe partial struct AtkTooltipManager {
         None = 0,
         Text = 1 << 0,
         Item = 1 << 1,
-        [Obsolete("Use AtkTooltipType.Text | AtkTooltipType.Item")]
-        TextItem = Text | Item,
         Action = 1 << 2,
         LovmAction = 1 << 3,
         MiragePrismPrismItem = 1 << 4,
