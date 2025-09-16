@@ -8,7 +8,7 @@ using FFXIVClientStructs.ResolverTester;
 using InteropGenerator.Runtime;
 using YamlDotNet.Serialization.NamingConventions;
 
-var gamePath = args.Length > 0 ? args[0] : @"D:\Personal\Download\ffxiv_dx11_cn7.2.exe";
+var gamePath = args.Length > 0 ? args[0] : @"E:\Program Files (x86)\上海数龙科技有限公司\最终幻想XIV\7.3\ffxiv_dx11.exe";
 
 using PEReader reader = new PEReader(File.OpenRead(gamePath));
 SectionHeader textHeader = reader.PEHeaders.SectionHeaders[0];
