@@ -32,21 +32,21 @@ public unsafe partial struct RaptureAtkModule {
     [FieldOffset(0x8700)] public Utf8String BoldOn; // <bold(1)>
     [FieldOffset(0x8768)] public Utf8String BoldOff; // <bold(0)>
 
-    [FieldOffset(0x8817)] public AgentUpdateFlags AgentUpdateFlag; // reset happens in RaptureAtkModule_OnUpdate
-    [FieldOffset(0x8818), FixedSizeArray] internal FixedSizeArray931<AddonFactoryInfo> _addonFactories;
-    [FieldOffset(0x11990)] public StdVector<Utf8String> AddonNames;
-    [FieldOffset(0x119A8)] public AddonConfig* AddonConfigPtr;
+    [FieldOffset(0x8817 - 0x10)] public AgentUpdateFlags AgentUpdateFlag; // reset happens in RaptureAtkModule_OnUpdate
+    [FieldOffset(0x8818 - 0x10), FixedSizeArray] internal FixedSizeArray931<AddonFactoryInfo> _addonFactories;
+    [FieldOffset(0x11990 - 0x10)] public StdVector<Utf8String> AddonNames;
+    [FieldOffset(0x119A8 - 0x10)] public AddonConfig* AddonConfigPtr;
 
     // [FieldOffset(0x119B8)] public ProhibitModule ProhibitModule;
-    [FieldOffset(0x11A50)] public int AudioClientRpcTagSize;
+    [FieldOffset(0x11A50 - 0x10)] public int AudioClientRpcTagSize;
 
-    [FieldOffset(0x11A58)] public char* AudioClientRpcTag;
-    [FieldOffset(0x11A60)] public UIModule* UIModulePtr;
-    [FieldOffset(0x11A68)] public RaptureLogModule* RaptureLogModulePtr;
-    [FieldOffset(0x11A70)] public AgentModule AgentModule;
-    [FieldOffset(0x129C0)] public RaptureHotbarModule* RaptureHotbarModulePtr;
-    [FieldOffset(0x129C8)] public RaptureAtkUnitManager RaptureAtkUnitManager;
-    [FieldOffset(0x1C6E0)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
+    [FieldOffset(0x11A58 - 0x10)] public char* AudioClientRpcTag;
+    [FieldOffset(0x11A60 - 0x10)] public UIModule* UIModulePtr;
+    [FieldOffset(0x11A68 - 0x10)] public RaptureLogModule* RaptureLogModulePtr;
+    [FieldOffset(0x11A70 - 0x10)] public AgentModule AgentModule;
+    [FieldOffset(0x129C0 - 0x10)] public RaptureHotbarModule* RaptureHotbarModulePtr;
+    [FieldOffset(0x129C8 - 0x10)] public RaptureAtkUnitManager RaptureAtkUnitManager;
+    [FieldOffset(0x1C6E0 - 0x10)] public RaptureAtkColorDataManager RaptureAtkColorDataManager;
 
     [FieldOffset(0x1C960)] public int NameplateInfoCount;
     [FieldOffset(0x1C968), FixedSizeArray] internal FixedSizeArray50<NamePlateInfo> _namePlateInfoEntries;
