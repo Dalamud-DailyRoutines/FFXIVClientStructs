@@ -27,6 +27,9 @@ public unsafe partial struct WKSManager {
 
     [FieldOffset(0xC4C)] public uint FishingBait;
 
+    [FieldOffset(0xC55), FixedSizeArray] internal FixedSizeArray136<byte> _missionCompletionFlags;
+    [FieldOffset(0xCDD), FixedSizeArray] internal FixedSizeArray136<byte> _missionGoldFlags;
+
     [FieldOffset(0xD68), FixedSizeArray] internal FixedSizeArray11<int> _scores; // cosmic class scores
 
     [FieldOffset(0xE10)] private void* UnkStructDB0;
@@ -41,4 +44,8 @@ public unsafe partial struct WKSManager {
     [FieldOffset(0xE58)] public WKSResearchModule* ResearchModule;
     [FieldOffset(0xE60)] private void* UnkStructE00;
     [FieldOffset(0xE68)] public StdVector<Pointer<WKSModuleBase>> Modules;
+
+    public bool IsMissionCompleted(uint missionUnitId) => MissionCompletionFlags.CheckBitInSpan(missionUnitId);
+
+    public bool IsMissionGolded(uint missionUnitId) => MissionGoldFlags.CheckBitInSpan(missionUnitId);
 }
