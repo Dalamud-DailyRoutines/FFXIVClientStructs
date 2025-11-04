@@ -11,6 +11,7 @@ namespace FFXIVClientStructs.FFXIV.Client.UI;
 [GenerateInterop(isInherited: true)]
 [StructLayout(LayoutKind.Explicit, Size = 8)]
 public unsafe partial struct UIModuleInterface {
+    [VirtualFunction(4)] public partial void ExitGame();
     [VirtualFunction(5)] public partial ExcelModuleInterface* GetExcelModuleInterface();
     [VirtualFunction(6)] public partial RaptureTextModule* GetRaptureTextModule();
     [VirtualFunction(7)] public partial RaptureAtkModule* GetRaptureAtkModule();
@@ -187,5 +188,6 @@ public enum UIModulePacketType {
     Logout = 7,
     CloseLogoutDialog = 8,
     StartLogoutCountdown = 9,
+    UnlockedMapMarkersUpdated = 10,
     PrintPlayTime = 11,
 }

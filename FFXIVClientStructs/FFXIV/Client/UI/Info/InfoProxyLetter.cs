@@ -22,7 +22,7 @@ public unsafe partial struct InfoProxyLetter {
     //0xCC0 After
     [FieldOffset(0x7608)] public Utf8String UnkString0;
     [FieldOffset(0x7670)] public Utf8String UnkString1;
-    
+
     [GenerateInterop]
     [StructLayout(LayoutKind.Explicit, Size = 0xE8)]
     public unsafe partial struct Letter {
