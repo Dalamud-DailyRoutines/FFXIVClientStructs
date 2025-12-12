@@ -295,6 +295,8 @@ functions:
   0x141AF6F30: lua_gethookmask
   0x141AF7120: lua_sethook
   0x141AF7150: lua_setlocal
+  0x141BC9530: SupportDeskHttpCallback
+  0x141B2E810: SupportDeskCreateConnection
   0x1417E56B0: luaL_openlibs
   0x1417E58A0: luaL_addlstring
   0x1417E5940: luaL_addstring
@@ -431,6 +433,10 @@ functions:
   0x141B13DF0: FollowTargetRecast # bool (nint a1-a6)
   0x14092F180: FreeCompanyDialogPacketReceive # (InfoProxyInterface* ptr, byte* packetData)
   0x141691380: SnipeTask # ulong (EventSceneModuleImplBase* scene, lua_State* state)
+  0x140B629D0: ContentDirector_IsPlayCutscene # ulong (lua_State* state)
+  0x141978900: MassivePcContentDirector_IsPlayCutscene # ulong (lua_State* state)
+  0x140CCEBE0: GoldSaucerDirector_IsPlayCutscene # ulong (lua_State* state)
+  0x14194AE90: CustomTalk_IsPlayCutsceneContent # ulong (lua_State* state)
 
 classes:
   Common::TimePoint:
@@ -853,6 +859,32 @@ classes:
       - ea: 0x14203E6F8
   Client::Graphics::RenderObjectList:
   Client::Graphics::Singleton:
+  Client::SupportDesk::HttpConnection:
+    vtbls:
+      - ea: 0x1422EBB20
+    vfuncs:
+      0: Dtor
+      1: OpenSession
+      2: CloseSession
+      4: MakeRequest
+  Client::SupportDesk::HttpConnectionImpl:
+    vtbls:
+      - ea: 0x142309430
+        base: Client::SupportDesk::HttpConnection
+    funcs:
+      0x141B6FF00: Initialize
+  Client::SupportDesk::HttpRequest:
+    vtbls:
+      - ea: 0x14232EEF0
+    vfuncs:
+      0: Dtor
+  Client::SupportDesk::HttpRequestImpl:
+    vtbls:
+      - ea: 0x14232ED58
+        base: Client::SupportDesk::HttpRequest
+    funcs:
+      0x141BC8C20: Initialize
+      0x141BC9000: BeginRequest
   Client::System::Common::NonCopyable:
     vfuncs:
       0: Dtor
@@ -1000,7 +1032,9 @@ classes:
       39: SetUIVisibility
       40: GetSoftKeyboardDeviceInterface
       44: GetAddonStatus
+      45: SetAddonDepthLayer
       56: InitializeHud
+      72: SetScreenSizeScale
   Component::GUI::AtkModuleInterface::AtkEventInterface:
     vtbls:
       - ea: 0x141FFA578
@@ -1987,6 +2021,7 @@ classes:
       0x141864280: GetInstance
       0x1418642B0: Initialize
       0x141864370: Finalizer
+      0x141864590: IsQuestRecompleteComplete
   Client::Game::QuestRedoManager: # New Game+
     instances:
       - ea: 0x142961340
@@ -2931,6 +2966,7 @@ classes:
         base: Client::Game::UI::ScenarioTextReader
     funcs:
       0x140354E20: ctor
+      0x140A06B40: AbandonQuest
       0x140A07BC0: IsQuestAccepted
   Client::Game::UI::QuestUI:
     instances:
@@ -4775,6 +4811,7 @@ classes:
       # 0x140105BF0: ProcessItemHistory_Internal # inlined in ProcessItemHistory
       0x14092BCA0: SetLastPurchasedItem
       0x14092BE10: SendPurchaseRequestPacket
+      0x14092B810: ProcessPurchaseResponse
       0x14092BFA0: ProcessPlayerRetainerInfo
   Client::UI::Info::InfoProxyPartyInvite:
     vtbls:
@@ -8714,7 +8751,7 @@ classes:
       74: GetMKDSupportJobModule
       75: GetMKDLoreModule
       76: GetMKDSupportJobNoteModule
-      77: GetQPNL
+      77: GetQuickPanelModule
       78: GetUIInputData
       79: GetUIInputModule
       81: GetLogFilterConfig
@@ -9153,6 +9190,12 @@ classes:
       0x1407DFA80: AddSeenSupportJob
       0x1407DFC10: IsSupportJobSeen
       0x1407DFC40: RemoveSeenSupportJob
+  Client::UI::Misc::QuickPanelModule:
+    vtbls:
+      - ea: 0x142057B70
+        base: Client::UI::Misc::UserFileManager::UserFileEvent
+    funcs:
+      0x1407DFF80: ctor
   Client::UI::Misc::HelperInterface:
     vtbls:
       - ea: 0x142067D58
@@ -9963,6 +10006,7 @@ classes:
       0x140991E60: ToggleCharacterVisibility
       0x1409921D0: ApplyCameraPositions
       0x140992520: SetCameraPosition
+      0x1409919F0: GetPortraitError
   Client::System::Configuration::CharamakeAvatarSaveDataContainer::ContainerInterface:
     vtbls:
       - ea: 0x142058028
@@ -17244,6 +17288,11 @@ classes:
     funcs:
       0x14120D380: ctor
       0x14120EE60: GenerateTooltip
+      0x14120F870: SetEquipRestrictionInfo
+      0x141210110: SetBonuses
+      0x1412103C0: SetMateria
+      0x14120FBF0: SetSpiritbondInfo # Spiritbond, Condition, Crest, Crafting and Repairs...
+      0x141210680: UpdateGroupPositions
   Client::UI::AddonItemDetailCompare: # 86
     vtbls:
       - ea: 0x1420DABD0
@@ -19830,7 +19879,7 @@ classes:
   Client::UI::AddonItemInspectionResult: # 538
     vtbls:
       - ea: 0x1420F76F8
-        base: Component::GUI::AtkUnitBase
+        base: Client::UI::AddonItemDetailBase
     funcs:
       0x141300A50: ctor
   Client::UI::AddonRelic2Glass: # 539
@@ -22085,13 +22134,17 @@ classes:
         base: Component::GUI::AtkUnitBase
   Client::UI::AddonImage:
     vtbls:
-      - ea: 0x142126878
+      - ea: 0x14211E598
         base: Client::UI::AddonScreenInfoChild
     funcs:
       0x14146B080: ctor
   Client::UI::AddonScreenText:
     vtbls:
       - ea: 0x142120BC8
+        base: Client::UI::AddonScreenInfoChild
+  Client::UI::AddonImage2:
+    vtbls:
+      - ea: 0x142122F60
         base: Client::UI::AddonScreenInfoChild
   Client::UI::AddonImage3:
     vtbls:
