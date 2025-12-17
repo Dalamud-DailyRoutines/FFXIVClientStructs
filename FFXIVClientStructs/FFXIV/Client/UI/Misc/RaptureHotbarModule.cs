@@ -44,7 +44,7 @@ public unsafe partial struct RaptureHotbarModule {
     [FieldOffset(0x5C), FixedSizeArray] internal FixedSizeArray12<bool> _expacJobHotbarsCreated; // TODO: Verify (7.3)
 
     // PvP hotbars for all jobs, appears to track if it's been initialized. 
-    // note: named this way so the actual field becomes PvPHotbarsCreated.
+    // named this way so the actual field becomes PvPHotbarsCreated.
     [FieldOffset(0x68), FixedSizeArray] internal FixedSizeArray22<bool> _pvPHotbarsCreated; // TODO: Verify (7.3)
 
     // ????? maybe AllowResets?
@@ -165,7 +165,7 @@ public unsafe partial struct RaptureHotbarModule {
     /// </summary>
     /// <param name="macroSet">The macro set to scan for.</param>
     /// <param name="macroIndex">The macro index to scan for.</param>
-    [MemberFunction("E8 ?? ?? ?? ?? 48 8B 4B ?? 48 8B 01 FF 50 ?? 45 33 C9 41 B0")]
+    [MemberFunction("48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 41 54 41 55 41 56 41 57 48 83 EC 20 44 0F B6 E2 48 8B D9")]
     public partial void ReloadMacroSlots(byte macroSet, byte macroIndex);
 
     /// <summary>
