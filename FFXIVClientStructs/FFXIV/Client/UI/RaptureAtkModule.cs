@@ -23,11 +23,10 @@ public unsafe partial struct RaptureAtkModule {
         return uiModule == null ? null : uiModule->GetRaptureAtkModule();
     }
 
-    // TODO: 确认一下还要不要再 -0x10
     [FieldOffset(0x82E0 - 0x10)] public GameUIScene UIScene;
-    [FieldOffset(0x82E0 - 0x10), Obsolete($"Renamed to {nameof(UIScene)}")] public ushort UiMode; // 0 = In Lobby, 1 = In Game
+    [FieldOffset(0x82E0 - 0x10), Obsolete($"Renamed to {nameof(UIScene)}", true)] public ushort UiMode; // 0 = In Lobby, 1 = In Game
     [FieldOffset(0x82E2 - 0x10)] public GameUIMode UIMode;
-    [FieldOffset(0x82E2 - 0x10), Obsolete($"Renamed to {nameof(UIMode)}")] public ushort UISetupStage; // unsure
+    [FieldOffset(0x82E2 - 0x10), Obsolete($"Renamed to {nameof(UIMode)}", true)] public ushort UISetupStage; // unsure
 
     [FieldOffset(0x8378 - 0x10)] internal Utf8String Unk8358;
     [FieldOffset(0x83E0 - 0x10), FixedSizeArray] internal FixedSizeArray6<Utf8String> _unkArray;
