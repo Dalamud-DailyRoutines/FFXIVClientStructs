@@ -1551,6 +1551,7 @@ classes:
       0x14086AAF0: Update
       0x14086AB90: Clear
       0x14086AC50: RequestPrismBox
+      0x14086ADE0: IsSetSlotUnlocked
       0x14086B580: RestorePrismBoxItem
       0x14086BE30: RequestGlamourPlates
       0x14086BF80: GetGlamourPlateData
@@ -12316,6 +12317,12 @@ classes:
     funcs:
       0x140CC3080: ctor
       0x140CC31A0: Finalizer
+  Client::UI::Agent::AgentDeepDungeonHard:
+    vtbls:
+      - ea: 0x1420DFF30
+        base: Client::UI::Agent::AgentInterface
+      - ea: 0x1420DFF20
+        base: Common::Component::Excel::ExcelSheetWaiter
   Client::UI::Agent::AgentGcArmyTraining:
     vtbls:
       - ea: 0x1420E02E0
@@ -12404,6 +12411,10 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140CFBD70: ctor
+  Client::UI::Agent::AgentPvPSpectator:
+    vtbls:
+      - ea: 0x1420E12D8
+        base: Client::UI::Agent::AgentInterface
   Client::UI::Agent::AgentAquarium:
     vtbls:
       - ea: 0x1420F8D00
@@ -13947,10 +13958,34 @@ classes:
       0x140A22260: Finalizer
   Client::UI::Agent::AgentTofuList:
     vtbls:
-      - ea: 0x1420C8A80
+      - ea: 0x1420C9CD8
         base: Client::UI::Agent::AgentInterface
     funcs:
-      0x1409B4BC0: ctor
+      0x140A1DB10: ctor
+  Client::UI::Agent::AgentTofuPreview:
+    vtbls:
+      - ea: 0x1420C9D58
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A20710: ctor
+  Client::UI::Agent::AgentTofuEdit:
+    vtbls:
+      - ea: 0x1420C9B58
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A0CF70: ctor
+  Client::UI::Agent::AgentTofuImport:
+    vtbls:
+      - ea: 0x1420C9BD8
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A1CA70: ctor
+  Client::UI::Agent::AgentTofuExport:
+    vtbls:
+      - ea: 0x1420C9C58
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A1D2D0: ctor
   Client::UI::Agent::AgentBannerInterface:
     vtbls:
       - ea: 0x1420C8DB0
@@ -13980,18 +14015,6 @@ classes:
     funcs:
       0x1409BD6B0: ctor
       0x1409BD7D0: Finalizer
-  Client::UI::Agent::AgentTofuPreview:
-    vtbls:
-      - ea: 0x1420C9CD8
-        base: Client::UI::Agent::AgentInterface
-    funcs:
-      0x140A1DB10: ctor
-  Client::UI::Agent::AgentTofuPreset:
-    vtbls:
-      - ea: 0x1420C9B58
-        base: Client::UI::Agent::AgentInterface
-    funcs:
-      0x140A0CF70: ctor
   Client::UI::Agent::AgentTurnBreak:
     vtbls:
       - ea: 0x14209EC60
@@ -14161,6 +14184,18 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140A58BC0: ctor
+  Client::UI::Agent::AgentWKSPlanetSelect:
+    vtbls:
+      - ea: 0x1420CAD20
+        base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentWKSSetting:
+    vtbls:
+      - ea: 0x1420CADA0
+        base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentWKSEnterInfo:
+    vtbls:
+      - ea: 0x1420CA608
+        base: Client::UI::Agent::AgentInterface
   Client::UI::Agent::AgentMKDInfo:
     vtbls:
       - ea: 0x1420CAF40
@@ -14210,6 +14245,24 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140A60680: ctor
+  Client::UI::Agent::AgentMKDRelicGrowth:
+    vtbls:
+      - ea: 0x1420CB2E0
+        base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentMKDRelicGrowth2:
+    vtbls:
+      - ea: 0x1420CB370
+        base: Client::UI::Agent::AgentInterface
+      - ea: 0x1420CB360
+        base: Common::Component::Excel::ExcelSheetWaiter
+  Client::UI::Agent::AgentQuickPanel:
+    vtbls:
+      - ea: 0x1420D2828
+        base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentConfigCharacterChatLogMiniTalk:
+    vtbls:
+      - ea: 0x14209A390
+        base: Client::UI::Agent::AgentInterface
   Client::Game::UI::GameEventCallback:
     vtbls:
       - ea: 0x1420C8B00
@@ -14243,25 +14296,25 @@ classes:
       0: Dtor
       6: Terminate
       7: IsUnlocked
-      154: CancelInteraction
-      200: GetTitle # lua function "GetEventHandlerTitle"
-      202: GetEventId
-      204: GetNameplateIconForObject # (this, GameObject* gameObject)
-      222: GetIconId
-      226: IsOccupied33
-      227: GetOccupiedConditionId
-      228: GetOccupiedPermissionId
-      246: GetScriptVersion
-      253: GetDescription
-      254: GetReliefText
-      255: GetTimeRemaining # pass current unix timestamp as a2
-      256: HasTimer
-      258: GetEventItemId
-      261: GetDirectorTodos
-      262: GetMassivePcContentTodos
-      263: IsTodoTitleFocusable
-      265: GetRecommendedLevel
-      269: Initialize
+      158: CancelInteraction
+      204: GetTitle # lua function "GetEventHandlerTitle"
+      206: GetEventId
+      208: GetNameplateIconForObject # (this, GameObject* gameObject)
+      226: GetIconId
+      230: IsOccupied33
+      231: GetOccupiedConditionId
+      232: GetOccupiedPermissionId
+      250: GetScriptVersion
+      257: GetDescription
+      258: GetReliefText
+      259: GetTimeRemaining # pass current unix timestamp as a2
+      260: HasTimer
+      262: GetEventItemId
+      265: GetDirectorTodos
+      266: GetMassivePcContentTodos
+      267: IsTodoTitleFocusable
+      269: GetRecommendedLevel
+      273: Initialize
   Client::Game::Event::EventHandlerSelector:
     instances:
       - ea: 0x1427A9710
@@ -14805,11 +14858,11 @@ classes:
       - ea: 0x1420DCC38
         base: Client::Game::Event::LuaEventHandler
     vfuncs:
-      273: PopulateMapMarkers # (this, ushort territoryTypeId, StdVector<MapMarkerData>* markerVector)
-      290: Update
-      291: Update2
-      292: SetSequence
-      293: Synchronize
+      277: PopulateMapMarkers # (this, ushort territoryTypeId, StdVector<MapMarkerData>* markerVector)
+      294: Update
+      295: Update2
+      296: SetSequence
+      297: Synchronize
     funcs:
       0x140C71E00: ctor
       0x140C72540: SetGlobalParametersContentName
@@ -15380,10 +15433,11 @@ classes:
       - ea: 0x1420DD5A0
         base: Client::Game::Event::Director
     vfuncs:
-      297: GetCurrentLevel
-      298: GetMaxLevel
-      314: GetContentTypeIconId
-      324: SetExperience
+      281: GetCurrentLevel
+      302: GetMaxLevel
+      317: GetContentTimeMax
+      318: GetContentTypeIconId
+      328: SetExperience
     funcs:
       0x140C77F00: ctor
       0x140C79AA0: ApplyMapEffect
@@ -15392,7 +15446,7 @@ classes:
       - ea: 0x14222FB00
         base: Client::Game::InstanceContent::ContentDirector
     vfuncs:
-      393: HandleGMCommand
+      397: HandleGMCommand
     funcs:
       0x1418EAB00: ctor
       0x1418EADA0: Finalizer
@@ -16584,20 +16638,20 @@ classes:
       - ea: 0x1422D7D48
         base: Client::Game::Event::Director
     vfuncs:
-      296: GetAdditionalTodoText
-      298: SetAdditionalTodo
-      299: SetAdditionalTodoNumber
-      300: SetAdditionalTodoFraction
-      301: SetAdditionalTodoFractionBar
-      302: SetAdditionalTodoLargeBar
-      303: SetAdditionalTodoColorableBar
-      304: SetAdditionalTodoTimeRemaining
-      305: SetAdditionalTodoQuestTitle
-      306: SetAdditionalTodoLargeTimeRemaining
-      307: SetAdditionalTodoLargeBlueText
-      308: SetAdditionalTodoLargeGrayText
-      309: SetAdditionalTodoJoinButton
-      329: ClearAdditionalTodo
+      300: GetAdditionalTodoText
+      302: SetAdditionalTodo
+      303: SetAdditionalTodoNumber
+      304: SetAdditionalTodoFraction
+      305: SetAdditionalTodoFractionBar
+      306: SetAdditionalTodoLargeBar
+      307: SetAdditionalTodoColorableBar
+      308: SetAdditionalTodoTimeRemaining
+      309: SetAdditionalTodoQuestTitle
+      310: SetAdditionalTodoLargeTimeRemaining
+      311: SetAdditionalTodoLargeBlueText
+      312: SetAdditionalTodoLargeGrayText
+      313: SetAdditionalTodoJoinButton
+      333: ClearAdditionalTodo
     funcs:
       0x1419608B0: ctor
   Client::Game::MassivePcContent::MassivePcContentCosmicExploration: # ContentId (MassivePcContent RowId?) 1 and 2: Sinus Ardorum and Phaenna
