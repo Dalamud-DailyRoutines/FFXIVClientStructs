@@ -13,7 +13,7 @@ namespace FFXIVClientStructs.FFXIV.Client.UI.Agent;
 public unsafe partial struct AgentMiragePrismPrismSetConvert {
     [FieldOffset(0x28)] public AgentData* Data;
 
-    [MemberFunction("48 89 5C 24 ?? 89 54 24 10 56 41 54")]
+    [MemberFunction("40 53 41 55 48 81 EC ?? ?? ?? ?? 0F B7 84 24")]
     public partial void Open(uint itemId, InventoryType inventoryType, int slot, int openerAddonId, bool enableStoring);
 
     // OpenPreview in data.yml
