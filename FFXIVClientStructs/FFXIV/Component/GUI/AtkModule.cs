@@ -18,46 +18,46 @@ namespace FFXIVClientStructs.FFXIV.Component.GUI;
 public unsafe partial struct AtkModule {
     public delegate AtkValue* CallbackHandlerDelegate(AtkModule* thisPtr, AtkValue* returnValue, AtkValue* values, uint valueCount);
 
-    [FieldOffset(0x20)] public ExcelSheet* AddonSheet;
+    [FieldOffset(0x20 - 0x10)] public ExcelSheet* AddonSheet;
 
-    [FieldOffset(0x128)] public AtkStage* AtkStage;
-    [FieldOffset(0x130)] internal nint Resources;
-    [FieldOffset(0x1D0)] public AtkFontManager AtkFontManager;
-    [FieldOffset(0x268)] public AtkTextureResourceManager AtkTextureResourceManager;
-    [FieldOffset(0x2C0)] public AtkUnitManager* AtkUnitManager;
-    [FieldOffset(0x2C8)] public AtkInputManager AtkInputManager;
-    [FieldOffset(0x1B68)] public AtkCollisionManager AtkCollisionManager;
-    [FieldOffset(0x1BA8)] public AtkArrayDataHolder AtkArrayDataHolder;
-    [FieldOffset(0x1BF8)] public AtkTimerHolder AtkTimerHolder;
-    [FieldOffset(0x1C18)] public AtkSimpleTweenHolder AtkSimpleTweenHolder;
-    [FieldOffset(0x5C20)] public AtkCrestManager AtkCrestManager;
-    [FieldOffset(0x5C68)] public AtkUIColorHolder AtkUIColorHolder;
+    [FieldOffset(0x128 - 0x10)] public AtkStage* AtkStage;
+    [FieldOffset(0x130 - 0x10)] internal nint Resources;
+    [FieldOffset(0x1D0 - 0x10)] public AtkFontManager AtkFontManager;
+    [FieldOffset(0x268 - 0x10)] public AtkTextureResourceManager AtkTextureResourceManager;
+    [FieldOffset(0x2C0 - 0x10)] public AtkUnitManager* AtkUnitManager;
+    [FieldOffset(0x2C8 - 0x10)] public AtkInputManager AtkInputManager;
+    [FieldOffset(0x1B68 - 0x10)] public AtkCollisionManager AtkCollisionManager;
+    [FieldOffset(0x1BA8 - 0x10)] public AtkArrayDataHolder AtkArrayDataHolder;
+    [FieldOffset(0x1BF8 - 0x10)] public AtkTimerHolder AtkTimerHolder;
+    [FieldOffset(0x1C18 - 0x10)] public AtkSimpleTweenHolder AtkSimpleTweenHolder;
+    [FieldOffset(0x5C20 - 0x10)] public AtkCrestManager AtkCrestManager;
+    [FieldOffset(0x5C68 - 0x10)] public AtkUIColorHolder AtkUIColorHolder;
 
-    [FieldOffset(0x5D18)] public AtkFontCodeModule AtkFontCodeModule;
-    [FieldOffset(0x7298)] public StdVector<nint> CallbackHandlerFunctions; // see CallbackHandlerDelegate
-    [FieldOffset(0x72B0)] public AtkModuleEvent* UIModuleEvent;
-    [FieldOffset(0x72B8)] public StdMap<uint, AddonCallbackEntry> AddonCallbackMapping; // Key is UnitBase->Id
-    [FieldOffset(0x72C8)] public AtkMessageBoxManager* AtkMessageBoxManager;
-    [FieldOffset(0x72D0)] public TextService TextService;
-    [FieldOffset(0x7300)] public AtkTextInput TextInput;
-    [FieldOffset(0x7FC8)] internal Utf8String Unk7FA8;
-    [FieldOffset(0x8030)] internal Utf8String Unk8010;
-    [FieldOffset(0x8098)] internal Utf8String Unk8078;
-    [FieldOffset(0x8100)] internal Utf8String Unk80E0;
+    [FieldOffset(0x5D18 - 0x10)] public AtkFontCodeModule AtkFontCodeModule;
+    [FieldOffset(0x7298 - 0x10)] public StdVector<nint> CallbackHandlerFunctions; // see CallbackHandlerDelegate
+    [FieldOffset(0x72B0 - 0x10)] public AtkModuleEvent* UIModuleEvent;
+    [FieldOffset(0x72B8 - 0x10)] public StdMap<uint, AddonCallbackEntry> AddonCallbackMapping; // Key is UnitBase->Id
+    [FieldOffset(0x72C8 - 0x10)] public AtkMessageBoxManager* AtkMessageBoxManager;
+    [FieldOffset(0x72D0 - 0x10)] public TextService TextService;
+    [FieldOffset(0x7300 - 0x10)] public AtkTextInput TextInput;
+    [FieldOffset(0x7FC8 - 0x10)] internal Utf8String Unk7FA8;
+    [FieldOffset(0x8030 - 0x10)] internal Utf8String Unk8010;
+    [FieldOffset(0x8098 - 0x10)] internal Utf8String Unk8078;
+    [FieldOffset(0x8100 - 0x10)] internal Utf8String Unk80E0;
 
     // probably an #IFDEF WINDOWS here or something specifically creating a Steam keyboard.
     // hope they don't add more soft keyboards later!
-    [FieldOffset(0x8170)] public SteamGamepadSoftKeyboard SoftKeyboardDevice;
+    [FieldOffset(0x8170 - 0x10)] public SteamGamepadSoftKeyboard SoftKeyboardDevice;
 
-    [FieldOffset(0x8288), FixedSizeArray(isString: true)] internal FixedSizeArray16<byte> _currentUIScene;
-    [FieldOffset(0x8298), FixedSizeArray(isString: true)] internal FixedSizeArray16<byte> _loadingUIScene;
+    [FieldOffset(0x8288 - 0x10), FixedSizeArray(isString: true)] internal FixedSizeArray16<byte> _currentUIScene;
+    [FieldOffset(0x8298 - 0x10), FixedSizeArray(isString: true)] internal FixedSizeArray16<byte> _loadingUIScene;
 
-    [FieldOffset(0x82B0)] internal ushort ScreenWidth; // maybe UI dimensions?
-    [FieldOffset(0x82B2)] internal ushort ScreenHeight;
-    [FieldOffset(0x82B4)] public bool EnableUiDraw;
+    [FieldOffset(0x82B0 - 0x10)] internal ushort ScreenWidth; // maybe UI dimensions?
+    [FieldOffset(0x82B2 - 0x10)] internal ushort ScreenHeight;
+    [FieldOffset(0x82B4 - 0x10)] public bool EnableUiDraw;
 
-    [FieldOffset(0x82B8)] public bool EnableUiInput;
-    [FieldOffset(0x82B9)] public bool IsHudInitialized;
+    [FieldOffset(0x82B8 - 0x10)] public bool EnableUiInput;
+    [FieldOffset(0x82B9 - 0x10)] public bool IsHudInitialized;
 
     [VirtualFunction(44)]
     public partial AddonStatus GetAddonStatus(uint addonId);
