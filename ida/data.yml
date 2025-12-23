@@ -866,6 +866,16 @@ classes:
     vtbls:
       - ea: 0x1420A1200
   Client::Game::InstanceContent::ContentSheetWaiterInterface:
+    vtbls:
+      - ea: 0x1420BB820
+  Client::Game::SheetWaiterBase:
+    vtbls:
+      - ea: 0x1420BB838
+        base: Common::Component::Excel::ExcelSheetWaiter
+  Client::Game::InstanceContent::ContentSheetWaiter:
+    vtbls:
+      - ea: 0x1420BB848
+        base: Client::Game::SheetWaiterBase
   Client::Game::Object::IGameObjectEventListener:
   Client::Game::Object::IFilterCommand:
     vtbls:
@@ -2710,7 +2720,9 @@ classes:
       0x140B00170: GetCurrentClassJobExp
       0x140B00220: GetClassJobNeededExp
       0x140B00290: GetCurrentClassJobNeededExp
+      0x140B00360: SetMainAttributeByIndex # (this, index, value)
       0x140B00380: GetAttributeByIndex # (this, index)
+      0x140B003A0: SetAttributeByIndex # (this, index, value)
       0x140AFD850: SetEurekaRank
       0x140AFD950: SetBozjaRank
       0x140AFDE00: TrackTraitUnlock
@@ -2957,10 +2969,6 @@ classes:
     funcs:
       0x140B0E390: Initialize
       0x140B0E830: Finalizer
-#  Client::Game::SheetWaiterBase:
-#    vtbls:
-#      - ea:
-#        base: Common::Component::Excel::ExcelSheetWaiter
   Client::Game::SheetWaiter<Client::Game::UI::ScenarioTextReader>:
 #    vtbls:
 #      - ea:
@@ -3598,7 +3606,6 @@ classes:
     vfuncs:
       0: Dtor
     funcs:
-      0x140225390: ctor
       0x140060A30: Finalizer
       0x140060B60: AddTask
       0x140060BD0: ExecuteAllTasks
@@ -6293,6 +6300,31 @@ classes:
     vtbls:
       - ea: 0x14206B920
         base: Client::System::Threading::Thread
+  Client::Graphics::Kernel::Device::DelayedReleaseManager:
+    vtbls:
+      - ea: 0x14206B980
+    funcs:
+      0x1402242A0: ctor
+  Client::Graphics::Kernel::Device::VertexDeclarationManager:
+    vtbls:
+      - ea: 0x14206B988
+    funcs:
+      0x1402248F0: ctor
+  Client::Graphics::Kernel::Device::CallbackManager:
+    vtbls:
+      - ea: 0x14206B990
+    funcs:
+      0x140225050: ctor
+      0x140225090: Initialize
+      0x140225170: AddCallback
+      0x140225210: RemoveCallback
+      0x140225270: ExecuteCallbacks
+  Client::Graphics::Kernel::Device::HandleManager:
+    vtbls:
+      - ea: 0x14206B998
+    funcs:
+      0x140225310: ctor
+      0x140225390: Initialize
   Client::Graphics::Render::Skeleton:
     vtbls:
       - ea: 0x142074C60
@@ -7890,11 +7922,11 @@ classes:
     vfuncs:
       1: GetScreenPosition
       3: GetComponentNode
-      4: SetComponentNode
-      5: GetActiveNode
-      7: GetComponent
-      8: HandleMouseUpEvent
-      11: GetPayloadContainer
+      5: SetComponentNode
+      6: GetActiveNode
+      8: GetComponent
+      9: HandleMouseUpEvent
+      12: GetPayloadContainer
   Component::GUI::AtkDragDropPayloadContainer:
     funcs:
       0x1406245A0: ctor
@@ -8653,10 +8685,10 @@ classes:
       6: GetDataSize
       7: GetFileVersion
       8: GetFileType
-      10: GetHasChanges
-      11: GetIsSavePending
-      12: SetCharacterContentId
-      13: SaveFile
+      11: GetHasChanges
+      12: GetIsSavePending
+      13: SetCharacterContentId
+      14: SaveFile
   Client::UI::Misc::UserFileManager:
     vtbls:
       - ea: 0x1420B35E8
@@ -9483,7 +9515,7 @@ classes:
       - ea: 0x1420B9C78
         base: Client::UI::Misc::UserFileManager::UserFileEvent
     vfuncs:
-      14: GetSegment
+      15: GetSegment
     funcs:
       0x1407DAED0: ctor
   Client::UI::Misc::RaptureMacroModule:
@@ -14689,7 +14721,7 @@ classes:
         base: Client::Game::Event::EventSceneTaskInterface
   Client::Game::Event::FinalizeSceneTask:
     vtbls:
-      - ea: 0x1421DF668
+      - ea: 0x1421DE8F8
         base: Client::Game::Event::EventSceneTaskInterface
   Client::Game::Event::SetPositionTask:
     vtbls:
@@ -15458,6 +15490,8 @@ classes:
     vtbls:
       - ea: 0x1420DC5C0
         base: Client::Game::Event::Director
+      - ea: 0x1420DD150
+        base: Client::Game::InstanceContent::ContentSheetWaiterInterface
     vfuncs:
       302: GetCurrentLevel
       303: GetMaxLevel
@@ -15471,6 +15505,8 @@ classes:
     vtbls:
       - ea: 0x14223CC40
         base: Client::Game::InstanceContent::ContentDirector
+      - ea: 0x14223D8D8
+        base: Client::Game::InstanceContent::ContentSheetWaiterInterface
     vfuncs:
       397: HandleGMCommand
     funcs:
