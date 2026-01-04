@@ -4641,6 +4641,11 @@ classes:
   Client::UI::RaptureAtkModule::ItemCache:
     vtbls:
       - ea: 0x14205E090
+    vfuncs:
+      0: Dtor
+      1: Clear
+      2: SetFromInventoryItem
+      3: Update
   Client::UI::RaptureAtkModule::InventoryCache:
     vtbls:
       - ea: 0x14205E0B0
@@ -4698,7 +4703,7 @@ classes:
       - ea: 0x1420C46A0
         base: Client::UI::Info::InfoProxyInterface
     vfuncs:
-      12: AddPage
+      11: AddPage
   Client::UI::Info::InfoProxyInvitedInterface:
     vtbls:
       - ea: 0x1420C4700
@@ -4803,6 +4808,8 @@ classes:
     vtbls:
       - ea: 0x1420C4868
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C4968
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x14092E100: ctor
       0x140930FE0: ChangeOrder
@@ -4872,12 +4879,16 @@ classes:
     vtbls:
       - ea: 0x1420C4B38
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C4C38
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x140937B80: ctor
   Client::UI::Info::InfoProxyFriendList:
     vtbls:
       - ea: 0x1420C4CC8
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C4DC8
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x14093A7A0: ctor
       0x14096DB00: Finalizer
@@ -4902,6 +4913,8 @@ classes:
     vtbls:
       - ea: 0x1420C4E80
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C4F80
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x14093F4D0: ctor
   Client::UI::Info::InfoProxyCatalogSearch:
@@ -4924,6 +4937,8 @@ classes:
     vtbls:
       - ea: 0x1420C51F8
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C52F8
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x14094AA80: ctor
   Client::UI::Info::InfoProxyChat:
@@ -4936,6 +4951,8 @@ classes:
     vtbls:
       - ea: 0x1420C54F0
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C55F0
+        base: Client::Game::Character::CharacterManagerInterface
   Client::UI::Info::InfoProxyNoviceNetworkMember:
     vtbls:
       - ea: 0x1420C5620
@@ -4952,6 +4969,8 @@ classes:
     vtbls:
       - ea: 0x1420C5880
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C5980
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x140955050: ctor
   Client::UI::Info::InfoProxy25:
@@ -4995,6 +5014,8 @@ classes:
     vtbls:
       - ea: 0x1420C5DA0
         base: Client::UI::Info::InfoProxyCommonList
+      - ea: 0x1420C5EA0
+        base: Client::Game::Character::CharacterManagerInterface
     funcs:
       0x14095FB40: ctor
   Client::UI::Info::InfoProxyCircleList:
@@ -8039,7 +8060,10 @@ classes:
       0x14066E060: SetCursorNavigationIndex
       0x14066E0A0: GetCursorNavigationStopFlags
       0x14066E180: SetAtkResNodeById
-      0x1406C5730: GetComponentButtonById
+      0x1406C5730: GetComponentButtonById # matches Button, CheckBox, RadioButton, ListItemRenderer, Tab
+      0x1406C5C50: GetComponentIconById
+      0x1406C6040: GetComponentItemRendererById
+      0x1406C6600: GetComponentTextNineGridById
   Component::GUI::AtkCursorNavigationInfo:
     funcs:
       0x14066D460: ctor
@@ -9827,6 +9851,10 @@ classes:
         pointer: true
     vtbls:
       - ea: 0x142224718 # maybe platform-specific implementation?
+      # Following offsets for BlacklistManager vtbls are from 2025.12.23.0000.0000 version
+      #  base: ??? # 0x1422246D8 is base
+      # - ea: 142224720 # some other struct that depends on critical section code for std::vector
+      #  base: ??? # 0x1422246E0 is base
     funcs:
       0x14181E150: IsCharacterBlocked
 #oldfail       0x140937B50: GetReplacementName # returns a Utf8String* to the set name that should be displayed instead of the character name
