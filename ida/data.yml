@@ -1628,6 +1628,15 @@ classes:
       0x14081B260: ctor
       0x14081B300: Dtor
       0x14081B370: Request # (this, callbackInterface, commandId, arg1, arg2)
+  Client::Game::ContentsReplayManager:
+    instances:
+      - ea: 0x14299AFA0
+    funcs:
+      0x14081E100: ctor
+      0x14081E380: Initialize
+      0x14081E530: Update
+      0x14081E4A0: Termiante
+      0x14081E2B0: Finalizer
   Client::Game::InventoryManager:
     instances:
       - ea: 0x1429C6D60
@@ -2865,9 +2874,10 @@ classes:
       0x140B4AD90: GetRelicID
       0x140B4ADA0: GetRelicNoteID
       0x140B4ADB0: GetMonsterProgress
-      0x140B4AED0: IsDungeonComplete
       0x140B4AE50: IsFateComplete
       0x140B4AE90: IsLeveComplete
+      0x140B4AED0: IsDungeonComplete
+      0x140B4B850: IsMonsterNoteTarget
   Client::Game::UI::MateriaTrade:
     vtbls:
       - ea: 0x1420D0700
@@ -5923,9 +5933,11 @@ classes:
       0x140BA6080: HandleCompletedRecipesPacket
       0x140BA65F0: HandleCompletedQuestsPacket
       0x140BA6730: HandleUnlockedMapMarkersPacket
+      0x140BA67A0: HandleQuestCompletePacket
       0x140BA6910: HandleCompletedLegacyQuestsPacket
       0x140BA6B20: HandleQuestRepeatFlagsPacket
-      0x140BA6EB0: HandleCompletedLeveQuestsPacket
+      0x140BA6EB0: HandleCompletedLevesPacket
+      0x140BA6F80: HandleLeveCompleteTogglePacket
       0x14181E0E0: HandleUIModulePacketPacket
       0x1419169D0: HandlePartyInvitePacket
       0x141916AA0: HandleSocialPacket
@@ -10512,6 +10524,8 @@ classes:
       0x141934AB0: SetEurekaRank
       0x141934AE0: SetEurekaElement
       0x141934B10: SetBozjaRank
+      0x141934B40: SetOccultCrescentRank
+      0x141934B70: SetOccultCrescentElement
   Client::Game::Control::CharacterLookAtController:
     vtbls:
       - ea: 0x1420A1878
