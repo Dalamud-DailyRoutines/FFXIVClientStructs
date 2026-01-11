@@ -1055,6 +1055,7 @@ classes:
       36: SetAtkHistory
       39: SetUiVisibility
       40: GetSoftKeyboardDeviceInterface
+      66: OnCursorTypeChange
   Component::GUI::AtkModuleInterface::AtkEventInterface:
     vtbls:
       - ea: 0x14205DCB0
@@ -1739,6 +1740,10 @@ classes:
       0x14085F460: GetParameterValue
       0x140B6DD50: GetParameterMaxValue
 #oldfail       0x1408A0170: GetEquipErrorLogMessageId # (this, race, sex, level, classJob, grandCompany, pvpRank, itemRow)
+  Client::Game::InventoryItemRef:
+    funcs:
+      0x1401176F0: Set
+      0x140117770: Get
   Client::Game::InventoryContainer:
     vtbls:
       - ea: 0x1420BC698
@@ -1867,6 +1872,21 @@ classes:
       0x140ACABB0: GetMemberCount
       0x140ACABD0: GetMember
       0x140ACAA40: UpdateNotifications
+  Client::Game::OrchestrionManager:
+    instances:
+      - ea: 0x1429E9DC0
+    funcs:
+      0x140DE0F60: PlayTrack
+      0x140DE11B0: PlaySample
+      0x140DE1330: StopCurrentTrack
+      0x140DE1560: StopSample
+      0x140DE1680: IsInRange
+      0x140DE1710: GetPlayMode
+      0x140DE1720: SetPlaylist
+      0x140DE1750: GetPlaylist
+  Client::Game::OrchestrionSampleState:
+    instances:
+      - ea: 0x1429E9E10
   Client::Game::HousingManager:
     instances:
       - ea: 0x1429E9DF8
@@ -3556,6 +3576,8 @@ classes:
       - ea: 0x14208CB90
         base: Client::System::Threading::Thread
     funcs:
+      0x1403FEE60: AcquireSoundData
+      0x1403FEEE0: ReleaseSoundData
       0x1403FF1C0: GetEffectiveVolume
       0x1403FF5A0: ctor
       0x140401320: SetAlwaysOn
@@ -3579,6 +3601,18 @@ classes:
       0x140401B80: SetPerformAlways
       0x140401BD0: SetMicPosition
       0x140402950: SetVolume #(this, type, float: volume
+  Common::Component::BGCollision::LinkList<Client::Sound::ISoundData,Client::Sound::ISoundData>:
+    vtbls:
+      - ea: 0x14208C940
+        base: Client::System::Common::NonCopyable
+  Client::Sound::ISoundData:
+    vtbls:
+      - ea: 0x14208C948
+        base: Common::Component::BGCollision::LinkList<Client::Sound::ISoundData,Client::Sound::ISoundData>
+  Client::Sound::SoundData:
+    vtbls:
+      - ea: 0x14208CCA0
+        base: Client::Sound::ISoundData
   Client::System::Framework::GameWindow:
     instances:
       - ea: 0x1427F5600
@@ -7323,14 +7357,19 @@ classes:
     instances:
       - ea: 0x14299E590
     funcs:
+      0x14060E1B0: ctor
+      0x142033C20: Finalizer
       0x14060DE60: Initialize
+      0x14060DEF0: Terminate
       0x140B52420: Update
       0x1417798E0: GetFlightAllowedStatus
   Client::Game::Control::CameraManager:
     funcs:
       0x1417F45F0: ctor
-      0x1417F4E50: PreUpdate
       0x1417F48B0: GetActiveCamera
+      0x1417F5370: SetActiveCamera
+      0x1417F5670: Update
+      0x1417F5C00: UpdateActiveCameraState
   Client::Game::Control::MoveControl::SplineController2D<float,SplineVector2,SplineVector2>:
     vtbls:
       - ea: 0x1420A1860
@@ -7958,6 +7997,7 @@ classes:
       17: SetScaleToHudLayoutScale
       18: ShouldCollideWithWindow
       20: OnMove
+      22: HandleCursorTypeChange
       23: ShouldIgnoreInputs
       24: GetRootNode
       27: GetWindowBounds
@@ -11500,7 +11540,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140BE4F30: ctor
-      0x140BE5720: ChangeInventoryContainer
+      0x140BE5720: ChangeRepairInventory
   Client::UI::Agent::AgentRepairRequest:
     vtbls:
       - ea: 0x1420D28A8
@@ -15153,6 +15193,10 @@ classes:
     vtbls:
       - ea: 0x1421DC4B8
         base: Component::GUI::AtkModuleInterface::AtkEventInterface # this should be Client::Game::Event::UICallbackBase<Client::Game::Event::EventHandler> but it's too hard to find
+  Client::Game::Event::NpcRepairCallback:
+    vtbls:
+      - ea: 0x1421DC9E0
+        base: Component::GUI::AtkModuleInterface::AtkEventInterface # this should be Client::Game::Event::UICallbackBase<Client::Game::Event::EventHandler>
   Client::Game::Event::EventSceneModule:
     funcs:
       0x141709150: ctor
@@ -23777,6 +23821,13 @@ classes:
   Client::Game::CameraBase:
     vtbls:
       - ea: 0x1421E7B58
+    vfuncs:
+      2: UpdateState
+      3: Update
+      5: ResetAngles
+      6: CalculateSceneCameraPitch
+      7: CalculateSceneCameraYaw
+      8: ResetAngles2
     funcs:
       0x1417E0430: ctor
       0x1417E0C50: ShouldDrawGameObject
@@ -23784,6 +23835,20 @@ classes:
     vtbls:
       - ea: 0x1421E7BC0
         base: Client::Game::CameraBase
+    vfuncs:
+      13: UpdateTiltOffset
+      16: DetermineControlMode
+      17: GetCameraTargetObject
+      18: GetTiltOffset
+      20: GetTargetObject
+      23: SaveConfigOptions
+      24: LoadConfigOptions
+      25: ResetConfigOptions
+      26: SetTiltOffset
+      27: GetZoomSpeed
+      28: GetZoomModeToggleSpeedMultiplier
+      29: GetInputDeltaHMultiplier
+      30: GetInputDeltaVMultiplier
     funcs:
 #oldfail       0x1416DAFB0: UpdateRotation
       0x1417EB3A0: ctor
@@ -23803,13 +23868,13 @@ classes:
         pointer: true
     funcs:
       0x1417F6750: ctor
-  Client::Game::Camera3:
+  Client::Game::SpectatorCamera:
     vtbls:
       - ea: 0x1421E7D30
         base: Client::Game::Camera
     funcs:
       0x1417F3940: ctor
-  Client::Game::Camera4:
+  Client::Game::AimingCamera:
     vtbls:
       - ea: 0x142357860
         base: Client::Game::CameraBase
