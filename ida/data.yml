@@ -173,6 +173,8 @@ functions:
   0x1406517A0: GetScaleListEntryFromScale
   0x140662400: GetScaleForListOption
   0x1406BFEF0: Component::GUI::TextModuleInterface::GetTextLabelByID
+  0x1406C0150: IsPadModeEnabled
+  0x1406C0180: IsPadMouseModeEnabled
 #fail   0x14064BB40: GetLocalTextParameter
   0x14078C5F0: FormatNumber
   0x1407B7E70: ComputeAddonNameHash
@@ -548,6 +550,17 @@ classes:
       0x140833D90: ResetBGM
       0x140833DE0: SetBGMPlayState # static
       0x140833E10: ctor
+  Client::Game::MapDiscoveryManager:
+    instances:
+      - ea: 0x1429BFFF0
+    funcs:
+      0x140835C00: ReadDiscoveryListPacket
+      0x140835D30: ReadDiscoveryPacket
+      0x140835F40: IsMapRegionDiscovered
+      0x140836290: IsRegionDiscovered
+      0x140836010: SendMapRangeEntered
+      0x140836190: Update
+      0x1408366A0: IsDiscoveryEnabledForMap
   Client::Game::Control::InputManager:
     instances:
       - ea: 0x1427AC640
@@ -863,9 +876,6 @@ classes:
       0x1419BEF80: GetAdjustedTimestamp # static
       0x1419BEFA0: GetBonusGuaranteeForTimestamp # static
       0x1419BEFE0: GetSatisfactionBonusesForNpc # static
-  Client::Game::Control::TargetSystem::ListFeeder:
-    vtbls:
-      - ea: 0x1420A1950
   Client::Game::InstanceContent::ContentSheetWaiterInterface:
     vtbls:
       - ea: 0x1420BC100
@@ -878,9 +888,6 @@ classes:
       - ea: 0x1420BC128
         base: Client::Game::SheetWaiterBase
   Client::Game::Object::IGameObjectEventListener:
-  Client::Game::Object::IFilterCommand:
-    vtbls:
-      - ea: 0x1420A18A0
   Client::Graphics::RenderObjectList:
   Client::Graphics::Singleton:
   Client::SupportDesk::HttpConnection:
@@ -1061,6 +1068,7 @@ classes:
       - ea: 0x14205DCB0
     vfuncs:
       0: ReceiveEvent
+      1: ReceiveEventWithResult
   Component::GUI::AtkTextInput::AtkTextInputEventInterface:
     vtbls:
       - ea: 0x1420A4E00
@@ -1289,6 +1297,11 @@ classes:
       0x14168CCA0: Destroy
       0x14168CFC0: GetObjectByIndex
       0x14168CFE0: GetObjectById
+      0x14168D210: CreateGatheringPointObject
+      0x14168D390: CreateEventObject
+      0x14168D4E0: CreateHousingEventObject
+      0x14168D5E0: CreateHousingCombinedObject
+      0x14168D6E0: CreateAreaObject
   Client::Game::Object::StandObjectManager: # Lively ENpcs
     instances:
       - ea: 0x1429FE4C0
@@ -1634,10 +1647,11 @@ classes:
       - ea: 0x14299AFA0
     funcs:
       0x14081E100: ctor
-      0x14081E380: Initialize
-      0x14081E530: Update
-      0x14081E4A0: Termiante
       0x14081E2B0: Finalizer
+      0x14081E380: Initialize
+      0x14081E4A0: Termiante
+      0x14081E530: Update
+      0x140823A70: ProcessPacket
   Client::Game::InventoryManager:
     instances:
       - ea: 0x1429C6D60
@@ -1648,6 +1662,7 @@ classes:
       0x140841B00: ClearOperationByContextId
       0x140842EC0: GetInventoryContainer  # (this, containerId)
       0x140842F70: GetInventorySlot  # (this, containerId, slotId)
+      0x140843850: IsContainerLoaded
       0x1408441D0: MoveItemSlot # (srcContainer, srcSlot, dstContainer, dstSlot, 1)
       0x14084B480: GetInventoryItemCount # (this, itemId, hq, 1, 1, 0)
       0x14084BBD0: GetItemCountInContainer # (this, itemId, containerId, hq, 0)
@@ -1674,6 +1689,7 @@ classes:
       0x1408596C0: GetWolfMarks
       0x140859730: GetAlliedSeals
       0x1408597A0: GetGoldSaucerCoin
+      0x140859930: HasLowDurabilityItemsInContainer
       0x14085ADB0: GetWeddingDateFromItem
       0x14085AE50: GetRemainingWeddingInvitationCopiesFromItem
       0x14085AFC0: GetRacingChocoboAdoptionDateFromItem # For Item#9560 (Proof of Covering)
@@ -2608,6 +2624,7 @@ classes:
       0x140B691C0: IsEmoteUnlocked
       0x140B69330: IsItemActionUnlocked
       0x140B670F0: IsTripleTriadCardUnlocked
+      0x140B673C0: AnnounceHowTo
       0x140B681D0: Dismount
       0x140B688A0: RequestResetTimestamps # MapAllowance, ChallengeLogReset
       0x140B688E0: HasNextMapAllowanceTimestamp
@@ -2732,6 +2749,8 @@ classes:
       0x140B004E0: IsGlassesStylesUnlocked
       0x140BA3410: SetDesynthesisLevels
       0x140B00520: IsGlassesUnlocked
+      0x140B00790: ToggleUnlockBit
+      0x140B007D0: IsUnlockBitSet
       0x140B00810: Initialize
       0x140B01CC0: IsCurrentJobCrafter
       0x140B01CE0: IsCurrentJobGatherer
@@ -2891,8 +2910,8 @@ classes:
       - ea: 0x1420D06F8
     funcs:
       0x140B4ABD0: ReadPacket
-      0x140B4AD90: GetRelicID
-      0x140B4ADA0: GetRelicNoteID
+      0x140B4AD90: GetRelicId
+      0x140B4ADA0: GetRelicNoteId
       0x140B4ADB0: GetMonsterProgress
       0x140B4AE50: IsFateComplete
       0x140B4AE90: IsLeveComplete
@@ -5943,6 +5962,7 @@ classes:
       0x140B9F380: HandleTreasureFadeOutPacket
       0x140B9F410: HandleWeatherChangePacket
       0x140B9F430: HandleDiscoveryPacket
+      0x140B9F450: HandleDiscoveryListPacket
       0x140B9F470: HandlePlayerTitleListPacket
       0x140B9F4C0: HandleUpdatePartyPositionsPacket
       0x140B9F4F0: HandleUpdateAllianceNormalPositionsPacket
@@ -6857,8 +6877,9 @@ classes:
     vtbls:
       - ea: 0x1420945A8
         base: Client::Graphics::Scene::Object
-    vfuncs:
+    vfuncs: # 50
       11: UpdateMaterials
+      24: UpdateTint
     funcs:
       0x14040C370: ctor
   Client::Graphics::JobSystem<Client::Graphics::Scene::World>:
@@ -6922,15 +6943,17 @@ classes:
     vtbls:
       - ea: 0x142094AC0
         base: Client::Graphics::Scene::DrawObject
-    vfuncs:
-      24: UpdateTint
+    vfuncs: # 111
       52: ForceWetness
       53: ResetWetness
+      56: LoadSlot
       58: SetupScaling
       63: OnRenderModel
       64: OnRenderMaterial
-      69: FlagSlotForUpdate
-      72: GetDataForSlot
+      69: SetEquipmentSlotModel
+      70: SetGlassesSlotModel
+      71: GetEquipmentSlotModel
+      72: GetGlassesSlotModel
       75: ResolveRootPath
       76: ResolveSklbPath
       77: ResolveMdlPath
@@ -6941,6 +6964,7 @@ classes:
       84: ResolvePapPath
       85: ResolveTmbPath
       87: ResolveMaterialPapPath
+      88: GetRaceSexId
       89: ResolveImcPath
       90: ResolveMtrlPath
       92: ResolveDecalPath
@@ -6963,6 +6987,8 @@ classes:
       0x140427290: LoadAllMTRLsFromMDLInSlot
       0x140427620: LoadAllDecalTexFromMDLInSlot
       0x140427790: LoadPHYBForSlot
+      0x140427910: LoadBKDForSlot
+      0x140427B50: LoadBNMBForSlot
       0x140427E90: UnloadMDLForSlot
       0x140428570: CopyIMCForSlot
 #oldfail       0x140498B30: CreateStagingArea
@@ -7301,6 +7327,24 @@ classes:
   Client::Graphics::Vfx::VfxDataListenner:
     vtbls:
       - ea: 0x14205DCA0
+  Client::Game::Object::IFilterCommand:
+    vtbls:
+      - ea: 0x1420A18A0
+  Client::Game::Object::AggroFilter:
+    vtbls:
+      - ea: 0x1420A18E0
+        base: Client::Game::Object::IFilterCommand
+  Client::Game::Control::TargetSystem::Circle:
+    vtbls:
+      - ea: 0x1420A1930
+        base: Client::Game::Object::IFilterCommand
+  Client::Game::Control::TargetSystem::CircleManager:
+    vtbls:
+      - ea: 0x1420A1940
+        base: Client::Game::Object::IFilterCommand
+  Client::Game::Control::TargetSystem::ListFeeder:
+    vtbls:
+      - ea: 0x1420A1950
   Client::Game::Control::TargetSystem::AggroListFeeder:
     vtbls:
       - ea: 0x1420A1960
@@ -7313,6 +7357,17 @@ classes:
     vtbls:
       - ea: 0x1420A1980
         base: Client::Game::Control::TargetSystem::ListFeeder
+  Client::Game::Control::TargetSystem::TargetFilter:
+    vtbls:
+      - ea: 0x1420A1990
+        base: Client::Game::Object::IFilterCommand
+  Client::Game::Control::TargetSystem::SpaceFilter:
+    vtbls:
+      - ea: 0x1420A19A0
+        base: Client::Game::Object::IFilterCommand
+  Client::Game::Control::TargetSystem::OutlineInfo:
+    funcs:
+      0x1405FEB00: UpdateOutline
   Client::Game::Control::TargetSystem:
     instances:
       - ea: 0x14299E720
@@ -8030,7 +8085,7 @@ classes:
       0x140650A70: Destructor
       0x140650F20: FireCallbackAndHideOrClose
       0x140650F30: FireCallbackInt  # this creates an int AtkValue and puts its argument into it before calling Callback
-      0x140651170: FireCallback2 # calls AtkEventInterface.ReceiveEvent2
+      0x140651170: FireCallbackWithResult # calls AtkEventInterface.ReceiveEventWithResult
       0x1406512D0: RegisterEvent
       0x140651310: UnregisterEvent
       0x140651360: SetPosition
@@ -8246,7 +8301,6 @@ classes:
       0x14067F910: HandleDragDropEvent
       0x1406803F0: PopulateAtkListItemData
       0x140680750: ctor
-      0x1406C6040: GetItemRendererByNodeId
   Component::GUI::AtkComponentListItemPopulator:
     funcs:
       0x140672A30: ctor_WithRenderer
@@ -8296,7 +8350,7 @@ classes:
       0x14068A3E0: HandleUnregisterAddonCallback # 1
       0x14068A430: HandleAddonAgentCallback # 2
       0x14068A680: HandleAddonEventCallback # 3 - unsure, used in AddonFadeMiddleBack to send an event to ScheduleManagement
-      0x14068A8B0: HandleAddonEventCallback2 # 4 - unsure, calls AtkEventInterface.ReceiveEvent2
+      0x14068A8B0: HandleAddonEventCallbackWithResult # 4 - calls AtkEventInterface.ReceiveEventWithResult
       0x14068A9A0: HandleSubscribeAtkArrayData # 5
       0x14068AA40: HandleUnsubscribeAtkArrayData # 6
       0x14068B220: HandleCalculateTextLength # 10
@@ -10439,15 +10493,18 @@ classes:
       13: DisableDraw
       17: SetDrawObject
       23: GetDrawObject
-      24: GetDrawObject_2
+      24: GetCharacterBase
       25: UpdateRadius
       26: Highlight
       #30: TryGetEventHandler
-      #31: GetEventHandlersImpl
+      30: GetEventHandlersImpl
       34: SetReadyToDraw
       35: Update
       46: GetCenterPosition
       47: GetNameId
+      53: GetTargetType
+      54: PositionModified
+      55: RotationModified
       57: IsDead
       58: IsNotMounted
       59: Terminate
@@ -13730,6 +13787,7 @@ classes:
       0x140F47590: CreateMapMarkers
       0x140F47DE0: ResetMiniMapMarkers
       0x140F47E20: CreateMiniMapMarkers
+      0x140F48020: UpdateEventMapMarkers
       0x140F48740: OpenMapByMapId
       0x140F4EEB0: CanUseTeleport # static
   Client::UI::Agent::OpenMapInfo:
@@ -15196,7 +15254,7 @@ classes:
   Client::Game::Event::NpcRepairCallback:
     vtbls:
       - ea: 0x1421DC9E0
-        base: Component::GUI::AtkModuleInterface::AtkEventInterface # this should be Client::Game::Event::UICallbackBase<Client::Game::Event::EventHandler>
+        base: Client::Game::Event::TalkCallback # this should be Client::Game::Event::UICallbackBase<Client::Game::Event::EventHandler>
   Client::Game::Event::EventSceneModule:
     funcs:
       0x141709150: ctor
@@ -17101,7 +17159,7 @@ classes:
     vtbls:
       - ea: 0x142103B18
     vfuncs:
-      0: ManagedVf0
+      0: ManagedInvoke
       1: ManagedHide
       2: GetManagedUnitBase
   Client::UI::Atk2DAreaMap:

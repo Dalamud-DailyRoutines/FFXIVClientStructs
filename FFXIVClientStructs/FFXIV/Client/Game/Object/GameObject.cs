@@ -98,11 +98,17 @@ public unsafe partial struct GameObject {
     [VirtualFunction(13)]
     public partial void DisableDraw();
 
+    [VirtualFunction(17)]
+    public partial void SetDrawObject(DrawObject* drawObject);
+
     [VirtualFunction(23)]
     public partial DrawObject* GetDrawObject();
 
+    [VirtualFunction(24)]
+    public partial CharacterBase* GetCharacterBase();
+
     [VirtualFunction(26)]
-    public partial void Highlight(ObjectHighlightColor color);
+    public partial void Highlight(ObjectHighlightColor color); // TODO: add missing "bool includeMount = true" arg
 
     /// <param name="outHandlers">Should point to array that can fit up to 32 pointers.</param>
     /// <returns>Num elements filled.</returns>
@@ -117,6 +123,9 @@ public unsafe partial struct GameObject {
 
     [VirtualFunction(47)]
     public partial uint GetNameId();
+
+    [VirtualFunction(53)]
+    public partial TargetType GetTargetType();
 
     [VirtualFunction(54)]
     public partial void PositionModified();
@@ -296,6 +305,16 @@ public enum BattleNpcSubKind : byte {
 
     /// <summary> Squadron, Trust, Duty Support </summary>
     NpcPartyMember = 9,
+}
+
+public enum TargetType {
+    NonPartyPc = 0,
+    Party = 1,
+    Alliance = 2,
+    Pet = 3,
+    Enemy = 4,
+    Minion = 5,
+    NpcOrObject = 6
 }
 
 [Flags]
