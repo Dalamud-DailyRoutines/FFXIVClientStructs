@@ -620,6 +620,10 @@ classes:
     funcs:
       0x141C60290: ctor
       0x140339CC0: Finalizer
+  Application::Network::MyGameLoginCallback:
+    vtbls:
+      - ea: 0x1423A82A0
+        base: Application::Network::LobbyClient::LobbyRequestCallback
   Application::Network::LobbyClientModule:
     vtbls:
       - ea: 0x1423A8468
@@ -2635,6 +2639,7 @@ classes:
       0x140B688F0: HasNextMapAllowanceTimestamp
       0x140B68910: GetNextMapAllowanceTimestamp
       0x140B68920: GetNextChallengeLogResetTimestamp
+      0x140B68590: GetIsAirDismountable
       0x1418E73D0: IsInstanceContentUnlocked   # static
       0x1418E7900: IsInstanceContentCompleted  # static
       0x1416BBCE0: IsPublicContentUnlocked   # static
@@ -3006,7 +3011,7 @@ classes:
       0x140B081C0: GetCraftTypeLevel
       0x140B08350: GetNoteBookDivisionIdByRecipe
       0x140B08460: GetRecipeByIndex # (this, index)
-      0x140B084A0: FirstRecipeIndex
+      0x140B084A0: GetRecipeCount
       0x140B084E0: GetSelectedRecipe
       0x140B09150: Initialize
       0x140B0B2F0: CancelCraftingPassthrough
@@ -3138,6 +3143,7 @@ classes:
     funcs:
       0x140B29590: RequestTitleList
       0x140B295E0: ReadPacket
+      0x140B29840: SetTitleUnlocked
       0x140B29870: IsTitleUnlocked
   Client::Game::UI::GCSupply:
     instances:
@@ -5985,8 +5991,10 @@ classes:
       0x140B9F530: HandleUpdateAllianceSmallPositionsPacket
       0x140B9F9B0: HandleRSVDataPacket
       0x140B9F9D0: HandleRSFDataPacket
+      0x140B9F9F0: HandleMarketBoardInfo
       0x140B9FA30: HandleHuntingLogEntryPacket
       0x140B9FA70: HandleNPCYellPacket
+      0x140B9FC30: HandleAchievementsPacket
       0x140B9FCA0: HandleFateProgressTabPacket
       0x140BA2890: HandleMapEffectPacket
       0x140BA2E70: HandleQuestManagerUnkArray2SecondHalfPacket
@@ -9280,7 +9288,7 @@ classes:
       212: IsDutyRaidFinderOpen
       214: ShowTalkSubtitle
       215: HideTalkSubtitle
-      218: ShowAdventureNotice
+      216: ShowAdventureNotice
       221: SetLinkshellCycle
       222: RotateLinkshellHistory
       223: SetCrossWorldLinkshellCycle
