@@ -1442,16 +1442,30 @@ classes:
     funcs:
       0x140DEABC0: ctor
       0x140DEABF0: Dtor
+      0x140DEACF0: RequestParameters
       0x140DEB480: GetAbility #(this,index)
-#oldfail       0x140D40460: GetNamePart
+      0x140DEB4A0: GetNamePart
+      0x140DEB4C0: GetRank
+      0x140DEB4D0: GetExperienceCurrent
+      0x140DEB4E0: GetExperienceMax
       0x140DEB4F0: GetColor
       0x140DEB500: GetGear #(this,index)
       0x140DEB520: GetSessionsAvailable
       0x140DEB540: HasRank
+      0x140DEB550: GetPedigreeLevel
+      0x140DEB5B0: IsAttributeInheritedFromMother
+      0x140DEB5E0: GetIsFemale
+      0x140DEB600: GetIsFoulWeather
+      0x140DEB640: GetAttributesCurrent
+      0x140DEB920: GetAttributesMaximum
+      0x140DEBBC0: GetAttributesStars
       # Not 100 confident what these 2 do
       #0x140DEB920: GetAbilitySlotIfNotLearned
       #0x140CAABC0: GetAbilityIndexIfLearned
-      0x140DEBD60: GetRank
+      0x140DEBD00: CanLearnRacingChocoboAbility # name from Lua function
+      0x140DEBD30: CanForgetRacingChocoboAbility # name from Lua function
+      0x140DEBD60: CanRetireRacingChocobo # name from Lua function
+      0x140DEBDA0: GetRating
       0x140DEC100: GetAdoptionDateFromItem # For Item#9560 (Proof of Covering)
       0x140DEC120: GetNameIdFromItem
       0x140DEC150: GetGradeFromItem
@@ -2911,8 +2925,19 @@ classes:
     vtbls:
       - ea: 0x1420D2C80
     funcs:
-      0x140B4B630: ReadPacket
+      0x140B4B590: ctor
+      0x140B4B630: HandleCompletionFlagsPacket
+      0x140B4B650: HandleTabDataPacket
+      0x140B4B7A0: Clear
+      0x140B4B830: IsContentNoteComplete
       0x140B4B9F0: IsCategoryUnlocked
+      0x140B4BB20: SetContentNoteComplete
+      0x140B4BB50: SelectTabAndRequestData
+      0x140B4BB90: GetState
+      0x140B4BBA0: GetSelectedTab
+      0x140B4BBB0: GetDisplayCount
+      0x140B4BBC0: GetDisplayId
+      0x140B4BBE0: GetDisplayStatus
   Client::Game::UI::RelicNote:
     instances:
       - ea: 0x1429C63F0  # UIState.RelicNote
@@ -3767,6 +3792,7 @@ classes:
       0x1400D3740: TaskHousingEvent
       0x1400D3750: TaskResourceManager
       0x1400D3760: TaskUpdateGame
+      0x1400D37E0: GetClientPlatform
       0x1400D4170: SetupSteamApi
       0x1400D42A0: TeardownSteamApi
       0x1400D4300: IsSteamApiInitialized
