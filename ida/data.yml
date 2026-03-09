@@ -97,6 +97,8 @@ globals:
   0x1429E6638: g_Client::Game::QuestManager::QuestRepeatFlagsReceived
   0x1429E6639: g_Client::Game::QuestManager::LeveQuestsReceived
   0x1429E663A: g_Client::Game::QuestManager::CompletedLeveQuestsReceived
+  0x1429E6660: g_InitializeSceneDataValues
+  0x1429E6A5C: g_InitializeSceneDataCount
   0x1427AC068: g_Component::SteamApi::InterfaceContext::ISteamFriends
   0x1427AC050: g_Component::SteamApi::InterfaceContext::ISteamUser
   0x1427AC098: g_Component::SteamApi::InterfaceContext::ISteamApps
@@ -2768,6 +2770,7 @@ classes:
       0x140B69890: IsEmoteUnlocked
       0x140B69A00: IsItemActionUnlocked
       0x140B677C0: IsTripleTriadCardUnlocked
+      0x140B678F0: IsTripleTriadNpcBeaten
       0x140B67A90: AnnounceHowTo
       0x140B688A0: Dismount
       0x140B68F70: RequestResetTimestamps # MapAllowance, ChallengeLogReset
@@ -5059,6 +5062,7 @@ classes:
       0x1409506D0: ctor
       0x1409508A0: GetPtr  # Static
       0x1409508B0: ReceiveListing
+      0x1409517E0: SendListingsRequest
       0x140953640: IsCrossRealmParty # Static
       0x1409536C0: IsCrossRealmPartyLeader # Static
       0x1409536E0: IsAllianceRaid # Static
@@ -6501,6 +6505,7 @@ classes:
         base: Client::UI::Info::InfoEventHandlerInterface
     funcs:
       0x14052C2D0: ctor
+      0x14052E330: MoveItemInChest
 #oldfail       0x14031A8B0: Finalizer # inlined @ 0x1403CD9F0
   Client::UI::Agent::AgentExplorationInterface:
     vtbls:
@@ -7694,6 +7699,7 @@ classes:
       0x1405C8560: ctor
       0x1405C8590: PositionsDiffer
       0x1405C85C0: ButtonsDiffer
+      0x1405C85F0: Clear
   Client::System::Input::KeyboardInputData:
     funcs:
       0x1405C86A0: ctor
@@ -9275,6 +9281,9 @@ classes:
     funcs:
       0x14074E790: ctor # unused, inlined @ 0x14075CD19
       0x14074F640: GetKeybindByName
+      0x1406163F0: FilterUICursorInputs
+      0x140616410: FilterDragInputs
+      0x1406163A0: FilterGamepadInputs
   Client::UI::Misc::UiDataModule:
     vtbls:
       - ea: 0x1420B7A10
@@ -10438,7 +10447,9 @@ classes:
       0x1407CC700: HasLinkedBannerByEnabledIndex
       0x1407CC730: ResolveIdFromEnabledIndex
       0x1407CC7D0: TryGetIdFromIndex
+      0x1407CC990: RenameGearset
       0x1407CCB00: FindGearsetIdByName
+      0x1407CFC70: ShowLogMessage
   Client::UI::Misc::ItemFinderModule:
     vtbls:
       - ea: 0x1420BD7C8
@@ -11113,7 +11124,8 @@ classes:
       0x1408E7280: SetChatChannel
       0x1408E75F0: SetFlags
       0x1408E6AA0: SetTellTargetInForay
-      0x1408E7A70: PrintLogMessage
+      0x1408E7A70: ShowLogMessage
+      0x1409913C0: ProcessShellCommandMessage
       0x140E65210: ReplyInSelectedChatMode
   Client::UI::Shell::ShellCommandBlueAction:
     vtbls:
@@ -12036,6 +12048,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140EB4DA0: ctor
+      0x140EB4E50: UpdateCatch
   Client::UI::Agent::AgentFreeCompany:
     vtbls:
       - ea: 0x14209D9F0
@@ -12377,6 +12390,7 @@ classes:
       0x14053DDC0: OpenListing
       0x14053DCE0: OpenListingByContentId
       0x14053EAB0: RequestListingsUpdate
+      0x140541050: PopulateListingData
   Client::UI::Agent::AgentContentsMvp:
     vtbls:
       - ea: 0x1420FC4C8
@@ -12712,6 +12726,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x141033030: ctor
+      0x140951EA0: RefreshDeckEdit
   Client::UI::Agent::AgentTripleTriadCoinExchange:
     vtbls:
       - ea: 0x142102360
@@ -14102,7 +14117,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x141021DF0: ctor
-  Client::UI::Agent::AgentTrippleTriad:
+  Client::UI::Agent::AgentTripleTriad:
     vtbls:
       - ea: 0x142101E98
         base: Client::UI::Agent::AgentInterface
@@ -15699,6 +15714,8 @@ classes:
         base: Client::Game::Event::EventHandler
       - ea: 0x1420F86D0
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
+    vfuncs:
+        275: PlayAnimation
     funcs:
       0x140E275D0: ctor
       0x140E2D600: Create
@@ -17838,6 +17855,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1414557E0: ctor
+      0x141456300: NotifyQuickGatherState
   Client::UI::AddonNeedGreed: # 46
     vtbls:
       - ea: 0x14214BC58
@@ -18733,6 +18751,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1411FAC50: ctor
+      0x1411FC330: SetExchangeMode
   Client::UI::AddonGrandCompanySupplyReward: # 192
     vtbls:
       - ea: 0x14213D3E8
@@ -19469,6 +19488,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1412721D0: ctor
+      0x141272C60: PopulateSalvageItemListItem
   Client::UI::AddonMinionNoteBook: # 324
     vtbls:
       - ea: 0x142135328
@@ -19739,6 +19759,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x14160A690: ctor
+      0x14160C480: SetSelectedCard
   Client::UI::AddonGSInfoCardFilter: # 371
     vtbls:
       - ea: 0x1421BE190
