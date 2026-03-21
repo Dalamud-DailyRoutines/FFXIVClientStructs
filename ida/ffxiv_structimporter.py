@@ -148,6 +148,7 @@ class BaseApi:
                             field["offset"],
                             base,
                             field["size"],
+                            field["is_string"]
                         )
                     )
                 elif "return_type" in field:
@@ -304,13 +305,14 @@ if api is None:
 
                 if "vfuncs" in class_data and index in class_data["vfuncs"]:
                     return class_data["vfuncs"][index]
-                
-                if "vtbls" in class_data and isinstance(class_data["vtbls"], list):
-                    for vtbl in class_data["vtbls"]:
-                        if "base" in vtbl:
-                            res = self.get_fallback_vfunc_name(vtbl["base"], index, visited)
-                            if res: return res
-                
+
+                if "vtbls" in class_data and isinstance(class_data["vtbls"], list) and len(class_data["vtbls"]) > 0:
+                    vtbl = class_data["vtbls"][0]
+                    if "base" in vtbl:
+                        res = self.get_fallback_vfunc_name(vtbl["base"], index, visited)
+                        if res:
+                            return res
+
                 return None
 
             def delete_struct_members(self, fullname):
@@ -412,7 +414,7 @@ if api is None:
                     type = fullname + "_vtbl*" if struct.virtual_functions else "void**"
                     meminfo = self.get_struct_member_by_name(s, "__vftable")
                     self.set_struct_member_info(
-                        s, meminfo, 0, self.get_tinfo_from_type(type), 0
+                        s, meminfo, 0, self.get_tinfo_from_type(type), 0, False
                     )
 
                 contiguous_fields = True
@@ -499,6 +501,7 @@ if api is None:
                             0,
                             self.get_tinfo_from_type(field_type, array_size),
                             0,
+                            field.is_string if hasattr(field, "is_string") and (field_type == "char" or field_type == "wchar_t") else False
                         )
 
                 if struct.size is not None and struct.size != 0:
@@ -539,7 +542,7 @@ if api is None:
                     field_type = field_type[:-1] + ")"
 
                     self.set_struct_member_info(
-                        s, meminfo, 0, self.get_tinfo_from_type(field_type), 0
+                        s, meminfo, 0, self.get_tinfo_from_type(field_type), 0, False
                     )
                 if struct.vtable_size:
                     size = int(struct.vtable_size / 8)
@@ -563,7 +566,7 @@ if api is None:
                         )
                         meminfo = self.get_struct_member_by_name(s, name)
                         self.set_struct_member_info(
-                            s, meminfo, 0, self.get_tinfo_from_type("__int64"), 0
+                            s, meminfo, 0, self.get_tinfo_from_type("__int64"), 0, False
                         )
 
             def create_union(self, struct):
