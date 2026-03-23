@@ -6252,6 +6252,11 @@ classes:
       0x140B9FF30: HandleFateProgressTabPacket
       0x140BA0430: HandleHousingSignboardPacket
       0x140BA0470: HandleHousingPortalPacket
+      0x140BA13C0: HandleDeepDungeonMapInfoPacket
+      0x140BA1430: HandleDeepDungeonUpdatePacket
+      0x140BA1470: HandleDeepDungeonPartyInfoPacket
+      0x140BA14B0: HandleDeepDungeonChestInfoPacket
+      0x140BA14F0: HandleDeepDungeonBlacklistPacket
       0x140BA2B20: HandleMapEffectPacket
       0x140BA3100: HandleQuestManagerUnkArray2SecondHalfPacket
       0x140BA3150: HandleQuestManagerUnkArray2SecondHalfEntryPacket
@@ -7956,6 +7961,16 @@ classes:
   Component::GUI::AtkRenderTexture:
     vtbls:
       - ea: 0x1420A62C0
+    vfuncs:
+      0: Dtor
+    funcs:
+      0x14061FFC0: ctor
+      0x14061FFE0: Finalizer
+      0x140620000: UnsetTexturePointer
+      0x140620010: UnloadTexture
+      0x140620040: CreateTexture
+      0x140620140: GetDisplayWidth
+      0x140620170: GetDisplayHeight
   Component::GUI::AtkCrestManager:
     vtbls:
       - ea: 0x1420A6348
@@ -10516,6 +10531,7 @@ classes:
       0x1407CA730: GetCurrentGearsetIndex
       0x1407CA830: EquipGearset
       0x1407CA8D0: EquipGearsetInternal
+      0x1407CB1B0: CreateGearsetInternal
       0x1407CB3B0: CreateGearset
       0x1407CB400: DeleteGearset
       0x1407CB5E0: UpdateGearset # (this, gearsetIndex)
@@ -10536,6 +10552,7 @@ classes:
       0x1407CC670: TryGetIdFromIndex
       0x1407CC830: RenameGearset
       0x1407CC9A0: FindGearsetIdByName
+      0x1407CD7F0: FirstEmptyGearsetSlot
       0x1407CFB10: ShowLogMessage
   Client::UI::Misc::ItemFinderModule:
     vtbls:
@@ -12264,12 +12281,19 @@ classes:
       0x140F77ED0: OpenDeleteDialog
       0x140F78060: EquipGearsetInternal
       0x140F78100: UpdateGearsetIfExistsOrCreateNew
+      0x140F78160: CreateGearset
+      0x140F782B0: OpenGearsetViewer
       0x140F78840: ReassignGear
+      0x140F78E90: PreviewWindowSetup
       0x140F79700: CreateGearsetInternal
+      0x140F798C0: DeleteGearset
       0x140F79DC0: UpdateGearsetInternal
+      0x140F79F20: ReassignSetNumber
       0x140F7A140: ReassignGearsetId
       0x140F7A2D0: MoveGearsetUpOrDown
       0x140F7A4C0: RenameGearset
+      0x140F7A660: OpenGearsetViewer2
+      0x140F7B440: PreviewWindowAtkSetup
       0x140F7B810: OpenBannerEditorForGearset
   Client::UI::Agent::AgentSupportMain:
     vtbls:
@@ -16226,7 +16250,7 @@ classes:
       - ea: 0x14223A558
         base: Client::Game::InstanceContent::ContentSheetWaiterInterface
     vfuncs:
-      397: HandleGMCommand
+      402: HandleGMCommand
     funcs:
       0x1418EB880: ctor
       0x1418EBB20: Finalizer
@@ -17232,6 +17256,11 @@ classes:
       0x14190BBE0: ctor
       0x14190A0B0: UsePomander
       0x14190A120: UseStone
+      0x14190A1A0: HandleMapInfoPacket
+      0x14190A3B0: HandleUpdatePacket
+      0x14190A5A0: HandlePartyInfoPacket
+      0x14190A600: HandleChestInfoPacket
+      0x14190A750: HandleBlacklistPacket
   Client::Game::InstanceContent::InstanceContentDeepDungeon2:
     vtbls:
       - ea: 0x1423234A0
