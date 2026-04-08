@@ -677,71 +677,72 @@ classes:
       23: IsLimitedJobAllowed
       24: GetNumParties
       25: GetQueueMaxPlayers
-      26: GetTanksPerParty
-      27: GetHealersPerParty
-      28: GetTotalDpsPerParty
-      29: GetMeleesPerParty
-      30: GetRangedPerParty
-      31: GetPartyCount
-      32: GetAlliancePartyCount
-      33: GetQueueMinPlayers
-      34: IsRoleIndependent
-      35: IsFixedItemLevelSync
-      36: IsUnrestrictedPartyAllowed
-      37: IsMatchingForAlliancesUnavailable
-      38: IsMemberRequiredInEveryParty
-      39: GetLootModeType
-      40: IsAdditionalLootRulesAvailable
-      41: IsMinimumILAllowed
-      # 42:
-      43: IsAllianceRegistrationAllowed
-      # 44:
-      45: GetAllianceRegistrationMinPlayers
-      # 46:
-      47: IsGrandCompanyRequired
-      48: IsBattleMentorWithCurrentCertificationOnly
-      # 49:
+      26: GetQueueMinPlayers
+      27: GetTanksPerParty
+      28: GetHealersPerParty
+      29: GetTotalDpsPerParty
+      30: GetMeleesPerParty
+      31: GetRangedPerParty
+      32: GetPartyCount
+      33: GetAlliancePartyCount
+      # 34:
+      35: IsRoleIndependent
+      36: IsFixedItemLevelSync
+      37: IsUnrestrictedPartyAllowed
+      38: IsMatchingForAlliancesUnavailable
+      39: IsMemberRequiredInEveryParty
+      40: GetLootModeType
+      41: IsAdditionalLootRulesAvailable
+      42: IsMinimumILAllowed
+      # 43:
+      44: IsAllianceRegistrationAllowed
+      # 45:
+      46: GetAllianceRegistrationMinPlayers
+      # 47:
+      48: IsGrandCompanyRequired
+      49: IsBattleMentorWithCurrentCertificationOnly
       # 50:
-      51: IsRegistrationDataCenterLimited
-      52: IsExplorerModeAllowed
-      53: GetRewardResetType
-      54: GetEchoSetting
-      55: GetRequiredExVersion
-      56: GetTimeLimit
-      57: GetTimeLimitMax
-      # 58:
-      59: GetContentUICategory
-      60: GetJournalGenre
-      61: IsReplacementAllowed
-      62: GetTerritoryType
-      # 63:
-      64: IsInDutyFinder
-      65: IsHighEndDuty
-      66: IsConsumableItemAllowed
-      67: GetSortKey
-      68: GetGoldSaucerRegisterConditionCount
-      69: GetGoldSaucerRegisterConditionAddonId
-      # 70:
+      # 51:
+      52: IsRegistrationDataCenterLimited
+      53: IsExplorerModeAllowed
+      54: GetRewardResetType
+      55: GetEchoSetting
+      56: GetRequiredExVersion
+      57: GetTimeLimit
+      58: GetTimeLimitMax
+      # 59:
+      60: GetContentUICategory
+      61: GetJournalGenre
+      62: IsReplacementAllowed
+      63: GetTerritoryType
+      # 64:
+      65: IsInDutyFinder
+      66: IsHighEndDuty
+      67: IsConsumableItemAllowed
+      68: GetSortKey
+      69: GetGoldSaucerRegisterConditionCount
+      70: GetGoldSaucerRegisterConditionAddonId
       # 71:
       # 72:
-      73: IsOnlyPvPTeamMembers
-      # 74:
-      75: GetContentCloseCycle
-      76: IsDutyRecorderAllowed
-      77: IsRegistrationHomeWorldLimited
-      # 78:
+      # 73:
+      74: IsOnlyPvPTeamMembers
+      # 75:
+      76: GetContentCloseCycle
+      77: IsDutyRecorderAllowed
+      78: IsRegistrationHomeWorldLimited
       # 79:
       # 80:
-      81: IsCurrentUnreal
-      82: IsRegistrationAllowedFromAnyDataCenter
-      83: GetCrystallineConflictGameplayFeatureCount
-      84: GetCrystallineConflictGameplayFeatureAddonId
-      85: GetUnlockType
-      86: GetUnlockCriteria
-      # 87:
-      88: GetPenaltyTimestampArrayIndex
-      89: IsLimitedTimeBonus
-      90: IsPhoenixDownAllowed
+      # 81:
+      82: IsCurrentUnreal
+      83: IsRegistrationAllowedFromAnyDataCenter
+      84: GetCrystallineConflictGameplayFeatureCount
+      85: GetCrystallineConflictGameplayFeatureAddonId
+      86: GetUnlockType
+      87: GetUnlockCriteria
+      # 88:
+      89: GetPenaltyTimestampArrayIndex
+      90: IsLimitedTimeBonus
+      91: IsPhoenixDownAllowed
     funcs:
       0x140B455C0: HasUnmetConditions
       0x140B463D0: GetIsResetDaily
@@ -3039,6 +3040,9 @@ classes:
     funcs:
       0x140B37CD0: InvokeSelectUseTicket
       0x140B37C40: TeleportWithTickets
+  Client::Game::UI::TeleportInfo:
+    funcs:
+      0x140C29AD0: GetFlags
   Client::Game::UI::Cabinet:
     instances:
       - ea: 0x1429CB5F8  # UIState.Cabinet
@@ -5024,6 +5028,7 @@ classes:
       3: RequestData
       4: GetEntryCount
       5: ClearListData
+      7: HandleZoneInitPacket
       10: EndRequest
   Client::UI::Info::InfoProxyPageInterface:
     vtbls:
@@ -6233,7 +6238,7 @@ classes:
       0x140B9E8C0: HandleUpdatePartyPacket
       0x140B9F0A0: HandleUpdateAllianceNormalPacket
       0x140B9F0E0: HandleUpdateAllianceSmallPacket
-      0x140B9F120: HandleInitZonePacket
+      0x140B9F120: HandleZoneInitPacket
       0x140B9F2A0: HandleUpdateHatePacket
       0x140B9F300: HandleUpdateHaterPacket
       0x140B9F3B0: HandleSpawnObjectPacket
@@ -7738,8 +7743,8 @@ classes:
       0x142035B40: Finalizer
       0x14060CC70: Initialize
       0x14060CD00: Terminate
-      0x140B52D20: Update
-      0x14177A7F0: GetFlightAllowedStatus
+      0x14060CF40: Update
+      0x14177A7F0: GetFlightAllowedStatus # static
   Client::Game::Control::CameraManager:
     funcs:
       0x1417F5500: ctor
@@ -9634,6 +9639,7 @@ classes:
       0x140769250: PropagateLevelChange
       0x1407692A0: PropagateClassJobChange
       0x140761920: ScreenShotCallback
+      0x140769410: HandleZoneInitPacket
   Client::UI::Misc::PvpSetModule:
     vtbls:
       - ea: 0x1420BE568
@@ -10678,6 +10684,8 @@ classes:
         base: Client::UI::Misc::UserFileManager::UserFileEvent
     funcs:
       0x1407D9740: ctor
+      0x1407D9AE0: IsInHistory
+      0x1407D9B30: GetHistoryEntry
       0x1407D9B80: AddHistoryEntry
   Client::UI::Misc::RecommendEquipModule:
     funcs:
@@ -14217,6 +14225,9 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140C26AF0: ctor
+      0x140C29520: GetRegionLabel
+      0x140C29810: GetRegion
+      0x140C29B80: GetTimelineId
   Client::UI::Agent::AgentLoadingTips:
     vtbls:
       - ea: 0x1421010F0
