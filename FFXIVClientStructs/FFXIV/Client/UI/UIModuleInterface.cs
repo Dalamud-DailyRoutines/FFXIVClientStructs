@@ -127,7 +127,7 @@ public unsafe partial struct UIModuleInterface {
     // [VirtualFunction(138)] public partial ??? ToggleCursor(???);
     // [VirtualFunction(152)] public partial ??? ShowEventFadeIn(???);
     // [VirtualFunction(153)] public partial ??? ShowEventFadeOut(???);
-    [VirtualFunction(157)] public partial void ToggleUi(UIModule.UiFlags flags, bool enable, bool unknown = true);
+    [VirtualFunction(157)] public partial void ToggleUi(UiFlags flags, bool enable, bool disableTransition = true);
     // [VirtualFunction(158)] public partial ??? ToggleUi_2(???);
     // [VirtualFunction(160)] public partial ??? LoadScreenHideUi(???);
     // [VirtualFunction(161)] public partial ??? LoadScreenShowUi(???);
@@ -217,11 +217,11 @@ public enum UIModulePacketType {
     Unknown34 = 34, // sets uintParam to InputTimerModule+0x4F4
     Unknown35 = 35, // FateProgress
     Unknown36 = 36, // Glasses
-    Unknown37 = 37, // Tofu
-    Unknown38 = 38, // Tofu
-    Unknown39 = 39, // Tofu
-    Unknown40 = 40, // Tofu
+    TofuReceiveBoard = 37,
+    TofuRealTimeUpdate = 38,
+    TofuStopShare = 39,
+    TofuConfirmation = 40,
 
-    [Obsolete("Renamed to ZoneInit")]
+    [Obsolete("Renamed to ZoneInit", true)]
     InitZone = 5,
 }

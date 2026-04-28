@@ -5,6 +5,9 @@ globals:
   0x142049DB8: g_FloatOne # 1f
   0x142052C60: g_FloatOneAndAHalf # 1.5f
   0x142049DF4: g_FloatSix # 6f
+  0x14204AFD0: g_MemoryPoolConfig # { int BlockSize; int BlockCount; }[10], last entry is special for the lookup table
+  0x1427F8130: g_MemoryPoolsStart
+  0x1427F8180: g_MemoryPoolsEnd
   0x142052C64: g_FloatTwenty # 20f
 #fail   0x141F0C404: g_ConfigFileName
   0x142055030: g_NumberArraySizes
@@ -134,7 +137,6 @@ functions:
   0x14005F170: vsprintf_s
   0x14005F1D0: vswprintf_s
   0x140093790: IsMacClient
-  0x1400942A0: SpecialFreeMemory
   0x1400D3810: CheckOsTypeAndVersion
 #fail   0x1400683A0: GetMyDocumentsFolder #as UTF8String
   0x1400D4E30: GetPerformanceFrequency
@@ -185,6 +187,7 @@ functions:
   0x14080CD80: GetItemName # (uint itemId, byte itemKind, Component::Exd::Sheets::Item* itemRow, bool withLinkPrefix) -> byte*
   0x14080CE70: GetEventItemName
   0x14080D000: GetItemIcon # (uint itemId, Component::Exd::Sheets::Item* itemRow) -> uint
+  0x140819680: GetUIConstOrDefault
   0x14082E550: LoadAreaVfx
   0x140859410: IsCompanySealItemId
   0x140859520: GetTomestonesItem
@@ -374,7 +377,6 @@ functions:
   0x141CE89B0: _invalid_parameter_noinfo
   0x141CE89D0: _invalid_parameter_noinfo_noreturn
   0x141CD86E0: MemCpy
-  0x14008E490: StaticMalloc #uses MemoryManager if avail, but fail saves malloc
   0x14008E7D0: MemAlloc
   0x14032AEB0: MatrixMultiply
   0x140328140: MatrixMultiply2
@@ -461,9 +463,10 @@ classes:
       0x1400D50F0: Now2
       0x1405C2410: Now
       0x1405C6520: ctor
-  MemoryManager:
+  Client::System::Memory::MemoryManager:
     funcs:
       0x14008E7E0: AllocDefaultSpace
+      0x14008E600: FreeDefaultSpace
       0x14008E870: Alloc
       0x14008FEE0: GetDefaultSpace
       0x14008FFA0: GetApricotSpace
@@ -473,6 +476,16 @@ classes:
       0x140090000: GetSoundSpace
       0x140090020: GetSoundSpace_2
       0x14008E8A0: SpaceAlloc
+  Client::System::Memory::MemoryPool:
+    instances:
+      - ea: 0x1427F80F0
+    funcs:
+      0x1400941A0: Alloc
+      0x1400942A0: Free
+      0x140094350: ctor
+      0x140094480: Dtor
+      0x140094A60: GetBlockSizeForSize
+      0x140094AB0: GetPoolIndexForSize
   Client::Game::GameMain:
     instances:
       - ea: 0x142996400
@@ -2948,7 +2961,8 @@ classes:
       0x140B00CC0: GetPenaltyTimestamp
       0x140B00CD0: SetPenaltyTimestamp
       0x140B00D40: SetOrnamentUnlocked
-      0x140B00DE0: IsGlassesStylesUnlocked
+      0x140B00DE0: IsGlassesStyleUnlocked
+      0x140B00E80: SetGlassesStyleUnlocked
       0x140BA3D00: SetDesynthesisLevels
       0x140B00B90: SetDesynthesisLevelForClassJob
       0x140B00E20: IsGlassesUnlocked
@@ -3853,6 +3867,7 @@ classes:
       0x140403E60: PlaySoundEffect
       0x140403EE0: PlaySoundEffect2
       0x140404270: PlayCutsceneVoSound
+      0x1404058B0: PlayWeatherSound
       0x140406250: ToggleForceFeedback
       0x140406280: LoadSoundDataScd
   Common::Component::BGCollision::LinkList<Client::Sound::ISoundData,Client::Sound::ISoundData>:
@@ -4865,6 +4880,8 @@ classes:
       21: UnloadScdResource # it really just DecRefs it
       24: ToggleUi
       25: IsUiFlagsSet
+      39: ShouldApplyUiBaseScale
+      40: ShouldApplyScreenTextBaseScale
     funcs:
       0x1401D2D40: Finalizer
       0x14065C650: ctor
@@ -4887,7 +4904,8 @@ classes:
       0x1400E4B20: ctor # INLINED IN 7.0
       0x1400E61C0: GetAddonByNameHash
       0x1401D3010: Finalizer
-      0x140661820: InitializeAddon # inlined @ 0x1406C0B93
+      0x14065E020: InitializeAddon
+      0x140661820: InitializeAddonInner # inlined
   Client::UI::RaptureAtkColorDataManager:
     vtbls:
       - ea: 0x142060308
@@ -5247,6 +5265,9 @@ classes:
       0x14093EAF0: GetNumLettersFromGameMasters
       0x14093EB10: GetHasLettersFromGameMasters
       0x14093EB00: GetHasLettersFromSupportDesk
+      0x14093EF70: DeleteLetter
+      0x14093F020: TakeAttachments
+      0x14093F870: RequestRewardDelivery
       0x14096E040: Finalizer
   Client::UI::Info::InfoProxySearch:
     vtbls:
@@ -5462,7 +5483,23 @@ classes:
       - ea: 0x1420997D8
     vfuncs:
       0: Dtor
+    funcs:
+      0x14045C6E0: OpenFile
+      0x14045C670: Close
+  Client::System::File::FileHandle:
+    funcs:
+      0x14045EE70: Reset
+  Client::System::File::FileDescriptor:
+    funcs:
+      0x1402EF650: Read
+  Client::System::File::FileHandleIndex:
+    funcs:
+      0x14045C130: Return
+      0x14045C1F0: Reset
   Client::System::File::FileHandleManager:
+    instances:
+      - ea: 0x1429944C0
+        pointer: true
     vtbls:
       - ea: 0x1420997E8
   Client::System::File::StreamFile:
@@ -5476,6 +5513,8 @@ classes:
     funcs:
       0x140460680: ctor
       0x140460770: Finalizer
+      0x140461D20: ReadSqPack
+      0x140460820: DoFileJob
   Client::System::File::FileManager:
     instances:
       - ea: 0x1429944C8
@@ -5510,6 +5549,7 @@ classes:
     funcs:
       0x1402EDA30: DecRef
       0x1402EDA60: IncRef
+      0x1402EEF20: FinishLoad
       0x1402EDC30: ctor
   Client::System::Resource::Handle::DefaultResourceHandle:
     vtbls:
@@ -5770,6 +5810,7 @@ classes:
     funcs:
       0x14030C6C0: ctor
       0x14030D410: GetMaterialFileNameBySlot
+      0x14030F460: LoadMaterials
 #oldfail       0x1403E05A0: GetAttributeIndex
 #oldfail       0x1403ED470: GetShapeIndex
   Client::System::Resource::Handle::ModelResourceHandleFactory:
@@ -6192,6 +6233,7 @@ classes:
       0x141819730: ctor
       0x140B87500: SendEventCompletePacket
       0x140B87F40: HandleEventPlayPacket
+      0x140B88030: HandleEventYieldPacket
       0x140B88450: HandleSystemLogMessagePacket
       0x140B8C190: HandleSpawnPlayerPacket
       0x140B8C290: HandleSpawnNPCPacket
@@ -7398,6 +7440,12 @@ classes:
         base: Client::Graphics::Scene::DrawObject
     funcs:
       0x1404434F0: ctor
+  Client::Graphics::Scene::Decal:
+    vtbls:
+      - ea: 0x142098868
+        base: Client::Graphics::Scene::DrawObject
+    funcs:
+      0x14043CD70: ctor
   Client::Graphics::Scene::BGObject:
     vtbls:
       - ea: 0x1420989F8
@@ -7405,6 +7453,9 @@ classes:
     funcs:
       0x14043DB80: ctor
       0x1407743A0: Create
+      0x140440160: LoadAnimationData
+      0x14043DC20: ResetFlags
+      0x14043E040: SetModel
   Client::Graphics::Scene::EnvScene:
     vtbls:
       - ea: 0x142098ED8
@@ -7515,20 +7566,20 @@ classes:
         base: Common::Lua::LuaState
     funcs:
       0x1405CFE10: ctor_FromState
-      0x1405CFE60: ctor
       0x1405CFE40: Finalizer
+      0x1405CFE60: ctor
       0x1405CFE90: Resume
-      0x1405D0080: PushBoolAndResume
-      0x1405D0140: PushIntegerAndResume
-      0x1405D0200: PushIntegersAndResume
-      0x1405D02D0: PushStringAndResume
-      0x1405D03A0: PushStringStringAndResume
-      0x1405D0480: PushStringIntegersAndResume
+      0x1405D0080: ResumeWithBool
+      0x1405D0140: ResumeWithInteger
+      0x1405D0200: ResumeWithIntegers
+      0x1405D02D0: ResumeWithString
+      0x1405D03A0: ResumeWithStringString
+      0x1405D0480: ResumeWithStringIntegers
       0x1405D0570: GetStringAndResume
-      0x1405D0640: PushBoolIntegersAndResume
+      0x1405D0640: ResumeWithBoolIntegers
+      0x1405D0720: IsError
       0x1405D0730: Yield
       0x1405D0740: GetStatus
-      0x1405D0720: IsError
   Client::Game::Event::LuaActor:
     vtbls:
       - ea: 0x1420E16B8
@@ -7713,6 +7764,11 @@ classes:
       0x140607470: GetHardTargetId
       0x140607490: GetHardTarget
       0x1405FE630: SetHardTarget
+      0x1405FF210: CheckHorizontalDistance # (TargetSystem* this, GameObject* object, float maxDistance) -> bool
+      0x1405FF460: CheckVerticalDistance # (TargetSystem* this, GameObject* object, float maxDistance) -> bool
+      0x140604050: IsObjectTargetableByLocalPlayer # (TargetSystem *this, GameObject *obj, float horizontalRange) -> bool
+      0x140606810: HandleTargetingKeybinds
+      0x140607240: SetHardTargetChecked # (TargetSystem* this, GameObject* hardTargetObject, bool requireOnScreen, bool requireOnScreenOrLos) -> bool
       0x1406074B0: GetSoftTargetObjectId
       0x1406074D0: GetSoftTargetId
       0x1406074F0: GetSoftTarget
@@ -9450,12 +9506,14 @@ classes:
     vtbls:
       - ea: 0x1420B82A0
     funcs:
+      0x1400E3750: IsInputIdPressed # static
       # 0x140621DA0: ctor # inlined @ 0x14075CDAD
       0x140759850: HandleInputUpdate
       0x14075A130: DisablePadMouseMode
       0x14075A860: CanEnterIdleCam
       0x14075A8C0: CanEnterGPose
       0x14075B180: CheckCastCancel
+      0x14075E000: HandleTargetingKeybinds
       0x14075EFE0: CheckScreenshotState
   Client::UI::UIModuleInterface:
     vtbls:
@@ -9721,9 +9779,9 @@ classes:
       0x1407DE020: SetOwnPlayerNameSetting
       0x1407DE040: SetOthersPlayerNameSetting
       0x1407DE060: ToggleCharacterVoices
-      0x1407DE080: SetUnk54
+      0x1407DE080: SetEmjVoiceNpc
       0x1407DE0A0: IsVoiceUnlocked
-      0x1407DE0C0: SetUnk55
+      0x1407DE0C0: SetEmjCostumeId
       0x1407DE0E0: IsConstumeUnlocked
       0x1407DE120: ToggleVoiceSeen
       0x1407DE180: IsVoiceSeen
@@ -9846,8 +9904,56 @@ classes:
     vtbls:
       - ea: 0x1420BEE50
         base: Client::UI::Misc::UserFileManager::UserFileEvent
+    vfuncs:
+      10: DeleteEverything
     funcs:
       0x1407E95A0: ctor
+      0x1407E9740: CreateFolder
+      0x1407E97d0: CreateBoard
+      0x1407E9860: CopyBoardToFolder
+      0x1407E9AE0: DeleteItemAndContents
+      0x1407E9CC0: TotalItemCount
+      0x1407E9CF0: MaxItemAllowed
+      0x1407E9D50: IsFull
+      0x1407E9D90: GetFolderAtUIIndex
+      0x1407E9DE0: GetFolderIndexByBoardIndex
+      0x1407E9E40: GetBoardAtUIIndex
+#fail       0x1407E9EA0: DeleteFolder
+      0x1407E9FF0: IsItemValid
+      0x1407EA0B0: MoveItem
+      0x1407EA140: RenameFolder
+      0x1407EA1B0: RenameBoard
+      0x1407EA310: SetServerTime
+      0x1407EA4B0: GetNumberOfBoardsInFolder
+      0x1407EA510: GetBoardFolderIndexByBoardIndex
+  Client::UI::Misc::TofuModule::TofuDataBase:
+    vtbls:
+      - ea: 0x1420BF558
+    vfuncs:
+      0: dtor
+      1: ResetData
+  Client::UI:Misc::TofuModule::TofuBoardData:
+    vtbls:
+      - ea: 0x1420BF588
+        base: Client::UI::Misc::TofuModule::TofuDataBase
+    vfuncs:
+      2: SwapItems
+      3: GetItemUIIndex
+      4: IsItemValid
+      5: GetItemOrderIndex
+    funcs:
+      0x1407FC5D0: DeleteFolder # Accessing boards via agent from deleted folder crashes game
+      0x1407FC680: DeleteFolderAtIndexOrAbove
+      0x1407FC8F0: DeleteAllEmptyFolders
+  Client::UI:Misc::TofuModule::TofuFolderData:
+    vtbls:
+      - ea: 0x1420BF5B8
+        base: Client::UI::Misc::TofuModule::TofuDataBase
+    vfuncs:
+      2: SwapItems
+      3: GetItemUIIndex
+      4: IsItemValid
+      5: GetItemOrderIndex
   Client::UI::Misc::FishingModule:
     vtbls:
       - ea: 0x1420BEEC8
@@ -9976,6 +10082,14 @@ classes:
       0x1407F14D0: AddSeenSupportJob
       0x1407F1660: IsSupportJobSeen
       0x1407F1690: RemoveSeenSupportJob
+  Client::UI::Misc::GlassesModule:
+    vtbls:
+      - ea: 0x1420BF4E0
+        base: Client::UI::Misc::UserFileManager::UserFileEvent
+    funcs:
+      0x1407F2A50: ctor
+      0x1407F2C40: AddUnseenGlassesStyle
+      0x1407F2D40: RemoveUnseenGlassesStyle
   Client::UI::Misc::QuickPanelModule:
     vtbls:
       - ea: 0x1420BF468
@@ -10062,6 +10176,31 @@ classes:
       0x140B34280: Initialize
       0x140B34300: ImportData
       0x140B34530: ExportData
+  Client::UI::Misc::TofuHelper:
+    vtbls:
+      - ea: 0x1420D27F0
+        base: Client::UI::Misc::HelperInterface
+    funcs:
+      0x140AE6380: HandleStartSharingPacket
+      0x140AE6400: HandleRealTimeUpdatePacket
+      0x140AE6970: HandleStopSharingPacket
+      0x140AE6BF0: HandleTofuConfirmationPacket
+  Client::UI::Misc::TofuHelper::TofuHelperData:
+    funcs:
+      0x140AED0D0: ctor
+      0x140AED730: dtor
+      0x140AF1B50: HandleSharePacket
+      0x140AF1F60: HandleRealTimeUpdate
+      0x140AF2580: SaveBoardAndPlaySound
+      0x140AF3E90: SendVerificationPacket
+      0x140AF49B0: ShowSharedNotification
+  Client::UI::Misc::TofuBoardOverview:
+    funcs:
+      0x140AE4330: ctor
+      0x140AE5430: WriteToUnpackedBoard
+  Client::UI::Misc::TofuUnpackedBoard:
+    funcs:
+      0x141FC4630: ReadPackedBoard
   Client::System::Crypt::SimpleString:
     vtbls:
       - ea: 0x142061E48
@@ -12181,6 +12320,7 @@ classes:
         base: Client::UI::Info::InfoEventHandlerInterface
     funcs:
       0x1405279D0: ctor
+      0x140521900: OpenContextMenuForMember
   Client::UI::Agent::AgentFreeCompanyOrganizeSheet:
     vtbls:
       - ea: 0x14209DBC0
@@ -12534,7 +12674,7 @@ classes:
       - ea: 0x1420FD268
         base: Client::UI::Agent::AgentInterface
     funcs:
-      0x1409C5D20: ctor
+      0x140ED1C00: ctor
   Client::UI::Agent::AgentVoteKick:
     vtbls:
       - ea: 0x1420D83F0
@@ -13589,12 +13729,14 @@ classes:
     vtbls:
       - ea: 0x1420CB7F0
         base: Client::UI::Misc::CharaView
+    funcs:
+      0x1409A2880: ctor
   Client::UI::Agent::AgentEmj:
     vtbls:
       - ea: 0x142103A58
         base: Client::UI::Agent::AgentInterface
     funcs:
-      0x140ED1C00: ctor
+      0x1410546C0: ctor
   Client::UI::Agent::AgentAozContentBriefing:
     vtbls:
       - ea: 0x1420E4AC0
@@ -14751,12 +14893,26 @@ classes:
     funcs:
       0x140A223E0: ctor
       0x140A22410: Finalizer
+  Client::UI::Agent::AgentVVDVoteRoute:
+    vtbls:
+      - ea: 0x1420CC050
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1409B4D60: ctor
   Client::UI::Agent::AgentTofuList:
     vtbls:
       - ea: 0x1420CD2A8
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140A1DCB0: ctor
+      0x140A1FA60: RenameBoard 
+      0x140A1FC40: ContextMenuOptions
+  Client::UI::Agent::AgentTofuList::TofuListData:
+    funcs:
+      0x140A96910: ReviewSelectedBoard
+      0x140A9AB30: RenameItem
+      0x140AA28A0: MoveSavedFolder
+      0x140AA2930: MoveSavedBoard
   Client::UI::Agent::AgentTofuPreview:
     vtbls:
       - ea: 0x1420CD328
@@ -15097,6 +15253,7 @@ classes:
       0: Dtor
       6: Terminate
       7: IsUnlocked
+      40: ProcessYield
       158: CancelInteraction
       204: GetTitle # lua function "GetEventHandlerTitle"
       206: GetEventId
@@ -15144,6 +15301,15 @@ classes:
         base: Client::Game::Event::EventHandler
     funcs:
       0x140C67900: ctor
+      0x140C6C560: FinalizeLuaCall
+      0x1419E1F90: ResumeWithInteger
+      0x140C6C770: ResumeWithIntegers
+      0x140C6C7D0: ResumeWithBoolIntegers
+      0x140C6C830: ResumeWithStringString
+      0x140C6C890: Resume
+      0x140C6C8F0: ResumeWithStringIntegers
+      0x140C6C950: HandleLuaResumeResult
+      0x140CACF20: ResumeWithString
   Client::Game::Event::EventSceneModuleImplBase:
     vtbls:
       - ea: 0x1421E2118
@@ -15647,8 +15813,14 @@ classes:
       0x14170A0D0: ctor
       0x14170A720: Dtor
       0x14170C190: AddInitializeSceneTask
+      0x14170C220: AddFinalizeSceneTask
+      0x1417113C0: ShowLogMessage
+      0x141711400: ShowLogMessageTextParameters
+      0x141711450: ShowLogMessage<uint>
+      0x1417114A0: ShowLogMessage<string>
+      0x141711550: ShowLogMessageSourceObjectTargetObjectTextParameters
+      0x1417115B0: ShowLogMessageSourceObjectTargetObject
       0x141711DE0: ShowScreenImage
-      0x14171F280: AddFinalizeSceneTask
   Client::Game::Event::EventSceneModule::UISkipListener:
     vtbls:
       - ea: 0x1421E4378
@@ -16143,6 +16315,7 @@ classes:
       0x140C7F7C0: Finalizer
       0x140C805C0: InteractWithObject
       0x140C856D0: ProcessEventPlay
+      0x140C857E0: ProcessEventYield
       0x140C92760: ProcessInitializeScene
       0x140C86800: ProcessSystemLogMessage
       0x140C88170: SetTerritoryTypeId
@@ -16165,6 +16338,8 @@ classes:
       0x140C8BB70: GetQuestBattleDirector
       0x140C8BBC0: GetGoldSaucerDirector
       0x140C8E7C0: CheckInteractRange
+      0x140C8E9D0: IsFestivalActive
+      0x140C8EA30: IsFestivalPhaseActive
       0x140C8F460: InteractWithHandlerFromSelector
       0x140C8FE90: AddDailyHandler
       0x140C8FEB0: RemoveDailyHandler
@@ -17334,30 +17509,48 @@ classes:
     vtbls:
       - ea: 0x1422EBB80
         base: Client::Game::InstanceContent::InstanceContentDirector
+  Client::Game::InstanceContent::InstanceContentVariantDungeon:
+    vtbls:
+      - ea: 0x142321B20
+        base: Client::Game::InstanceContent::InstanceContentDirector
+    funcs:
+      0x1419A9740: ctor
   Client::Game::InstanceContent::InstanceContentVariantDungeon1: # The Sil'dihn Subterrane
     vtbls:
       - ea: 0x14230F110
-        base: Client::Game::InstanceContent::InstanceContentDirector
+        base: Client::Game::InstanceContent::InstanceContentVariantDungeon
     funcs:
       0x14197EA60: ctor
   Client::Game::InstanceContent::InstanceContentVariantDungeon2: # Mount Rokkon
     vtbls:
       - ea: 0x14230E450
-        base: Client::Game::InstanceContent::InstanceContentVariantDungeon1
+        base: Client::Game::InstanceContent::InstanceContentVariantDungeon
     funcs:
       0x14197E6B0: ctor
   Client::Game::InstanceContent::InstanceContentVariantDungeon3: # Aloalo Island
     vtbls:
       - ea: 0x14230FDE0
-        base: Client::Game::InstanceContent::InstanceContentVariantDungeon1
+        base: Client::Game::InstanceContent::InstanceContentVariantDungeon
     funcs:
       0x14197EBB0: ctor
+  Client::Game::InstanceContent::InstanceContentVariantDungeon4: # The Merchant's Tale
+    vtbls:
+      - ea: 0x1423227E0
+        base: Client::Game::InstanceContent::InstanceContentVariantDungeon2
+    funcs:
+      0x1419A9AB0: ctor
   Client::Game::InstanceContent::InstanceContentCriterionDungeon:
     vtbls:
       - ea: 0x142310AA0
         base: Client::Game::InstanceContent::InstanceContentDirector
     funcs:
       0x14197EE70: ctor
+  Client::Game::InstanceContent::InstanceContentAozStage: # Masked Carnivale
+    vtbls:
+      - ea: 0x1422DB6A0
+        base: Client::Game::InstanceContent::InstanceContentDirector
+    funcs:
+      0x14195D450: ctor
   Client::Game::InstanceContent::PublicContentDirector:
     vtbls:
       - ea: 0x1421D0768
@@ -25101,6 +25294,9 @@ classes:
       - ea: 0x1427F80B8
         name: SoundSpace
         pointer: true
+      - ea: 0x1427F80D8
+        name: ManagedResouceSpace
+        pointer: true
     vtbls:
       - ea: 0x14204A9F0
     vfuncs:
@@ -25112,7 +25308,11 @@ classes:
       9: GetMemoryModule
     funcs:
       0x14008E510: Free
+      0x14008E490: StaticMalloc # uses _aligned_malloc, but always with an alignment of 0x10
+      0x14008EA40: StaticAlignedMalloc
+      0x14008EB20: StaticAlignedFree
       0x14008EC60: CreateMemorySpaces
+      0x14008F2A0: DestroyMemorySpaces
   Client::System::Memory::IMemoryModule:
     vtbls:
       - ea: 0x14204AAF8
