@@ -3060,9 +3060,11 @@ classes:
       0x140CEA560: GetFlags
   Client::Game::UI::Cabinet:
     instances:
-      - ea: 0x142ACD808  # UIState.Cabinet
+      - ea: 0x142ACD808
     funcs:
-      0x140C1A6E0: IsItemInCabinet # row id of Cabinet sheet, not Item
+      0x140C1A3D0: StoreCabinetItem
+      0x140C1A4F0: WithdrawCabinetItem
+      0x140C1A6E0: IsItemInCabinet
   Client::Game::UI::Achievement:
     instances:
       - ea: 0x142ACD828  # UIState.Achievement
@@ -4769,7 +4771,7 @@ classes:
       3: SetRow  # (ExcelRowWrapper* this, ExcelRow* pNew)
   Common::Component::Excel::LinkList<Component::Excel::RingBufferExcelPageRowResolver::RowWrapper>:
     vtbls:
-      - ea: 142581158
+      - ea: 0x142581158
     vfuncs:
       0: Dtor
   Component::Excel::HashTableExcelPageRowResolver::RowWrapper:
