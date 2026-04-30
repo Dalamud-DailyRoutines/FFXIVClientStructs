@@ -141,6 +141,7 @@ public unsafe partial struct AgentLookingForGroup {
         [FieldOffset(0x3B0), FixedSizeArray(isString: true)] internal FixedSizeArray192<byte> _comment;
     }
 
+    [Flags]
     public enum DutyCategory : uint {
         None = 0,
         Roulette = 1 << 1,
@@ -160,11 +161,12 @@ public unsafe partial struct AgentLookingForGroup {
         VCDungeonFinder = 1 << 15
     }
 
+    [Flags]
     public enum Objective : byte {
         None = 0,
-        DutyCompletion = 1,
-        Practice = 2,
-        Loot = 4,
+        DutyCompletion = 1 << 0,
+        Practice = 1 << 1,
+        Loot = 1 << 2,
     }
 
     [Flags]
@@ -199,9 +201,12 @@ public unsafe partial struct AgentLookingForGroup {
 
     [Flags]
     public enum JoinCondition : byte {
-        Free = 1,
-        PrivateParty = 3,
-        LimitedRecruitingWorld = 8,
-        OnePlayerPerJob = 33,
+        None = 0,
+        DataCenter = 1 << 0,
+        Private = 1 << 1,
+        AllianceRaid = 1 << 2,
+        World = 1 << 3,
+        // Unknown 1 << 4
+        OnePlayerPerJob = 1 << 5,
     }
 }

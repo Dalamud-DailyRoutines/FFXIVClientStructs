@@ -6,7 +6,7 @@ namespace FFXIVClientStructs.FFXIV.Client.Game.UI;
 [StructLayout(LayoutKind.Explicit, Size = 0x20)]
 public unsafe partial struct Cabinet {
     [FieldOffset(0x00)] public CabinetState State;
-    // [FieldOffset(0x04), FixedSizeArray] internal FixedSizeArray132<byte> _unlockedItems; // TODO: 7.5 - this changed to a pointer, StdVector?
+    [FieldOffset(0x08)] public StdVector<byte> UnlockedItems;
 
     [MemberFunction("E8 ?? ?? ?? ?? 33 F6 40 B5 ?? 89 B3")]
     public partial bool WithdrawCabinetItem(uint cabinetId);
@@ -35,7 +35,7 @@ public unsafe partial struct Cabinet {
         => this.State is CabinetState.Loaded;
 
     /// <summary> Represents the loaded state of Cabinet </summary>
-    public enum CabinetState : int {
+    public enum CabinetState {
         Invalid = 0, // Cabinet is initialized at this state
         Requested = 1, // This state is set between the client request and receiving the data from the server
         Loaded = 2, // Set upon data being received
