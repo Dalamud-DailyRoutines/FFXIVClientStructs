@@ -227,6 +227,7 @@ functions:
   0x1409AA6C0: ToObjStrId
   0x1409AA780: ToActStrId
   0x140C14D30: GenerateEquippedItemsChecksum # for Banners; unused
+  0x140C27800: HasReachedExpansionMaxLevel
   0x140E88EF0: IsExportedGatheringPointTimed  # static, value of ExportedGatheringPoint.GatheringPointType
   0x140FBD580: ConvertRawToMapPosX
   0x140FBD610: ConvertRawToMapPosY
@@ -1985,6 +1986,7 @@ classes:
       0x140867DA0: GetLinkedItem
       0x1408682C0: GetConditionPercentage
       0x140868300: GetStain
+      0x1408683B0: SetStain
       0x1408683D0: GetMateriaCount
       0x1408684D0: IsMarketable
       0x140896530: GetCrafterContentId
@@ -4094,6 +4096,8 @@ classes:
       0x142081C70: ctor
       0x142081B80: ctor_From
       0x142081CA0: Finalizer
+    vfuncs:
+      0: Dtor
   Component::Excel::ExcelModuleInterface:
     vtbls:
       - ea: 0x14211C050
@@ -4690,6 +4694,8 @@ classes:
         base: Common::Component::Excel::LinkList<Common::Component::Excel::ExcelSheet>
     funcs:
       0x14207B380: ctor
+      0x14207CAE0: AddWaiter
+      0x14207E7D0: RemoveWaiter
   Component::Excel::ExcelPage:
     funcs:
       0x1420828D0: ctor  # (ExcelPage* this, ExcelDataPagination* exhPageInfo, ExcelSheetContainer* pOwner)
@@ -4845,6 +4851,7 @@ classes:
     funcs:
       0x1400D9390: Finalizer
       0x1400D9F40: ExecuteCommandInner
+      0x1400DAAF0: EvaluateTextCommand
   Component::GUI::AtkEventListener:
     vtbls:
       - ea: 0x142128D60
@@ -9110,6 +9117,7 @@ classes:
       0x1406F37D0: GetOutdoorPlotExteriorData # static
       0x1406F3850: SetOutdoorPlotExteriorData # static
       0x1406F38B0: SetOutdoorPlotExterior # static
+      0x1406F40C0: SetInteriorFixture # static
   Client::LayoutEngine::LayoutManager:
     vtbls:
       - ea: 0x1421760C0
@@ -11302,6 +11310,7 @@ classes:
         base: Client::Game::Character::ContainerInterface
     funcs:
       0x1408C85C0: CalculateFloatHeight
+      0x1408c9440: LoadTiltData
   Client::Game::Character::ReaperShroudContainer:
     vtbls:
       - ea: 0x14218C850
@@ -14100,13 +14109,13 @@ classes:
       0x140D9B100: ctor
   Client::UI::Agent::AgentInclusionShop:
     vtbls:
-      - ea: 0x1421EE1B8
+      - ea: 0x1421F1DE8
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x14102C830: ctor
   Client::UI::Agent::AgentCollectablesShop:
     vtbls:
-      - ea: 0x1421F1DE8
+      - ea: 0x1421EE1B8
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140F3B610: ctor
@@ -14320,6 +14329,32 @@ classes:
     vtbls:
       - ea: 0x1421ED560
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
+  Client::UI::Agent::AgentContentsFinderInterface:
+    funcs:
+      0x140C29C90: ctor
+      0x140C29D20: CancelWaiters
+      0x140C29E10: SetAgent
+      0x140C29E20: LoadContentFinderCondition
+      0x140C2A520: LoadContentRoulette
+      0x140C2A090: LoadInstanceContent
+      0x140C2A7F0: GetReceivedRewardCount
+      0x140C2A870: GetMaxReceivedRewardCount
+  Client::UI::Agent::AgentContentsFinderReward:
+    funcs:
+      0x140ACCCA0: ctor
+      0x140F04A70: Finalize
+      0x140F04B80: Clear
+  Client::UI::Agent::AgentContentsFinderInterface::RewardsContainer:
+    funcs:
+      0x140ACFEB0: Finalize
+      0x140C5A5B0: ctor
+      0x140C5EE40: CopyFrom
+      0x140C607D0: Clear
+  Client::UI::Agent::AgentContentsFinderInterface::RewardsData:
+    funcs:
+      0x140ACCC30: ctor
+      0x140AD7B40: Clear
+      0x140FA61F0: CopyFrom
   Client::UI::Agent::AgentMap::MapMarkerStructSearchName:
     vtbls:
       - ea: 0x1421F0FC0
