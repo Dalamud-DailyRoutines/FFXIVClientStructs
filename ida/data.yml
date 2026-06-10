@@ -518,6 +518,15 @@ classes:
     funcs:
       0x140844730: ctor
       0x1408445A0: Refresh
+  Client::Game::ColliderProvider:
+    instances:
+      - ea: 0x142AB1390
+    funcs:
+      0x1408624D0: Initialize
+      0x140862520: Update
+      0x140862500: Clear
+      0x140862C60: GetHasColliders
+      0x140862C70: GetColliderList
   Client::Game::BGMSystem:
     instances:
       - ea: 0x142AB1428
@@ -2283,6 +2292,14 @@ classes:
       - ea: 0x1421C3EC0
     vfuncs:
       0: Dtor
+      1: IsActive
+      2: GetCurrentWeatherId
+      3: SetNextWeather
+      4: GetNextWeatherId
+      5: Update
+      6: GetDaytimeFadeLength
+      7: GetIsCurrentWeatherForced
+      8: GetIsNextWeatherForced
   Client::Game::WeatherManager::ServerWeather:
     vtbls:
       - ea: 0x1421C3F08
@@ -11506,13 +11523,13 @@ classes:
     vfuncs:
       77: GetModelChara
       78: GetStatusManager
-      79: GetStatusManager_2
+      79: GetStatusManager2
       80: GetCastInfo
-      81: GetCastInfo_2
+      81: GetCastInfo2
       82: GetActionEffectHandler
       83: GetScreenLogManager
       84: GetForayInfo
-      85: GetForayInfo_2
+      85: GetForayInfo2
     funcs:
       0x1408D87E0: ctor
       0x140896A90: IsValidClientObject
