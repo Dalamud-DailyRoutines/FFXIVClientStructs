@@ -5,7 +5,7 @@ using System.Reflection.PortableExecutable;
 using FFXIVClientStructs.Interop.Generated;
 using InteropGenerator.Runtime;
 
-var gamePath = args.Length > 0 ? args[0] : @"E:\Program Files (x86)\上海数龙科技有限公司\clients\7.51\ffxiv_dx11.exe";
+var gamePath = args.Length > 0 ? args[0] : @"E:\Program Files (x86)\上海数龙科技有限公司\clients\7.51hf1\ffxiv_dx11.exe";
 
 using var reader = new PEReader(File.OpenRead(gamePath));
 var textHeader = reader.PEHeaders.SectionHeaders[0];
