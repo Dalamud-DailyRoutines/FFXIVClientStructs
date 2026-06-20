@@ -186,7 +186,6 @@ functions:
 #fail   0x14064BB40: GetLocalTextParameter
   0x1407B17A0: FormatNumber
   0x1407DD5D0: ComputeAddonNameHash
-  0x1409AF2F0: Client::UI::Misc::ScreenLog_ConvertLogMessageIdToScreenLogKind
   0x140835C50: GetItemName # (uint itemId, byte itemKind, Component::Exd::Sheets::Item* itemRow, bool withLinkPrefix) -> byte*
   0x140835D40: GetEventItemName
   0x140835ED0: GetItemIcon # (uint itemId, Component::Exd::Sheets::Item* itemRow) -> uint
@@ -483,7 +482,7 @@ classes:
       0x140094C60: Alloc
       0x140094D60: Free
       0x140094E10: ctor
-      0x140094F40: Dtor
+      0x140094F40: dtor
       0x140095520: GetBlockSizeForSize
       0x140095570: GetPoolIndexForSize
   Client::Game::GameMain:
@@ -534,7 +533,7 @@ classes:
         pointer: true
     funcs:
       0x14085BBD0: Initialize
-      0x14085BC20: Dtor
+      0x14085BC20: dtor
       0x14085BC70: Update
       0x14085BDA0: SetTerritoryBGM # static
       0x14085BE10: ResetTerritoryBGM # static
@@ -616,7 +615,7 @@ classes:
   Application::Network::NetworkModule:
     funcs:
       0x141CF0B80: ctor
-      0x141CF15E0: Dtor
+      0x141CF15E0: dtor
       0x141CF1980: GetCharacterData
       0x141CF2150: Initialize
       0x141CF21B0: InitializeLobbyConnection
@@ -625,7 +624,7 @@ classes:
   Application::Network::ZoneClient:
     funcs:
       0x141CF9290: ctor
-      0x141CF9330: Dtor
+      0x141CF9330: dtor
       0x141CF9620: OpenChannel
       0x141CF9670: ReceivePacket
       0x141CF9690: SendPacket
@@ -633,7 +632,7 @@ classes:
   Application::Network::ChatClient:
     funcs:
       0x141CF9970: ctor
-      0x141CF99A0: Dtor
+      0x141CF99A0: dtor
       0x141CF9AB0: OpenChannel
       0x141CF9B00: ReceivePacket
       0x141CF9B20: SendPacket
@@ -642,7 +641,7 @@ classes:
     vtbls:
       - ea: 0x142495D58
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x141D26530: ctor
       0x14034AFB0: Finalizer
@@ -663,7 +662,7 @@ classes:
     vtbls:
        - ea: 0x14212B1F0
     vfuncs:
-      0: Dtor
+      0: dtor
       4: ReportError
     funcs:
       0x1404A9230: RequestCharacterData # no xrefs
@@ -693,7 +692,7 @@ classes:
       # 1: OnReceive? or OnDetach?
       # 2:
       # 3:
-      4: Dtor
+      4: dtor
     funcs:
       0x141D3F480: ctor
       0x141D3F4D0: Finalizer
@@ -707,7 +706,7 @@ classes:
     vtbls:
       - ea: 0x14212B3B0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetName
       2: GetNameShortOrCategory
       # 3:
@@ -957,7 +956,7 @@ classes:
     vtbls:
       - ea: 0x142443EB0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OpenSession
       2: CloseSession
       4: MakeRequest
@@ -971,7 +970,7 @@ classes:
     vtbls:
       - ea: 0x14248B650
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::SupportDesk::HttpRequestImpl:
     vtbls:
       - ea: 0x14248B4B8
@@ -981,7 +980,7 @@ classes:
       0x141CEFB20: BeginRequest
   Client::System::Common::NonCopyable:
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::System::Crypt::CryptInterface:
   Client::System::Input::InputData::InputCodeModifiedInterface:
     vfuncs:
@@ -990,13 +989,13 @@ classes:
     vtbls:
       - ea: 0x142171F90
     vfuncs:
-      0: Dtor
+      0: dtor
       2: WriteString
       # 2: ApplyInput # not sure if this is moved or it was just named something else in .cs
       4: GetInputMaxLength
   Client::System::Input::TextServiceInterface:
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::System::Input::TextServiceInterface::TextServiceEvent:
     vtbls:
       - ea: 0x142171FD0
@@ -1012,7 +1011,7 @@ classes:
     vtbls:
       - ea: 0x142164820
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x14047E7D0: ctor
       0x14047E860: Finalizer
@@ -1020,7 +1019,7 @@ classes:
     vtbls:
       - ea: 0x1421647F0
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x14047E530: ctor
       0x14047E5F0: Finalizer
@@ -1028,7 +1027,7 @@ classes:
     vtbls:
       - ea: 0x14211D6A0
     vfuncs:
-      0: Dtor
+      0: dtor
       13: SetVibration
   Client::System::Input::PadDevice:
     vtbls:
@@ -1044,7 +1043,7 @@ classes:
     vtbls:
       - ea: 0x1422CBAD8
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::System::Input::MouseDevice:
     vtbls:
       - ea: 0x1422CBB20
@@ -1065,7 +1064,7 @@ classes:
       - ea: 0x14216DB08
         base: Client::System::Input::RepeatCounter
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1405E8940: ctor
   Client::System::Input::VibrationControl:
@@ -1077,7 +1076,7 @@ classes:
     vtbls:
       - ea: 0x1421456C8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Create
       2: ResourceHandleSize
   Client::UI::Agent::AgentMap::MapMarkerStructSearch:
@@ -1089,7 +1088,7 @@ classes:
     vtbls:
       - ea: 0x142172020
     vfuncs:
-      0: Dtor
+      0: dtor
       1: CallHandler
       2: PlaySoundEffect
   Component::GUI::AtkModuleEvent:
@@ -1105,7 +1104,7 @@ classes:
     vtbls:
       - ea: 0x142172790
     vfuncs:
-      0: Dtor
+      0: dtor
       4: IsUIReady # (AtkModule* this, bool checkIsHudInitialized) -> bool
       6: EnsureNumberArray
       7: EnsureStringArray
@@ -1141,7 +1140,7 @@ classes:
     vtbls:
       - ea: 0x142172C00
     vfuncs:
-      0: Dtor
+      0: dtor
       1: UpdateTextSelection
       4: GetOwnerNode
   Component::GUI::AtkGrid:
@@ -1159,7 +1158,7 @@ classes:
     vtbls:
       - ea: 0x142166108
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ProcessString
   Component::Text::TextModule:
     vtbls:
@@ -1177,7 +1176,7 @@ classes:
     vtbls:
       - ea: 0x142184E80
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetGlobalParameters
       3: FormatUtf8String
       7: EncodeString
@@ -1192,7 +1191,7 @@ classes:
       0x1407A8560: ProcessNoun
   Component::Text::Localize::Noun:
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Resolve
   Component::Text::Localize::NounEn:
     vtbls:
@@ -1235,7 +1234,7 @@ classes:
     vtbls:
       - ea: 0x142166210
     vfuncs:
-      0: Dtor
+      0: dtor
   Application::Network::WorkDefinitions::Base_TypeInfoInterface:
     vtbls:
       - ea: 0x142497330
@@ -1431,7 +1430,7 @@ classes:
     vtbls:
       - ea: 0x1424995C8
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Game::Network::PacketElement:
     vtbls:
       - ea: 0x14219DC58
@@ -1462,7 +1461,7 @@ classes:
     vtbls:
       - ea: 0x1422CBB78
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Enable            # called in AtkModule_Initialize
       2: DumpInput         # called every frame from AtkModule_HandleInput
       3: Disable           # called as part of UIModule_Finalize
@@ -1556,7 +1555,7 @@ classes:
     vtbls:
       - ea: 0x142166150
     vfuncs:
-      5: Dtor
+      5: dtor
   Client::Game::Character::CharacterManager: # networked characters
     instances:
       - ea: 0x1428A4030
@@ -1588,7 +1587,7 @@ classes:
       0x140E68390: HandleGMCommand
       0x140E68A40: Update
       0x140E68F50: Initialize
-      0x140E68FE0: Dtor
+      0x140E68FE0: dtor
       0x140E69030: GetInstance
       0x140E68EB0: IsRunningGate
       0x140E68E90: IsAcceptingGate
@@ -1666,7 +1665,7 @@ classes:
       - ea: 0x142AE07E8
     funcs:
       0x140E4F440: ctor
-      0x140E4F470: Dtor
+      0x140E4F470: dtor
       0x140E4F570: RequestParameters
       0x140E4FD00: GetAbility #(this,index)
       0x140E4FD20: GetNamePart
@@ -1763,8 +1762,8 @@ classes:
   Client::Game::NpcYellBalloon:
     funcs:
       0x141947120: Reset
-      0x141947180: Ctor
-      0x1419471E0: Dtor
+      0x141947180: ctor
+      0x1419471E0: dtor
       0x141947240: Initialize # (this, chara*)
       0x141947290: Update
       0x141947570: OpenBalloon # (this, char*, float, bool, float, bool, bool, bool, byte)
@@ -1778,7 +1777,7 @@ classes:
       0x141779120: HasInstance
       0x141779140: GetInstance
       0x141779150: Initialize
-      0x1417792B0: Dtor
+      0x1417792B0: dtor
       0x14177A310: ctor
       0x14177A420: Finalizer
       0x14177C470: IsInFateRadius
@@ -1834,7 +1833,7 @@ classes:
     funcs:
       0x140895D50: Initialize # unused, inlined into ctor
       0x140893CF0: ctor
-      0x140893DE0: Dtor
+      0x140893DE0: dtor
       0x140893E50: HasInstance
       0x140893E70: GetInstance
       0x140893E80: Update
@@ -1863,7 +1862,7 @@ classes:
         pointer: true
     funcs:
       0x140EAE840: ctor
-      0x140EAE950: Dtor
+      0x140EAE950: dtor
       0x140EAE9A0: Initialize
       0x140EAEA50: Finalizer
       0x140EAE810: HasInstance
@@ -1879,7 +1878,7 @@ classes:
     vtbls:
       - ea: 0x14218AA00
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnReceivePacket
     funcs:
       0x140844690: Finalizer
@@ -1892,7 +1891,7 @@ classes:
       0x140844770: HasInstance
       0x140844790: GetInstance
       0x1408447A0: ctor
-      0x140844840: Dtor
+      0x140844840: dtor
       0x1408448B0: Request # (this, callbackInterface, commandId, arg1, arg2)
   Client::Game::ContentsReplayManager:
     instances:
@@ -1965,7 +1964,7 @@ classes:
     vtbls:
       - ea: 0x14218AFF8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Copy
       2: EqualTo
       3: IsEmpty
@@ -2018,7 +2017,7 @@ classes:
     vtbls:
       - ea: 0x14218B0C0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: SetInventoryType
       2: Clear
       4: GetSize
@@ -2037,7 +2036,7 @@ classes:
       - ea: 0x142AF5A88
         pointer: true
     vfuncs:
-      0: Dtor
+      0: dtor
       6: vf6
     funcs:
       0x141985680: CreateInstance
@@ -2072,7 +2071,7 @@ classes:
     vtbls:
       - ea: 0x142440B78
     vfuncs:
-      0: Dtor
+      0: dtor
       1: HasInventoryContainer
       2: IsValidTerritoryType
       3: Setup
@@ -2122,7 +2121,7 @@ classes:
       0x140B2C120: Initialize
       0x140B2C2A0: ctor
       0x140B2C410: Finalizer
-      0x140B2D820: Dtor
+      0x140B2D820: dtor
       0x140B2C630: RequestData
       0x140B2C680: GetEventInfo
       0x140B2C690: GetMissionInfo
@@ -2136,7 +2135,7 @@ classes:
         pointer: true
     funcs:
       0x140B17FC0: ctor
-      0x140B18010: Dtor
+      0x140B18010: dtor
       0x140B18060: HasInstance
       0x140B18080: GetInstance
       0x140B18200: GetMemberCount
@@ -2163,7 +2162,7 @@ classes:
         pointer: true
     funcs:
       0x140E1F5D0: ctor
-      0x140E1F6A0: Dtor
+      0x140E1F6A0: dtor
       0x140E16780: Initialize
       0x140E16890: Finalizer
       0x140E16970: HasInstance
@@ -2221,7 +2220,7 @@ classes:
     vtbls:
       - ea: 0x1421C4178
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Update
       2: IsLoaded
       6: GetTerritoryType
@@ -2292,7 +2291,7 @@ classes:
     vtbls:
       - ea: 0x1421C35F0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: IsActive
       2: GetCurrentWeatherId
       3: SetNextWeather
@@ -2347,7 +2346,7 @@ classes:
         pointer: true
     funcs:
       0x141970720: ctor
-#oldfail       0x141858260: Dtor # inlined to Finalizer (at least since 7.3)
+#oldfail       0x141858260: dtor # inlined to Finalizer (at least since 7.3)
       0x141970850: HasInstance
       0x141970840: GetInstance
       0x141970870: Initialize
@@ -2363,7 +2362,7 @@ classes:
       0x140EAFEF0: HasInstance
       0x140EAFF10: GetInstance
       0x140EAFCE0: ctor
-      0x140EAFE00: Dtor
+      0x140EAFE00: dtor
   Client::Game::QuestRedoMapMarkerManager:
     instances:
       - ea: 0x142AF56B8
@@ -2374,7 +2373,7 @@ classes:
       0x141973730: HasInstance
       0x141973720: GetInstance
       0x141973660: ctor
-      0x1419738B0: Dtor
+      0x1419738B0: dtor
   Client::Game::FreeMoveManager:
     instances:
       - ea: 0x142AF5670
@@ -2385,7 +2384,7 @@ classes:
       0x14196D080: HasInstance
       0x14196D070: GetInstance
       0x14196CDE0: ctor
-      0x14196CEE0: Dtor
+      0x14196CEE0: dtor
   Client::Game::SequentialEventManager:
     instances:
       - ea: 0x142AF56C8
@@ -2396,7 +2395,7 @@ classes:
       0x141977C50: HasInstance
       0x141977C40: GetInstance
       0x1419774E0: ctor
-      0x141977CC0: Dtor
+      0x141977CC0: dtor
   Client::Game::PathWalkManager:
     instances:
       - ea: 0x142AF56E0
@@ -2407,7 +2406,7 @@ classes:
       0x14197F2D0: HasInstance
       0x14197F2C0: GetInstance
       0x14197F1A0: ctor
-      0x14197F1F0: Dtor
+      0x14197F1F0: dtor
   Client::Game::QuestEffectManager:
     instances:
       - ea: 0x142AF5650
@@ -2418,7 +2417,7 @@ classes:
       0x14196A680: HasInstance
       0x14196A670: GetInstance
       0x141969E80: ctor
-      0x14196A7F0: Dtor
+      0x14196A7F0: dtor
   Client::Game::DawnManager:
     instances:
       - ea: 0x142AC3B10
@@ -2435,7 +2434,7 @@ classes:
         pointer: true
     funcs:
 #oldfail       0x1418780D0: ctor # inlined to Initialize
-      0x1419831E0: Dtor
+      0x1419831E0: dtor
       0x141983260: HasInstance
       0x141983250: GetInstance
       0x141983280: Initialize
@@ -2499,7 +2498,7 @@ classes:
       0x140EA9B30: RequestFavorData
       0x140EA9B50: IsFavorDataAvailable
       0x140E0E970: ctor
-      0x140EAA4E0: Dtor
+      0x140EAA4E0: dtor
   Client::Game::MJI::IslandState:
     funcs:
       0x140EAD4B0: ctor
@@ -2531,7 +2530,7 @@ classes:
       - ea: 0x14240A810
     funcs:
       0x141A57020: ctor
-      0x141A570C0: Dtor
+      0x141A570C0: dtor
       0x141A57190: InitSeedItemIds
       0x141A57340: Update
       0x141A57570: CalculateCareCost
@@ -2548,7 +2547,7 @@ classes:
   Client::Game::MJI::MJIFavorState:
     funcs:
       0x141AC1C40: ctor
-      0x141AC1CB0: Dtor
+      0x141AC1CB0: dtor
       0x141AC1D10: GetNumItemsDelivered
       0x141AC1E20: GetNumItemsRequired
       0x141AC1EC0: GetItemReward
@@ -2558,7 +2557,7 @@ classes:
   Client::Game::MJI::MJIGranariesState:
     funcs:
       0x141A56B50: ctor
-      0x141A56BD0: Dtor
+      0x141A56BD0: dtor
       0x141A56BE0: CollectResources
       0x141A56C60: SelectExpeditionStart
       0x141A56CE0: SelectExpeditionCommit
@@ -2603,7 +2602,7 @@ classes:
     vtbls:
       - ea: 0x1423D6208
     vfuncs:
-      0: Dtor
+      0: dtor
       1: SetIntData
       2: ProcessPacket
   Client::Game::WKS::WKSMechaEvent:
@@ -2740,7 +2739,7 @@ classes:
       0x140088580: ctor  # empty string ctor
       0x1400885C0: ctor_copy # copy constructor
       0x140088640: ctor_FromCStr # from null-terminated string
-      0x140088690: ctor_FromSequence # (FFXIVString, char * str, size_t size)
+      0x140088690: ctor_FromSequence # (Utf8String*, char* str, size_t size)
       0x140088B20: Copy
       0x140089070: dtor
       0x1400890A0: SetString
@@ -2950,7 +2949,7 @@ classes:
       0x140C4D280: Update
       0x140C4DA90: UpdateMainCommands
       0x140C5C6D0: ctor
-      0x140C5F170: Dtor
+      0x140C5F170: dtor
       0x14004DDF0: staticCtor
       0x1421001C0: staticDtor
       0x140C48E70: SetUnlockLinkValue
@@ -3145,7 +3144,7 @@ classes:
     vtbls:
       - ea: 0x1421B7D48
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140C0C540: ctor
       0x140C0C640: Finalizer
@@ -3161,7 +3160,7 @@ classes:
       - ea: 0x1421B7D68
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
     vfuncs:
-      2: Dtor
+      2: dtor
     funcs:
       0x140C16EB0: ctor # unused, inlined
       0x140C17070: IsSelectUseTicketInactive
@@ -3173,7 +3172,7 @@ classes:
       - ea: 0x1421B7D50
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
     vfuncs:
-      2: Dtor
+      2: dtor
     funcs:
       0x140C19280: InvokeSelectUseTicket
       0x140C191F0: TeleportWithTickets
@@ -3344,7 +3343,7 @@ classes:
       - ea: 0x142ACAFB0
     funcs:
      0x140BE57D0: ctor
-     0x140BE5940: Dtor
+     0x140BE5940: dtor
      0x140BE59B0: Initialize # unused, inlined
   Client::Game::UI::RecipeNote:
     instances:
@@ -3430,13 +3429,16 @@ classes:
       0x140C4F6D0: AddActionLogMessage
       0x140C4FC90: AddToScreenLogWithLogMessageId  # this converts log message id to screen log kind and calls below function
       0x140C4FD70: AddToScreenLogWithScreenLogKind
+  Client::UI::Misc::ScreenLog:
+    funcs:
+      0x1409AF2F0: ConvertLogMessageIdToScreenLogKind
   Client::Game::UI::MarkingController:
     instances:
       - ea: 0x142AD6900 # note: it's actually a member of UIState instance
     vtbls:
       - ea: 0x1421B7C48
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140C08FE0: Reset
       0x140C09530: PlaceFieldMarker
@@ -3464,7 +3466,7 @@ classes:
     vtbls:
       - ea: 0x1421B7C50
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140C0B050: SetValues
       0x140C0B080: GetActionId
@@ -3475,7 +3477,7 @@ classes:
     vtbls:
       - ea: 0x1421B7C58
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140C0B140: SendTitleIdUpdate # better use Client::Game::Character::Character.SendTitleIdUpdate
   Client::Game::TitleList:
@@ -3484,7 +3486,7 @@ classes:
     vtbls:
       - ea: 0x1421B7C60
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140C0B230: RequestTitleList
       0x140C0B280: ReadPacket
@@ -3584,7 +3586,7 @@ classes:
       - ea: 0x1421B9030
     funcs:
       0x140C43200: ctor
-      0x140DDD7E0: Dtor
+      0x140DDD7E0: dtor
       0x140C43360: Initialize
       0x140C435A0: QueueYell
       0x140C43B60: Update
@@ -3735,7 +3737,7 @@ classes:
   Client::Game::DutyActionManager:
     funcs:
       0x1409031F0: ctor
-      0x140903250: Dtor
+      0x140903250: dtor
       0x140903370: Tick
       0x140903440: HasAction
       0x1409034C0: IsPrimaryCostTypeDutyAction
@@ -3763,7 +3765,7 @@ classes:
       - ea: 0x142A8F718
     funcs:
       0x1408FD7A0: ctor
-      0x1408FD7D0: Dtor
+      0x1408FD7D0: dtor
       0x1408FD810: Tick
       0x1408FD830: OverrideStatusRemaining
       0x1408FD890: GetStatusManager
@@ -3774,7 +3776,7 @@ classes:
     vtbls:
       - ea: 0x14218D198
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Init
       2: Tick
       3: ReceivePacketValues
@@ -3988,7 +3990,7 @@ classes:
       0x140416970: PlayClipSound
       0x140416BC0: PlayLayoutSound
       0x1404173A0: PlayBGMSound
-      0x1404174D0: PlayGayaTitleSound
+      0x1404174D0: PlayGAYATitleSound
       0x1404175F0: PlayOrchestrionSound
       0x140417820: PlaySystemSound
       0x140417970: PlayMovieSound
@@ -4055,7 +4057,7 @@ classes:
     vtbls:
       - ea: 0x1421092E0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Execute # arg 1 is always an event object
       2: Execute_arg2
     funcs:
@@ -4074,7 +4076,7 @@ classes:
     vtbls:
       - ea: 0x142109328
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140060C80: Finalizer
       0x140060DB0: AddTask
@@ -4121,7 +4123,7 @@ classes:
     vtbls:
       - ea: 0x14211DEC8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Setup
       2: Destroy
       3: Free
@@ -4182,19 +4184,17 @@ classes:
       0x142083260: ctor_From
       0x142083380: Finalizer
     vfuncs:
-      0: Dtor
+      0: dtor
   Component::Excel::ExcelModuleInterface:
     vtbls:
       - ea: 0x14211DEF0
-    vfuncs:
-      1: GetSheetByIndex
-      2: GetSheetByName
-      3: GetLanguage
+    funcs:
+      0x1401E4960: GetLanguage
   Common::Component::Excel::ExcelResourceListener:
     vtbls:
       - ea: 0x1425797A0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnResourceLoad
   Common::Component::Excel::ExcelModule:
     vtbls:
@@ -4244,7 +4244,7 @@ classes:
       - ea: 0x14216E470
         base: Client::System::Resource::ResourceEventListener
     funcs:
-      0x1405F31B0: Dtor
+      0x1405F31B0: dtor
   Common::Component::BGCollision::Resource:
     vtbls:
       - ea: 0x14216E3E0
@@ -4254,12 +4254,12 @@ classes:
     vtbls:
       - ea: 0x142579618
     vfuncs:
-      0: Dtor
+      0: dtor
   Common::Component::BGCollision::NodeLink:
     vtbls:
       - ea: 0x1425797C8
     vfuncs:
-      0: Dtor
+      0: dtor
   Common::Component::BGCollision::Node:
     vtbls:
       - ea: 0x1425797D0
@@ -4270,7 +4270,7 @@ classes:
     vtbls:
       - ea: 0x142579A40
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Clone
   Common::Component::BGCollision::Mesh:
     vtbls:
@@ -4388,7 +4388,7 @@ classes:
     vtbls:
       - ea: 0x1425796C0
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x142062590: ctor
       0x1420625D0: Finalizer
@@ -4512,7 +4512,7 @@ classes:
     vtbls:
       - ea: 0x142579D10
     vfuncs:
-      0: Dtor
+      0: dtor
       1: AcceptIntersection
     funcs:
       0x142069800: IntersectCheckMaterial
@@ -4522,7 +4522,7 @@ classes:
     vtbls:
       - ea: 0x142579D40
     vfuncs:
-      0: Dtor
+      0: dtor
       1: AcceptIntersection
     funcs:
       0x142069660: IntersectCheckMaterial
@@ -4569,7 +4569,7 @@ classes:
     vtbls:
       - ea: 0x142579D78
     vfuncs:
-      0: Dtor
+      0: dtor
       1: AcceptIntersection
   Common::Component::BGCollision::ColliderBox::RayNonHorizIntersectFunctor:
     vtbls:
@@ -4667,7 +4667,7 @@ classes:
     vtbls:
       - ea: 0x14257A348
     vfuncs:
-      0: Dtor
+      0: dtor
       1: AcceptIntersection
   Common::Component::BGCollision::ColliderPlane::RayIntersectFunctor:
     vtbls:
@@ -4686,7 +4686,7 @@ classes:
       0x1405F1DA0: TaskBGCollisionModule_OnEndOfFrame
       0x1405F1DD0: TaskBGCollisionModule_Update
       0x1405F1EC0: ctor
-      0x1405F1F70: Dtor
+      0x1405F1F70: dtor
       0x1405F1FE0: Initialize
       0x1405F21D0: UpdateTaskFuncImpl
       0x1405F2260: UpdateTaskFunc
@@ -4733,7 +4733,7 @@ classes:
     vtbls:
       - ea: 0x14216E2A8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetPath
       2: IsLoadSucceed
       3: IsLoadFail
@@ -4775,7 +4775,7 @@ classes:
     vtbls:
       - ea: 0x14257A5F0
     vfuncs:
-      0: Dtor
+      0: dtor
   Common::Component::Excel::ExcelSheet:
     vtbls:
       - ea: 0x14257A658
@@ -4816,12 +4816,12 @@ classes:
     vtbls:
       - ea: 0x14257A7C0
     vfuncs:
-      0: Dtor
+      0: dtor
   Component::Excel::IExcelPageRowResolver:
     vtbls:
       - ea: 0x14257A5F8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: SetDesiredCapacity  # (IExcelPageRowResolver* this, int nNewCapacity)
       2: GetAllocatedRowCount  # (IExcelPageRowResolver* this) -> int
       3: StoreRow  # (IExcelPageRowResolver* this, ExcelRowDescriptor* pRowDescriptor, ExcelRow* pRow) -> bool
@@ -4864,7 +4864,7 @@ classes:
     funcs:
       0x1406FC940: HasSubRowsBeginningFrom  # (ExcelRowDescriptor* this, short* nFirstSubRowIndex)
 #fail       0x141FB7E30: Assign0xFFFF  # (ExcelRowDescriptor* this)
-#fail       0x141FB7FB0: AssignIndividual  # (ExcelRowDescriptor* this, int nRowId, short* pSubRowIds, short nSubRowCount)
+      0x142083A80: AssignIndividual  # (ExcelRowDescriptor* this, int nRowId, short* pSubRowIds, short nSubRowCount)
       0x1418F3C10: AssignCopy  # (ExcelRowDescriptor* this, ExcelRowDescriptor* that)
 #fail       0x141FB7CF0: AssignClearThenCopy  # (ExcelRowDescriptor* this, ExcelRowDescriptor* that)
 #fail       0x141FB7D90: AssignByRowId  # (ExcelRowDescriptor* this, int nRowId)
@@ -4874,7 +4874,7 @@ classes:
     vtbls:
       - ea: 0x14257A6C0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: DecRef  # (ExcelRowWrapper* this)
       2: GetRow  # (ExcelRowWrapper* this) -> ExcelRow*
       3: SetRow  # (ExcelRowWrapper* this, ExcelRow* pNew)
@@ -4882,7 +4882,7 @@ classes:
     vtbls:
       - ea: 0x14257A6B8
     vfuncs:
-      0: Dtor
+      0: dtor
   Component::Excel::HashTableExcelPageRowResolver::RowWrapper:
     vtbls:
       - ea: 0x14257A800
@@ -4906,7 +4906,7 @@ classes:
     vtbls:
       - ea: 0x142194F60
     vfuncs:
-      0: Dtor
+      0: dtor
       1: WriteToSystemClipboard
       2: GetSystemClipboardText
     funcs:
@@ -4926,7 +4926,7 @@ classes:
     vtbls:
       - ea: 0x14211CA68
     vfuncs:
-      0: Dtor
+      0: dtor
       2: Update
       4: SetCursorType
       5: SetCursorVisibility
@@ -4961,7 +4961,7 @@ classes:
     vtbls:
       - ea: 0x14212AAA0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ReceiveGlobalEvent # this seems to be a common event handler shared by all AtkUnitBase instances, they don't overwrite it
       2: ReceiveEvent
     funcs:
@@ -5108,7 +5108,7 @@ classes:
     vtbls:
       - ea: 0x14212ADB8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Clear
       2: SetFromInventoryItem
       3: Update
@@ -5124,7 +5124,7 @@ classes:
     vtbls:
       - ea: 0x14212A9E8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Previous
       2: Next
       3: Reset
@@ -5140,7 +5140,7 @@ classes:
     vtbls:
       - ea: 0x14212B1E8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140147F70: ctor
       0x140147FE0: Attach
@@ -5151,13 +5151,13 @@ classes:
     vtbls:
       - ea: 0x1421087D8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnConfigChange
   Client::UI::Info::InfoProxyInterface:
     vtbls:
       - ea: 0x1421934D0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: AddData
       2: ClearData
       3: RequestData
@@ -5206,7 +5206,7 @@ classes:
     vtbls:
       - ea: 0x1421935B8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140956400: ctor
       0x140957BD0: Finalizer
@@ -5534,12 +5534,12 @@ classes:
       0x1401FCF70: Calculate
       0x1401F63C0: Update
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Graphics::ReferencedClassBase:
     vtbls:
       - ea: 0x142113BB0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Cleanup # this is called by DecRef when there are no refs left, before the dtor is called
       2: IncRef
       3: DecRef
@@ -5599,7 +5599,7 @@ classes:
     vtbls:
       - ea: 0x1421645F8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1404747A0: OpenFile
       0x140474730: Close
@@ -5651,7 +5651,7 @@ classes:
       0x140095650: ctor_FromSequence
       0x1400D5230: Copy
       0x140095F10: SetPathUtf8String
-      0x1400956E0: Dtor
+      0x1400956E0: dtor
   Client::System::Resource::Handle::ResourceHandle:
     vtbls:
       - ea: 0x142145560
@@ -5714,7 +5714,7 @@ classes:
     vtbls:
       - ea: 0x142145EA0
     vfuncs:
-      0: Dtor
+      0: dtor
       3: Load
     funcs:
       0x14030C0A0: ctor
@@ -6323,20 +6323,20 @@ classes:
     vtbls:
       - ea: 0x142164B10
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnReceiveZonePacket
       2: OnReceiveChatPacket
   Client::Network::Protocol::Zone::PacketReceiverCallbackInterface:
     vtbls:
       - ea: 0x14219DC48
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnReceivePacket
   Client::Network::Protocol::Chat::PacketReceiverCallbackInterface:
     vtbls:
       - ea: 0x1423128C0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnReceivePacket
   Client::Network::PacketDispatcher:
     vtbls:
@@ -6351,7 +6351,7 @@ classes:
       0x140B2ECE0: HandleEventYieldPacket
       0x140B2F170: HandleSystemLogMessagePacket
       0x140B32EB0: HandleSpawnPlayerPacket
-      0x140B32FB0: HandleSpawnNPCPacket
+      0x140B32FB0: HandleSpawnNpcPacket
       0x140B330B0: HandleSpawnBossPacket
       0x140B331A0: HandleDespawnCharacterPacket
       0x140B33310: HandleStatusEffectListPlayerPacket
@@ -6471,7 +6471,7 @@ classes:
       - ea: 0x142165DE8
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
     vfuncs:
-      2: Dtor
+      2: dtor
       3: Show
       4: ShowFromLua
       5: Hide
@@ -6485,6 +6485,7 @@ classes:
     funcs:
       0x1404835D0: ctor
       0x140483600: Finalizer
+      0x140483720: SetOpenerEventInterface
       0x140483730: ShowAddon
       0x140483770: HideAddon
       0x1404837B0: IsAddonShown
@@ -6526,18 +6527,18 @@ classes:
       0x1404952E0: GetAgentByInternalId
       0x1404952F0: GetAgentByInternalId_2  # dupe?
       0x140495390: HideAgent
-#oldfail       0x14026A7D0: HideAgentIfActive
+      0x1404953B0: HideAgentIfActive
       0x140495400: IsAgentActive
       0x140495160: HideAll
-#oldfail       0x14028E610: GetAgentScenarioTree
-#oldfail       0x14028E620: GetAgentMateriaAttach
-#oldfail       0x140258CA0: GetAgentGoldSaucerReward
+      0x14048D180: GetAgentScenarioTree
+      0x14048D190: GetAgentMateriaAttach
+      0x14048D1A0: GetAgentGoldSaucerReward
       0x14048D1B0: GetAgentCharacterTitleSelect
       0x14048D1C0: GetAgentReadyCheck
       0x14048D1E0: GetAgentHwdMonument
       0x14048D1F0: GetAgentMycItemBox
       0x14048D200: GetAgentMycItemBag
-#oldfail       0x140246B90: GetAgentMycDuelRequest
+      0x14048D210: GetAgentMycDuelRequest
       0x14048D220: GetAgentMycBattleAreaInfo
       0x14048D230: GetAgentTourismMenu
       0x14048D240: GetAgentMJIHud
@@ -6549,25 +6550,41 @@ classes:
       0x14048D2B0: GetAgentMJINekomimiRequest
       0x14048D2C0: GetAgentTripleTriadRuleAnnounce
       0x14048D2D0: GetAgentTripleTriadRuleSetting
+      0x14048D2E0: GetAgentUnk177
       0x14048D2F0: GetAgentTripleTriadTournamentMatchList
-      # 0x140247410: GetAgentPerformanceMode # no xrefs
+      0x14048D300: GetAgentFishRelease
+      0x14048D310: GetAgentPerformanceMode # no xrefs
+      0x14048D320: GetAgentSharlayanCraftworksSupply
+      0x14048D330: GetAgentBankaCraftworksSupply
       0x14048D340: GetAgentCutsceneReplay
       0x14048D350: GetAgentPvPHeader
+      0x14048D360: GetAgentPvPSpectator
       0x14048D370: GetAgentBannerList
       0x14048D380: GetAgentBannerEditor
       0x14048D390: GetAgentBannerUpdateView
-#oldfail       0x14028EA20: GetAgentFittingShop
+      0x14048D3A0: GetAgentUnk410
+      0x14048D3B0: GetAgentBannerPreview
+      0x14048D3C0: GetAgentFittingShop
       0x14048D3D0: GetAgentCharaCard
       0x14048D3E0: GetAgentCharaCardDesignSetting
       0x14048D3F0: GetAgentCharaCardProfileSetting
+      0x14048D400: GetAgentPvPMKSRankRating
       0x14048D410: GetAgentEmjIntro
       0x14048D420: GetAgentMap
-#oldfail       0x14028E9B0: GetAgentTofuList
+      0x14048D430: GetAgentTofuList
+      0x14048D440: GetAgentTofuPreview
+      0x14048D450: GetAgentTofuEdit
+      0x14048D460: GetAgentTofuImport
+      0x14048D470: GetAgentTofuExport
       0x14048D480: GetAgentBannerParty
       0x14048D490: GetAgentBannerMIP
+      0x14048D4A0: GetAgentUnk144 # no xrefs
+      0x14048D4B0: GetAgentMandervilleWeapon # no xrefs
       0x14048D4C0: GetAgentSXTBattleLog
       0x14048D4D0: GetAgentFGSHud
-      # 0x14047DA40: GetAgentContext # no xrefs
+      0x14048D4E0: GetAgentQuickPanel
+      0x14048D4F0: GetAgentEventImage
+      0x14048D500: GetAgentContext # no xrefs
       0x14048D510: GetAgentInventoryContext
       0x1404951B0: PropagateGameEvent
       0x140495420: PropagateLevelChange
@@ -7279,7 +7296,7 @@ classes:
     vtbls:
       - ea: 0x142154DC0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetCaster
       6: GetTarget
   Apricot::IHandleListenner:
@@ -7349,7 +7366,7 @@ classes:
     vtbls:
       - ea: 0x142161D20
     vfuncs:
-      0: Dtor
+      0: dtor
       1: CleanupRender
       2: GetObjectType
       4: UpdateRender
@@ -7373,7 +7390,8 @@ classes:
       18: GetAttachBoneWorldLocation
       19: GetAttachBoneLocalLocation
       21: HasAttachBone
-      24: UpdateTint
+      24: SetTint
+      25: GetTint
       26: SetTransparency
       27: GetTransparency
     funcs:
@@ -7408,7 +7426,7 @@ classes:
     vtbls:
       - ea: 0x142162000
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Graphics::Scene::CameraManager:
     instances:
       - ea: 0x1428F0EF8
@@ -7440,6 +7458,7 @@ classes:
       - ea: 0x142162270
         base: Client::Graphics::Scene::DrawObject
     vfuncs: # 111
+      50: GetModelType
       52: ForceWetness
       53: ResetWetness
       56: LoadSlot
@@ -7491,8 +7510,9 @@ classes:
       0x14043B940: PopulateMaterialsFromStaging
       0x14043BB20: LoadMDLSubFilesIntoStaging
       0x14043BD20: LoadMDLSubFilesForSlot
+      0x14043C900: SetupSlotModel
 #oldfail       0x14049C4C0: UpdateWetness
-      0x14046B600: Finalizer
+      0x14046B600: Destroy
       0x1408D3300: Create
       0x14044A1D0: CreateSlotStorage
   Client::Graphics::Scene::Human:
@@ -7620,7 +7640,7 @@ classes:
     vtbls:
       - ea: 0x14216D8C0
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1405E77D0: ctor
       0x1405E78D0: Finalizer
@@ -7637,7 +7657,7 @@ classes:
     vtbls:
       - ea: 0x14216E0B8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1405ECC70: ctor
       0x1405ECCA0: ctor_FromState
@@ -7725,7 +7745,7 @@ classes:
     vtbls:
       - ea: 0x1421A6F30
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140B8B1A0: IsPc
       0x140B8B230: IsEventNpc
@@ -8078,7 +8098,7 @@ classes:
     vtbls:
       - ea: 0x14216E630
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1405F49C0: ctor
       0x1405F4B10: Finalizer
@@ -8279,7 +8299,7 @@ classes:
     vtbls:
       - ea: 0x14218C670
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1408DAA00: Finalizer
       0x14180B7C0: ctor
@@ -8328,7 +8348,7 @@ classes:
     vtbls:
       - ea: 0x142171E18
     vfuncs:
-      0: Dtor
+      0: dtor
       1: FreeManagedData
     funcs:
       0x140637460: UnsubscribeAddon
@@ -8374,7 +8394,7 @@ classes:
     vtbls:
       - ea: 0x142171E58
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x14063AB10: ctor
       0x14063C180: Draw
@@ -8392,7 +8412,7 @@ classes:
       - ea: 0x142171EF0
         base: Component::GUI::AtkEventTarget
     vfuncs:
-      1: Dtor
+      1: dtor
       2: OnTick
     funcs:
       0x140641860: ctor
@@ -8411,7 +8431,7 @@ classes:
     vtbls:
       - ea: 0x142171F08
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140642250: ctor
       0x1406422D0: Finalizer
@@ -8468,7 +8488,7 @@ classes:
       - ea: 0x142171F58
         base: Component::GUI::AtkEventTarget
     vfuncs:
-      1: Dtor
+      1: dtor
     funcs:
       0x140647DE0: ctor
       0x140647F90: Prepare
@@ -8500,7 +8520,7 @@ classes:
     vtbls:
       - ea: 0x142171EE0
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1406406B0: ctor
       0x1406406D0: Finalizer
@@ -8513,7 +8533,7 @@ classes:
     vtbls:
       - ea: 0x142171F68
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       # 0x140543590: ctor # INLINED IN 7.0
       0x140649800: Initialize
@@ -8545,7 +8565,7 @@ classes:
       - ea: 0x142172038
         base: Component::GUI::AtkEventTarget # This doesn't look right...'
     vfuncs:
-      1: Dtor
+      1: dtor
     funcs:
       # 0x140640890: RemoveAllEvents # gone, inlined (using AtkEventManager.RemoveAllEvents directly)
       # 0x1405371E0: Update INLINED IN 7.0 14068A6D6
@@ -8590,7 +8610,7 @@ classes:
     vtbls:
       - ea: 0x142172048
     vfuncs:
-      8: Dtor
+      8: dtor
   Component::GUI::AtkFontAnalyzerFunctor:
     vtbls:
       - ea: 0x142172468
@@ -9099,7 +9119,7 @@ classes:
   Component::GUI::AtkDragDropPayloadContainer:
     funcs:
       0x140645340: ctor
-      0x1406453A0: Dtor
+      0x1406453A0: dtor
       0x1406453B0: Clear
   Component::GUI::AtkComponentListItemRenderer:
     vtbls:
@@ -9108,7 +9128,7 @@ classes:
       - ea: 0x142172FD8
         base: Component::GUI::AtkDragDropInterface
     funcs:
-#oldfail       0x14064FD50: ctor # no xrefs, inlined @ 0x14064B78B
+      0x140692CE0: ctor # no xrefs, inlined @ 0x14064B78B
       0x140692DE0: Finalizer # no xrefs
       #0x14059AEE0: RemoveAllEvents # 7.0: no longer exists. instead there is a new function to remove individual events - see 0x140671AFA
       0x1406976E0: StartDragDrop
@@ -9178,7 +9198,7 @@ classes:
     vtbls:
       - ea: 0x142173060
     vfuncs:
-      0: Dtor
+      0: dtor
   Component::GUI::AtkComponentTreeList:
     vtbls:
       - ea: 0x1421731F0
@@ -9284,7 +9304,7 @@ classes:
       - ea: 0x1421739A8
         base: Client::System::Input::SoftKeyboardDeviceInterface::SoftKeyboardInputInterface
     funcs:
-      # 0x140695050: ctor # inlined in AtkUldManager_CreateAtkComponent
+      0x1406B7E50: ctor # inlined in AtkUldManager_CreateAtkComponent
       0x1406B6270: SetText
       0x1406B6B00: InsertText
       0x1406B71E0: HasEvaluatedText
@@ -9396,7 +9416,7 @@ classes:
     funcs:
       0x1406CAA20: SetMapScale
       0x1406CAA60: SetMapSize
-      0x1406CAAA0: SetMapPosition
+      0x1406CAAA0: SetMapOffset
       0x1406CB030: ctor
   Component::GUI::AtkComponentPreview:
     vtbls:
@@ -9583,8 +9603,8 @@ classes:
       0x1407134A0: ctor
       # 0x1405FB860: SetInteriorFixture # inlined @ 1406CDF00
       0x140716FF0: SetActiveFestivals
-      0x14071B380: SetOutdoorExteriorData
-      0x14071B440: GetOutdoorExteriorData
+      0x14071B380: SetOutdoorPlotExterior
+      0x14071B440: GetOutdoorPlotExterior
       0x14071F100: GetLayoutInstance
   Client::LayoutEngine::OutdoorAreaLayoutData:
     funcs:
@@ -9854,7 +9874,7 @@ classes:
     vtbls:
       - ea: 0x142175C48
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetSize
       10: Initialize
       11: Tick
@@ -9885,11 +9905,14 @@ classes:
     vtbls:
       - ea: 0x14217ECD8
         base: Client::LayoutEngine::Group::SGActionController
+  Client::LayoutEngine::FileSceneTimelineDescription:
+    funcs:
+      0x141BEF570: GetC010Data
   Client::UI::Misc::UserFileManager::UserFileEvent:
     vtbls:
       - ea: 0x142182288
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ReadFile
       2: WriteFile
       5: GetFileSize
@@ -9991,7 +10014,7 @@ classes:
     vtbls:
       - ea: 0x1421824E0
     vfuncs:
-      0: Dtor
+      0: dtor
       4: ExitGame
       5: GetExcelModuleInterface
       6: GetRaptureTextModule
@@ -10588,7 +10611,7 @@ classes:
     vtbls:
       - ea: 0x1421B7048
     vfuncs:
-      0: Dtor
+      0: dtor
       1: OnLogin
       2: OnLogout
       3: Update
@@ -11035,7 +11058,7 @@ classes:
 #oldfail       0x140800790: GetDutyActionId                   # (this, slotId) -> uint  - identical to ActionManager's version.
 #oldfail       0x1407C8AE0: GetDutyActionIdForGeneralActionId # (this, generalActionId) -> uint
       0x1407D7C90: SetDutyActionSlot                 # (this, slotId, actionId)
-#oldfail       0x1407C8C40: GetDutyActionSlot                 # (this, slotId) -> DutyActionSlot*
+      0x1407D79A0: GetDutyActionSlot                 # (this, slotId) -> DutyActionSlot*
       0x1407D7A00: ExecuteDutyActionSlot             # (this, slotId)
 #oldfail       0x140801B60: IsGeneralActionDutyAction         # (this, generalActionId) -> bool  - utility function?
       0x1407D3A10: GrandCompanyUpdateTask            # (this) -> void
@@ -11209,7 +11232,7 @@ classes:
     vtbls:
       - ea: 0x142196000
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1409C3A80: ctor
       0x1409C3AC0: Finalizer
@@ -11221,7 +11244,7 @@ classes:
     vtbls:
       - ea: 0x142196018
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1409C41A0: ctor
       0x1409C4270: Finalizer
@@ -11232,7 +11255,7 @@ classes:
     vtbls:
       - ea: 0x142196020
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1409C58E0: ctor
       0x1409C5900: Finalizer
@@ -11242,7 +11265,7 @@ classes:
     vtbls:
       - ea: 0x142196028
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1409C5A90: ctor
       0x1409C5AB0: Finalizer
@@ -11313,7 +11336,7 @@ classes:
       0x1408003A0: ctor
       0x140800740: IsInHistory
       0x140800790: GetHistoryEntry
-      0x1408007E0: AddHistoryEntry
+      0x1408007E0: AddToHistory
   Client::UI::Misc::RecommendEquipModule:
     funcs:
       0x1409C48B0: Setup # (this, race, sex, level, classJob, grandCompany, pvpRank) # no xrefs
@@ -11364,7 +11387,7 @@ classes:
     vtbls:
       - ea: 0x142196388
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Initialize
       2: Release
       3: ResetPositions
@@ -11441,7 +11464,7 @@ classes:
     vtbls:
       - ea: 0x14218A420
     vfuncs:
-      0: Dtor
+      0: dtor
       1: IsSlotValid
       2: GetSlot
       4: GetValidSlotCount
@@ -11495,7 +11518,7 @@ classes:
       58: IsDead
       59: IsNotMounted
       60: Terminate
-      61: Dtor
+      61: dtor
       62: IsCharacter
       69: OnInitialize
       70: IntersectsRay
@@ -11606,7 +11629,7 @@ classes:
   Client::Game::Character::ForayInfo:
     funcs:
       0x1419F0CB0: ctor
-      0x1419F0CD0: Dtor
+      0x1419F0CD0: dtor
       0x1419F0CE0: SetEurekaRank
       0x1419F0D10: SetEurekaElement
       0x1419F0D40: SetBozjaRank
@@ -11617,7 +11640,7 @@ classes:
       - ea: 0x14216F680
     funcs:
       0x140611A00: ctor
-      0x1406342E0: Dtor
+      0x1406342E0: dtor
       0x1406139D0: GetParamCount
   Client::Game::Control::CharacterLookAtControlParam:
     vtbls:
@@ -11659,12 +11682,12 @@ classes:
     vtbls:
       - ea: 0x14216F698
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Game::Control::EmoteController::PlayEmoteOption:
     vtbls:
       - ea: 0x14216F6A0
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Game::Character::DrawDataContainer:
     vtbls:
       - ea: 0x14218C3F0
@@ -11705,7 +11728,7 @@ classes:
     vtbls:
       - ea: 0x14218C378
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Initialize
       2: Terminate
       3: Update
@@ -11739,6 +11762,7 @@ classes:
       - ea: 0x14218C418
         base: Client::Game::Character::ContainerInterface
     funcs:
+      0x1408B4A10: GetOrnamentObject
       0x1408B4A20: HasOrnament
       0x1408B4A50: SetupOrnament
   Client::Game::Character::VfxContainer:
@@ -11780,7 +11804,7 @@ classes:
     vtbls:
       - ea: 0x14218C360
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ClassJobChanged
     funcs:
 #oldfail       0x1408C6510: Reset
@@ -11847,7 +11871,7 @@ classes:
     vtbls:
       - ea: 0x14218FAB0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ExecuteCommand
   Component::Shell::DebugCommandInterface:
     vtbls:
@@ -12363,7 +12387,7 @@ classes:
     vtbls:
       - ea: 0x1421B7C80
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ResetAllHotbars  # (self, RaptureHotbarModule*) -> bool
       2: ResetPvEHotbarsForClass  # (self, RaptureHotbarModule*, int) -> bool
       3: ResetPvPHotbarsForClass  # (self, RaptureHotbarModule*, uint) -> bool
@@ -12623,6 +12647,9 @@ classes:
         base: Common::Configuration::ConfigBase::ChangeEventInterface
     funcs:
       0x141014560: ctor
+      0x141014BF0: OpenHowTo
+      0x141014ED0: GetAdjustedHowToText # static
+      0x141015260: GetAdjustedHowToIconId
   Client::UI::Agent::AgentHowToNotice:
     vtbls:
       - ea: 0x1421F0590
@@ -12647,7 +12674,7 @@ classes:
       0x141031FA0: ctor
       0x141032E00: ReceiveSearchComment
       0x1410329C0: ExamineCharacter
-  Client::UI::Agent::AgentTelepotTown:
+  Client::UI::Agent::AgentTeleportTown:
     vtbls:
       - ea: 0x1421BC038
         base: Client::UI::Agent::AgentInterface
@@ -12942,7 +12969,7 @@ classes:
       0x140FF9FE0: PreviewWindowSetup
       0x140FFA850: CreateGearsetInternal
       0x140FFAA10: DeleteGearset
-      0x140FFAF10: UpdateGearsetInternal
+      0x140FFAF10: UpdateGearset
       0x140FFB070: ReassignSetNumber
       0x140FFB290: ReassignGearsetId
       0x140FFB420: MoveGearsetUpOrDown
@@ -13235,6 +13262,8 @@ classes:
     vtbls:
       - ea: 0x1421BAAF0
         base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140CBF6D0: OpenRetainerTaskResult
   Client::UI::Agent::AgentRetainerTaskSupply:
     vtbls:
       - ea: 0x1421BAB70
@@ -13879,6 +13908,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x14104ADE0: ctor
+      0x14104AA60: OpenResult
   Client::UI::Agent::AgentRecipeItemContext:
     vtbls:
       - ea: 0x1421676E8
@@ -14143,6 +14173,14 @@ classes:
     funcs:
       0x14173C250: ctor
       0x14173C2F0: Finalizer
+  Client::UI::Agent::AgentSelectCustomString:
+    vtbls:
+      - ea: 0x142167768
+        base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentSelectStringEventGimmick:
+    vtbls:
+      - ea: 0x1421677E8
+        base: Client::UI::Agent::AgentInterface
   Client::UI::Agent::AgentReconstructionBox:
     vtbls:
       - ea: 0x1421BEF90
@@ -14194,6 +14232,12 @@ classes:
   Client::UI::Agent::AgentAlarm::Alarm:
     funcs:
       0x140EFD300: CompareTo
+  Client::UI::Agent::AgentMountainClimbingResult:
+    vtbls:
+      - ea: 0x1421F3C28
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410D5780: ctor
   Client::UI::Agent::AgentMerchantSetting:
     vtbls:
       - ea: 0x1421F1038
@@ -14861,7 +14905,7 @@ classes:
     vtbls:
       - ea: 0x1421BA078
     vfuncs:
-      0: Dtor
+      0: dtor
       1: GetIsComplete
       2: Iterate
   Client::UI::Agent::AgentRecipeTree:
@@ -14924,6 +14968,12 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x1410A3470: ctor
+  Client::UI::Agent::AgentGoldSaucerHud:
+    vtbls:
+      - ea: 0x1421F2D78
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410A1610: ctor
   Client::UI::Agent::AgentTripleTriad:
     vtbls:
       - ea: 0x1421F2E90
@@ -14943,6 +14993,12 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x1410E36F0: ctor
+  Client::UI::Agent::TripleTriadRule:
+    vtbls:
+      - ea: 0x1421F4280
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410E46B0: ctor
   Client::UI::Agent::TripleTriadSchedule:
     vtbls:
       - ea: 0x1421F33E0
@@ -15076,7 +15132,7 @@ classes:
   Client::UI::Agent::AgentCharaCard::Storage:
     funcs:
 #       0x1409C7500: ctor # inlined @ 140CD2EFC
-      0x140DC54F0: Dtor
+      0x140DC54F0: dtor
   Client::UI::Agent::AgentCharaCardDesignSetting:
     vtbls:
       - ea: 0x1421C06D0
@@ -15344,7 +15400,7 @@ classes:
   Client::UI::Agent::AgentMJIGatheringHouse::AgentData:
     funcs:
       0x140A12560: ctor
-      0x140A12600: Dtor
+      0x140A12600: dtor
       0x140A12730: Init
       0x140A12830: Reset
       0x140A128A0: Update
@@ -15431,7 +15487,7 @@ classes:
       0x140A4B230: ctor
       0x140A4CFE0: RenameBoard 
       0x140A4D1C0: ContextMenuOptions
-  Client::UI::Agent::AgentTofuList::TofuListData:
+  Client::UI::Agent::TofuListData:
     funcs:
       0x140AE2120: ReviewSelectedBoard
       0x140AE6D60: RenameItem
@@ -15476,7 +15532,7 @@ classes:
         base: Component::GUI::AtkModuleInterface::AtkEventInterface
     funcs:
       0x1409E75B0: ctor
-      0x1409E7690: Dtor
+      0x1409E7690: dtor
   Client::UI::Agent::AgentBannerParty:
     vtbls:
       - ea: 0x142197130
@@ -15718,6 +15774,12 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140A930D0: ctor
+  Client::UI::Agent::AgentMKDLore:
+    vtbls:
+      - ea: 0x142199380
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A90CF0: ctor
   Client::UI::Agent::AgentMKDLoreBook:
     vtbls:
       - ea: 0x1421992F0
@@ -15748,6 +15810,52 @@ classes:
     vtbls:
       - ea: 0x142167968
         base: Client::UI::Agent::AgentInterface
+  Client::UI::Agent::AgentToggleContextMenu:
+    vtbls:
+      - ea: 0x142166320
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1404A6900: ctor
+  Client::UI::Agent::AgentXBMMonsterNotebook:
+    vtbls:
+      - ea: 0x142199AA8
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140AA74A0: ctor
+  Client::UI::Agent::AgentXBMPetParty:
+    vtbls:
+      - ea: 0x142199920
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140AA1590: ctor
+  Client::UI::Agent::AgentXBMStageDetailList:
+    vtbls:
+      - ea: 0x1421998A0
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A9DB30: ctor
+  Client::UI::Agent::AgentXBMStageList:
+    vtbls:
+      - ea: 0x142199B90
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140AABEC0: ctor
+  Client::UI::Agent::AgentXBMStageMap:
+    vtbls:
+      - ea: 0x142199C58
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140AACDF0: ctor
+  Client::UI::Agent::AgentEventImage:
+    vtbls:
+      - ea: 0x1421EDA48
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140F66B80: ctor
+  Client::UI::Agent::AgentKeyBoardInput:
+    vtbls:
+      - ea: 0x1421679E8
+        base: Client::UI::Agent::AgentInterface
   Client::Game::UI::GameEventCallback:
     vtbls:
       - ea: 0x142196DE8
@@ -15755,19 +15863,19 @@ classes:
     vtbls:
       - ea: 0x1421A45E8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: HandleCallback
   Client::Game::Event::ActionTimelineCallbackInterface:
     vtbls:
       - ea: 0x1421A4600
     vfuncs:
-      0: Dtor
+      0: dtor
       1: HandleCallback
   Client::Game::Event::ListenItemCallbackInterface:
     vtbls:
       - ea: 0x14219A558
     vfuncs:
-      0: Dtor
+      0: dtor
       1: HandleCallback
   Client::Game::Event::FormatStringCallback<Client::Game::Event::EventHandler>:
     vtbls:
@@ -15789,7 +15897,7 @@ classes:
       0x140B55120: QueueFormatStringCallback
       0x140B551D0: QueueActionTimelineCallback
     vfuncs:
-      0: Dtor
+      0: dtor
       6: Terminate
       7: IsUnlocked
       40: ProcessYield
@@ -16218,7 +16326,7 @@ classes:
     vtbls:
       - ea: 0x1422CDA90
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ContinueBattleBGM
       2: ContinueEventBGM
       3: StopEventBGM
@@ -16510,7 +16618,7 @@ classes:
     vtbls:
       - ea: 0x1422CEC78
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Game::Event::CreateAppearanceTask:
     vtbls:
       - ea: 0x1422CECC8
@@ -16739,7 +16847,7 @@ classes:
   Client::Game::Event::EventSceneModule:
     funcs:
       0x1417BFC40: ctor
-      0x1417C02E0: Dtor
+      0x1417C02E0: dtor
       0x1417C1D90: AddInitializeSceneTask
       0x1417C1E20: AddFinalizeSceneTask
       0x1417C74B0: ShowLogMessage
@@ -17586,7 +17694,7 @@ classes:
     vtbls:
       - ea: 0x14219C2E8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140B1D060: Initialize
       0x140B1D120: Destroy
@@ -17606,7 +17714,7 @@ classes:
         pointer: true
     funcs:
       0x140B74DD0: ctor
-      0x140B74AA0: Dtor
+      0x140B74AA0: dtor
       0x140B74AF0: GetInstance
       0x140B74A50: Initialize
       0x140B75BE0: Finalizer
@@ -17694,7 +17802,7 @@ classes:
     vtbls:
       - ea: 0x1421A5018
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x140B5D0D0: ctor
       0x140B5D110: ctor_From
@@ -19047,7 +19155,7 @@ classes:
     vtbls:
       - ea: 0x1421F7A98
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x14110F140: ctor
       0x14110F170: Finalize
@@ -22573,6 +22681,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1412F7700: ctor
+      0x1412F9810: UpdateClasses
   Client::UI::AddonPvpProfileActionAdditional: # 592
   Client::UI::AddonPvpProfileActionTraits: # 593
   Client::UI::AddonPvpProfileActionQuickChat: # 594
@@ -24969,6 +25078,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1411865C0: ctor
+      0x141186800: OnWorldListItemPopulate
   Client::UI::AddonJournalDetail:
     vtbls:
       - ea: 0x14221CF08
@@ -25320,7 +25430,7 @@ classes:
     vtbls:
       - ea: 0x142290EA8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: Initialize
       2: Finalizer
       3: Update
@@ -25977,7 +26087,7 @@ classes:
     vtbls:
       - ea: 0x1422C9EE8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1417770D0: ctor
       0x1417773D0: Finalizer
@@ -26225,7 +26335,7 @@ classes:
     vtbls:
       - ea: 0x1422DA6B0
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x1418B1CF0: ctor
       0x1418B1E50: Finalizer
@@ -26238,22 +26348,22 @@ classes:
     vtbls:
       - ea: 0x1422D1BB8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x14185C550: ctor
   Client::System::Scheduler::Base::SchedulerState:
     vtbls:
       - ea: 0x1422DE740
     vfuncs:
-      0: Dtor
+      0: dtor
   Client::Graphics::Physics::BoneSimulator:
     vtbls:
       - ea: 0x142324BA0
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ClearSkeleton
     funcs:
-      0x141932730: Ctor
+      0x141932730: ctor
       0x141932A20: Finalizer
       0x141932C20: SetSkeleton
       0x141932EC0: Reset
@@ -26269,7 +26379,7 @@ classes:
     vtbls:
       - ea: 0x14232A4B8
     vfuncs:
-      0: Dtor
+      0: dtor
       1: ClearLog
       2: SetContentId
       3: GetCurrentLogIndex
@@ -26317,7 +26427,7 @@ classes:
     vtbls:
       - ea: 0x1424428D8
     vfuncs:
-      0: Dtor
+      0: dtor
     funcs:
       0x141C49150: ctor
       0x141C492A0: GetGroup
@@ -26332,7 +26442,7 @@ classes:
   Component::SteamApi::SteamApi:
     funcs:
       0x1407935A0: ctor
-      0x1407936A0: Dtor
+      0x1407936A0: dtor
       0x140793720: SteamApiInit
       0x140793850: RunSteamCallbacks
       0x140793890: EndAuthSession
@@ -26350,7 +26460,7 @@ classes:
       0: RunExtended  # (void* param, bool bIoFailure, long hSteamApiCall);
       1: Run          # (void* param)
       2: GetSize
-      3: Dtor
+      3: dtor
   Component::SteamApi::SteamCallbackBase2:
     vtbls:
       - ea: 0x142183A88
@@ -26539,6 +26649,7 @@ classes:
         base: Client::System::Scheduler::Instance::LayoutReferenceObject
     funcs:
       0x14199A3D0: ctorPrefab
+      0x14199A580: InsertObject
   Client::System::Scheduler::Instance::LayoutMemberObject:
     vtbls:
       - ea: 0x14243C080
@@ -26936,7 +27047,7 @@ classes:
     vtbls:
       - ea: 0x1421147A0
     vfuncs:
-      0: Dtor
+      0: dtor
       3: Malloc
       5: AlignedMalloc
       6: AlignedRealloc
@@ -27020,66 +27131,66 @@ classes:
       - ea: 0x142460720
         base: Client::Graphics::ReferencedClassBase
     funcs:
-      0x141C847B0: Ctor
+      0x141C847B0: ctor
   Client::Graphics::Physics::CollisionEllipsoid:
     vtbls:
       - ea: 0x14243A898
         base: Client::Graphics::Physics::CollisionBase
     funcs:
-      0x141BD8610: Ctor
+      0x141BD8610: ctor
   Client::Graphics::Physics::CollisionPlane:
     vtbls:
       - ea: 0x14243A8E8
         base: Client::Graphics::Physics::CollisionBase
     funcs:
-      0x141BD9B70: Ctor
+      0x141BD9B70: ctor
   Client::Graphics::Physics::CollisionNormalPlane:
     vtbls:
       - ea: 0x14243A938
         base: Client::Graphics::Physics::CollisionPlane
     funcs:
-      0x141BDA530: Ctor
+      0x141BDA530: ctor
   Client::Graphics::Physics::CollisionSphere:
     vtbls:
       - ea: 0x14243A7F8
         base: Client::Graphics::Physics::CollisionBase
     funcs:
-      0x141BD3A30: Ctor
+      0x141BD3A30: ctor
   Client::Graphics::Physics::CollisionThreePointPlane:
     vtbls:
       - ea: 0x14243A988
         base: Client::Graphics::Physics::CollisionPlane
     funcs:
-      0x141BDAAB0: Ctor
+      0x141BDAAB0: ctor
   Client::Graphics::Physics::CollisionCapsule:
     vtbls:
       - ea: 0x14243A848
         base: Client::Graphics::Physics::CollisionBase
     funcs:
-      0x141BD5800: Ctor
+      0x141BD5800: ctor
   Client::Graphics::Physics::ConstraintBase:
     vtbls:
       - ea: 0x14243F8E0
     funcs:
-      0x141C8A7F0: Ctor
+      0x141C8A7F0: ctor
   Client::Graphics::Physics::ConstraintAttract:
     vtbls:
       - ea: 0x14243F908
         base: Client::Graphics::Physics::ConstraintBase
     funcs:
-      0x141C2AAB0: Ctor
+      0x141C2AAB0: ctor
   Client::Graphics::Physics::ConstraintPin:
     vtbls:
       - ea: 0x14243F930
         base: Client::Graphics::Physics::ConstraintBase
     funcs:
-      0x141C2AED0: Ctor
+      0x141C2AED0: ctor
   Client::Graphics::Physics::ConstraintSpring:
     vtbls:
       - ea: 0x14243F958
         base: Client::Graphics::Physics::ConstraintBase
     funcs:
-      0x141C2B0C0: Ctor
+      0x141C2B0C0: ctor
   # havok
   hkArrayUtil:
     funcs:
