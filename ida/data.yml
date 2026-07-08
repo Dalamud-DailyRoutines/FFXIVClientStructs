@@ -1,14 +1,12 @@
 version: 2026.06.18.0000.0000
 
 globals:
-  0x142112DA8: g_FloatHalf # 0.5f
-  0x142112E08: g_FloatOne # 1f
-  0x14211BA98: g_FloatOneAndAHalf # 1.5f
-  0x142112E44: g_FloatSix # 6f
+  0x142112E1C: g_Common::Math::HalfPI
+  0x142112E2C: g_Common::Math::PI
+  0x142112E48: g_Common::Math::TwoPI
   0x142113ED0: g_MemoryPoolConfig # { int BlockSize; int BlockCount; }[10], last entry is special for the lookup table
   0x1428E15C0: g_MemoryPoolsStart
   0x1428E1610: g_MemoryPoolsEnd
-  0x14211BA9C: g_FloatTwenty # 20f
 #fail   0x141F0C404: g_ConfigFileName
   0x1421272D0: g_NumberArraySizes
   0x1421274E0: g_StringArraySizes
@@ -1840,6 +1838,8 @@ classes:
       0x140893120: Clear
       0x1408931E0: RequestPrismBox
       0x140893380: IsSetSlotUnlocked
+      0x1408935F0: StoreNewOutfit
+      0x140893840: StoreExistingOutfit
       0x140893B20: RestorePrismBoxItem
       0x140893D00: RestorePrismBoxSetItem
       0x1408945F0: RequestGlamourPlates
@@ -4089,6 +4089,13 @@ classes:
       0x140060C80: Finalizer
       0x140060DB0: AddTask
       0x140060E20: ExecuteAllTasks
+  Client::System::Framework::TaskManager::JobPool:
+    funcs:
+      0x14005FE50: ctor
+  Client::System::Framework::TaskManager::JobPool::InnerThread:
+    vtbls:
+      - ea: 0x1421082F8
+        base: Client::System::Threading::Thread
   Client::System::Framework::JobListInterface:
     vtbls:
       - ea: 0x142108330
@@ -6028,6 +6035,14 @@ classes:
     vtbls:
       - ea: 0x142147B60
         base: Client::System::Resource::Handle::ResourceHandleFactory
+  Client::System::Resource::Handle::CloudAssetResourceHandle:
+    vtbls:
+      - ea: 0x142147B78
+        base: Client::System::Resource::Handle::DefaultResourceHandle
+  Client::System::Resource::Handle::CloudAssetResourceHandleFactory:
+    vtbls:
+      - ea: 0x142147CE0
+        base: Client::System::Resource::Handle::ResourceHandleFactory
   Client::System::Resource::Handle::LookAtIkResourceHandle:
     vtbls:
       - ea: 0x142147CF8
@@ -6896,6 +6911,7 @@ classes:
       0x14022D430: SetDefaultState
       0x14022AEC0: DoClearCommandViaDraw
       0x14022AD90: DoClearCommand
+      0x14022B340: DoSetTargetCommand
 #oldfail       0x14036DBA0: PrimeForDraw
   Client::Graphics::Kernel::Device::RenderThread:
     vtbls:
@@ -7467,6 +7483,8 @@ classes:
       25: GetTint
       26: SetTransparency
       27: GetTransparency
+      28: SetTargetStatus
+      29: GetTargetStatus
     funcs:
       0x14041DD80: ctor
   Client::Graphics::JobSystem<Client::Graphics::Scene::World>:
@@ -9280,8 +9298,11 @@ classes:
       0x1406A2DF0: LoadAtkValues
       0x1406A37C0: ExpandGroupExclusively
       0x1406A48F0: GetItem
+      0x1406A49B0: FindItemGroup
+      0x1406A4BD0: IsItemSectionHeader
       0x1406A4C30: ctor # no xrefs, inlined in AtkUldManager_CreateAtkComponent
       0x1406A4CF0: Finalizer # no xrefs
+      0x1406A7430: CalculateVisibleItemHeightAndCount
       0x1406A7620: CreateItem # inlined (7.3)
   Component::GUI::AtkModule:
     vtbls:
@@ -9430,6 +9451,7 @@ classes:
     funcs:
       0x1406C2730: ctor
       0x1406C2760: Finalizer
+      0x1406C2710: SetActive
   Component::GUI::AtkComponentTab:
     vtbls:
       - ea: 0x142173B20
@@ -9938,6 +9960,10 @@ classes:
   Client::LayoutEngine::Layer::DecalLayoutInstance:
     vtbls:
       - ea: 0x142178420
+        base: Client::LayoutEngine::ILayoutInstance
+  Client::LayoutEngine::Layer::CullingBoxLayoutInstance:
+    vtbls:
+      - ea: 0x142178B70
         base: Client::LayoutEngine::ILayoutInstance
   Client::LayoutEngine::Group::TimeLineLayoutInstance:
     vtbls:
@@ -11574,6 +11600,9 @@ classes:
       11: GetSex
       12: EnableDraw
       13: DisableDraw
+      14: UpdateNextDistanceAndTargetStatus
+      15: SetTargetStatus
+      16: SetDistance
       17: SetDrawObject
       23: GetDrawObject
       24: GetCharacterBase
@@ -11935,6 +11964,13 @@ classes:
       0x1408C5480: UpdateBannerHeadDirection
       0x1408C5550: SetBannerEyesFollowingCamera
       0x1408C55A0: UpdateBannerEyeDirection
+  Client::Game::Character::TargetStatusContainer:
+    vtbls:
+      - ea: 0x14218C250
+        base: Client::Game::Character::ContainerInterface
+    funcs:
+      0x1408C7AB0: UpdateNextDistanceAndTargetStatus # inlined in GameObject.UpdateNextDistanceAndTargetStatus
+      0x1408C7C70: DetermineTargetStatus
   Client::Game::Character::DrawData:
     vtbls:
       - ea: 0x142163238
@@ -14158,6 +14194,12 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140DA9AD0: ctor
+      0x140DABCD0: HandleCrystallizeCallback
+      0x140DACBE0: LoadPrismBoxItems
+      0x140DADB30: ShouldFilterPrismBoxItem
+      0x140DAE5C0: UpdateCrystallizePopulate
+      0x140DAE170: PopulateCrystallizeAndFireRefresh
+      0x140DAED60: ScanCrystallizeInventoryForCategory
       0x140DADDD0: UpdateItems
   Client::UI::Agent::AgentMiragePrismPrismItemDetail:
     vtbls:
@@ -14173,6 +14215,8 @@ classes:
     funcs:
       0x140DB0840: Open # todo: check this (7.4)
       0x140DB0B10: OpenPreview
+      0x140DB1EB0: PopulateHandInItem
+      0x140DB2980: ValidateItems
   Client::UI::Agent::AgentMiragePrismPrismSetConvert::AgentData:
     funcs:
 #fail       0x140C36B10: ctor # inlined (7.3)
@@ -19647,6 +19691,7 @@ classes:
     funcs:
       0x1412CA250: ctor
       0x1412CC880: IsZoomed
+      0x1412D11C0: ChangeTab
   Client::UI::AddonContextMenu: # 31
     vtbls:
       - ea: 0x1421FA5F8
@@ -23019,6 +23064,8 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x141273410: ctor
+      0x141274120: ToggleGearsetFilter
+      0x1412741F0: SwitchCategory
   Client::UI::AddonMiragePrismPrismBoxFilter: # 642
     vtbls:
       - ea: 0x14222BF90
