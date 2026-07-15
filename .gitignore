@@ -429,6 +429,9 @@ FodyWeavers.xsd
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Local CN signature migration report
+/ida/cn-migration-report.yml
+
 # Windows Installer files from build outputs
 *.cab
 *.msi

@@ -4,6 +4,7 @@
 # @runtime PyGhidra
 
 from __future__ import print_function
+import json
 import os
 import yaml
 from anytree import Node, RenderTree, PreOrderIter
@@ -202,15 +203,62 @@ if api is None:
         import idautils  # noqa
         import ida_funcs  # noqa
         import ida_bytes  # noqa
+        import ida_nalt  # noqa
+        import ida_name  # noqa
     except ImportError:
         print("Warning: Unable to load IDA")
     else:
         # noinspection PyUnresolvedReferences
         class IdaApi(BaseApi):
 
+            def __init__(self):
+                self._data_file_path = self._select_data_file_path()
+                self._relocate_existing_names = os.path.basename(
+                    self._data_file_path
+                ).lower() == "data_cn.yml"
+                print("Using IDA data file: {0}".format(self._data_file_path))
+
+            def _select_data_file_path(self):
+                script_dir = os.path.dirname(os.path.realpath(__file__))
+                default_path = os.path.join(script_dir, "data.yml")
+                override = os.getenv("FFXIVCLIENTSTRUCTS_DATA_FILE")
+                if override:
+                    if not os.path.isfile(override):
+                        raise FileNotFoundError(override)
+                    return override
+
+                cn_path = os.path.join(script_dir, "data_cn.yml")
+                appdata = os.getenv("APPDATA")
+                if not appdata or not os.path.isfile(cn_path):
+                    return default_path
+
+                config_path = os.path.join(
+                    appdata, "XIVLauncherCN", "launcherConfigV3.json"
+                )
+                if not os.path.isfile(config_path):
+                    return default_path
+                try:
+                    with open(config_path, "r") as config_file:
+                        config = json.load(config_file)
+                    cn_exe = os.path.normcase(
+                        os.path.abspath(
+                            os.path.join(
+                                config["GamePath"], "game", "ffxiv_dx11.exe"
+                            )
+                        )
+                    )
+                    input_file = os.path.normcase(
+                        os.path.abspath(ida_nalt.get_input_file_path())
+                    )
+                    if input_file == cn_exe:
+                        return cn_path
+                except (KeyError, OSError, ValueError) as error:
+                    print("Warning: Unable to detect CN game path: {0}".format(error))
+                return default_path
+
             @property
             def data_file_path(self):
-                return os.path.join(os.path.dirname(os.path.realpath(__file__)), "data.yml")
+                return self._data_file_path
 
             def get_image_base(self):
                 return idaapi.get_imagebase()
@@ -240,6 +288,15 @@ if api is None:
                 # print("{0} {1}".format(ea, name))
                 if ida_bytes.get_item_head(ea) != ea:
                     return True
+                if self._relocate_existing_names:
+                    existing_ea = ida_name.get_name_ea(0, name)
+                    if existing_ea != idc.BADADDR and existing_ea != ea:
+                        print(
+                            "Relocating exact CN name {0} from 0x{1:X} to 0x{2:X}".format(
+                                name, existing_ea, ea
+                            )
+                        )
+                        ida_name.set_name(existing_ea, "", ida_name.SN_NOWARN)
                 result = idc.set_name(ea, name)
                 return bool(result)
 
@@ -307,6 +364,9 @@ if api is None:
                 proposed_qualified_func_name = "{0}.{1}".format(class_name, proposed_func_name)
                 if current_func_name == proposed_qualified_func_name:
                     return ""
+
+                if self._relocate_existing_names:
+                    return proposed_qualified_func_name
 
                 if any(current_func_name.startswith(prefix) for prefix in ("sub_", "nullsub_", "loc_", "qword_", "unknown_libname_", "?", "_")):
                     return proposed_qualified_func_name

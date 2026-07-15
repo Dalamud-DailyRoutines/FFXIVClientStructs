@@ -46,3 +46,20 @@ This script runs `ffxiv_idarename.py`,  `ffxiv_exdgetters.py`,  `ffxiv_structimp
 Once upon a time, someone did a bad thing and released FFXIV with the RTTI data intact.
 This is an export of that RTTI data using the ClassInformer IDA Pro plugin.
 It is useful as a baseline for many hierarchies and class names, be aware however it is several years old at this point.
+
+## CN address migration
+
+`ffxiv_cn_migration_report.py` compares the signatures exported in `ffxiv_structs.yml` against global and CN executables. It only reports an `exact` result when the signature has a unique match in both executables and the resolved global target equals the address in `data.yml`.
+
+```powershell
+py .\ida\ffxiv_cn_migration_report.py `
+  --global-exe "C:\path\to\global\game\ffxiv_dx11.exe"
+```
+
+The generated `cn-migration-report.yml` is local diagnostic output and is not committed. Generate the exact-only CN address file from it with:
+
+```powershell
+py .\ida\ffxiv_cn_data_generator.py
+```
+
+`data_cn.yml` uses the same schema as `data.yml`, but contains only confirmed CN function addresses. In IDA, `ffxiv_idarename.py` selects it when the loaded input executable matches the game path in `%APPDATA%\XIVLauncherCN\launcherConfigV3.json`. Set `FFXIVCLIENTSTRUCTS_DATA_FILE` to an explicit YAML path to override automatic selection.
