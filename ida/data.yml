@@ -1561,22 +1561,22 @@ classes:
       - ea: 0x142199F38
         base: Client::Game::Character::CharacterManagerInterface
     funcs:
-      0x140AF73C0: Initialize
-      0x140AF78F0: Finalizer
-      0x140AF7990: Tick
-      0x140AF7A60: UpdateAnimations
-      0x140AF7AA0: UpdateMovement
-      0x140AF7B00: UpdateCompanions
+      0x140AF3C60: Initialize
+      0x140AF4190: Finalizer
+      0x140AF4230: Tick
+      0x140AF4300: UpdateAnimations
+      0x140AF4340: UpdateMovement
+      0x140AF43A0: UpdateCompanions
 #fail       0x1409501D0: CreateCharacterAtFirstEmptyIndex
-      0x140AF7BE0: CreateCharacterAtIndex
-      0x140AF7E30: DeleteCharacterAtIndex
-      0x140AF7F30: DeleteAllCharacters
-      0x140AF8090: LookupBattleCharaByEntityId
-      0x140AF80F0: LookupBattleCharaByName
-      0x140AF81E0: LookupRetainerByName
-      0x140AF8280: LookupBuddyByOwnerObject
-      0x140AF8300: LookupPetByOwnerObject
-      0x140AF83E0: LookupBattleNpcPartsByObjectId
+      0x140AF4480: CreateCharacterAtIndex
+      0x140AF46D0: DeleteCharacterAtIndex
+      0x140AF47D0: DeleteAllCharacters
+      0x140AF4930: LookupBattleCharaByEntityId
+      0x140AF4990: LookupBattleCharaByName
+      0x140AF4A80: LookupRetainerByName
+      0x140AF4B20: LookupBuddyByOwnerObject
+      0x140AF4BA0: LookupPetByOwnerObject
+      0x140AF4C80: LookupBattleNpcPartsByObjectId
   Client::Game::GoldSaucer::GoldSaucerManager:
     instances:
       - ea: 0x142AD1870

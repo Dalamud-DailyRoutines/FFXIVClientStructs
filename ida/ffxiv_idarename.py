@@ -240,7 +240,15 @@ if api is None:
                 # print("{0} {1}".format(ea, name))
                 if ida_bytes.get_item_head(ea) != ea:
                     return True
-                result = idc.set_name(ea, name)
+                existing_ea = ida_name.get_name_ea(0, name)
+                if existing_ea != idc.BADADDR and existing_ea != ea:
+                    print(
+                        "Moving {0} from 0x{1:X} to 0x{2:X}".format(
+                            name, existing_ea, ea
+                        )
+                    )
+                    ida_name.set_name(existing_ea, "", ida_name.SN_NOWARN)
+                result = ida_name.set_name(ea, name, ida_name.SN_NOWARN)
                 return bool(result)
 
             def get_comment(self, ea):
