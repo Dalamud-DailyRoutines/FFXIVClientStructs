@@ -349,21 +349,6 @@ class IdaInterface(BaseIdaInterface):
             """
             ea = self.search_binary(0, pattern, ida_search.SEARCH_DOWN)
 
-            if ea == idc.BADADDR:
-                return idc.BADADDR
-
-            mnem = idc.print_insn_mnem(ea)
-            opType0 = idc.get_operand_type(ea, 0)
-            if mnem and (mnem == "jmp" or mnem == "call" or mnem[0] == "j"):
-                if opType0 != idc.o_near and opType0 != idc.o_mem:
-                    print(
-                        "Error: Can't follow opType0 {0}".format(
-                            self.opTypeAsName(opType0)
-                        )
-                    )
-                    return idc.BADADDR
-                return idc.get_operand_value(ea, 0)
-
             if ida_funcs.get_func(ea) is None:
                 finf = ida_funcs.func_t()
                 finf.start_ea = ea
@@ -375,8 +360,20 @@ class IdaInterface(BaseIdaInterface):
 
             if ida_funcs.get_func(ea).start_ea == ea:
                 return ea
+            mnem = idc.print_insn_mnem(ea)
             if not mnem:
                 return idc.BADADDR
+
+            opType0 = idc.get_operand_type(ea, 0)
+            if mnem == "jmp" or mnem == "call" or mnem[0] == "j":
+                if opType0 != idc.o_near and opType0 != idc.o_mem:
+                    print(
+                        "Error: Can't follow opType0 {0}".format(
+                            self.opTypeAsName(opType0)
+                        )
+                    )
+                    return idc.BADADDR
+                return idc.get_operand_value(ea, 0)
 
             if idc.next_head(ea) == ea + idc.get_item_size(ea) and idc.is_flow(
                 idc.get_full_flags(idc.next_head(ea))
@@ -825,21 +822,6 @@ class IdaInterface(BaseIdaInterface):
             """
             ea = self.search_binary(0, pattern, ida_search.SEARCH_DOWN)
 
-            if ea == idc.BADADDR:
-                return idc.BADADDR
-
-            mnem = idc.print_insn_mnem(ea)
-            opType0 = idc.get_operand_type(ea, 0)
-            if mnem and (mnem == "jmp" or mnem == "call" or mnem[0] == "j"):
-                if opType0 != idc.o_near and opType0 != idc.o_mem:
-                    print(
-                        "Error: Can't follow opType0 {0}".format(
-                            self.opTypeAsName(opType0)
-                        )
-                    )
-                    return idc.BADADDR
-                return idc.get_operand_value(ea, 0)
-
             if ida_funcs.get_func(ea) is None:
                 finf = ida_funcs.func_t()
                 finf.start_ea = ea
@@ -851,8 +833,20 @@ class IdaInterface(BaseIdaInterface):
 
             if ida_funcs.get_func(ea).start_ea == ea:
                 return ea
+            mnem = idc.print_insn_mnem(ea)
             if not mnem:
                 return idc.BADADDR
+
+            opType0 = idc.get_operand_type(ea, 0)
+            if mnem == "jmp" or mnem == "call" or mnem[0] == "j":
+                if opType0 != idc.o_near and opType0 != idc.o_mem:
+                    print(
+                        "Error: Can't follow opType0 {0}".format(
+                            self.opTypeAsName(opType0)
+                        )
+                    )
+                    return idc.BADADDR
+                return idc.get_operand_value(ea, 0)
 
             if idc.next_head(ea) == ea + idc.get_item_size(ea) and idc.is_flow(
                 idc.get_full_flags(idc.next_head(ea))

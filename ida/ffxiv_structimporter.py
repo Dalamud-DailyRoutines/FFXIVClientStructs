@@ -597,19 +597,9 @@ if api is None:
                 func_name = "{0}.{1}".format(
                     self.clean_name(struct.type), member_func.name
                 )
-                named_ea = self.get_func_ea_by_name(func_name)
-                signature_ea = self.get_func_ea_by_sig(member_func.signature)
-                if signature_ea != idc.BADADDR:
-                    ea = signature_ea
-                    if named_ea != idc.BADADDR and named_ea != signature_ea:
-                        print(
-                            "Relocating {0} from 0x{1:X} to 0x{2:X}".format(
-                                func_name, named_ea, signature_ea
-                            )
-                        )
-                        ida_name.set_name(named_ea, "", ida_name.SN_NOWARN)
-                else:
-                    ea = named_ea
+                ea = self.get_func_ea_by_name(func_name)
+                if ea == idc.BADADDR:
+                    ea = self.get_func_ea_by_sig(member_func.signature)
                 if ea == idc.BADADDR:
                     print(
                         "Error: {0} not found bad sig? {1}".format(
