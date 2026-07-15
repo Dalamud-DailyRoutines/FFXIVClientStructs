@@ -5,7 +5,7 @@
 
 from json import load
 from os import getenv
-from os.path import join
+from os.path import isfile, join
 import sys
 from luminapie.game_data import GameData, ParsedFileName
 from luminapie.excel import ExcelListFile, ExcelHeaderFile
@@ -435,7 +435,19 @@ if sys.platform.startswith("linux"):
     if not game_path:
         raise ValueError("GamePath key not found in {0}".format(launcher_ini))
 else:
-    f = open(join(getenv("APPDATA"), "XIVLauncher", "launcherConfigV3.json"), "r")
+    launcher_configs = [
+        join(getenv("APPDATA"), launcher, "launcherConfigV3.json")
+        for launcher in ("XIVLauncherCN", "XIVLauncher")
+    ]
+    launcher_config = next((path for path in launcher_configs if isfile(path)), None)
+    if launcher_config is None:
+        raise FileNotFoundError(
+            "XIVLauncher configuration not found; checked: {0}".format(
+                ", ".join(launcher_configs)
+            )
+        )
+
+    f = open(launcher_config, "r")
     try:
         config = load(f)
     finally:

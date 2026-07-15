@@ -468,12 +468,19 @@ if api is None:
                         == self.get_struct_flag()
                     ):
                         field_type = self.clean_struct_name(field_type)
+                        struct_opinfo = self.get_struct_opinfo_from_type(field_type)
+                        if struct_opinfo.tid == idaapi.BADADDR:
+                            print(
+                                "Warning: Skipping {0}.{1} at 0x{2:X}: type {3} is not available"
+                                .format(fullname, field_name, offset, field_type)
+                            )
+                            continue
                         self.create_struct_member(
                             s,
                             field_name,
                             offset,
                             self.get_idc_type_from_ida_type(field_type),
-                            self.get_struct_opinfo_from_type(field_type),
+                            struct_opinfo,
                             self.get_size_from_ida_type(field_type),
                         )
                     elif (
