@@ -586,6 +586,8 @@ classes:
     instances:
       - ea: 0x1428914B0
     funcs:
+      0x140619670: HasKeyboardCameraInput
+      0x1406199B0: HasAnalogCameraInput
       0x140619C40: Update
       0x140619E90: GetInputStatus
       0x141811080: IsAutoRunning # static function, might belong in a different class.
@@ -1052,6 +1054,7 @@ classes:
         base: Client::System::Input::InputDevice
     funcs:
       0x141782F20: ctor
+      0x141783410: ScheduleCursorMove # static
   Client::System::Input::KeyboardDeviceInterface:
     vtbls:
       - ea: 0x14216D118
@@ -2859,6 +2862,8 @@ classes:
       0x14066E700: GetDuplicatedNode
       0x14066AD80: UpdateDrawNodeList
       0x14066AFF0: TraverseNode
+      0x14066B060: CountDrawNodeCallback
+      0x14066B070: AddDrawNodeCallback
       0x14066D180: Finalizer
       0x140668920: SetupTimelineFromULDResourceHandle # CreateTimeline
       0x1406687B0: SetupComponentTimelineFromULDResourceHandle
@@ -5618,8 +5623,15 @@ classes:
     vfuncs:
       0: dtor
     funcs:
+      0x1404738C0: ctor
+      0x1404738F0: Finalizer
       0x140473960: OpenFile
-      0x1404738F0: Close
+      0x140473AF0: Read
+      0x140473BA0: ReadAt
+      0x140473C50: Write
+      0x140473CF0: SetFilePointer
+      0x140473D40: GetFileSize
+      0x140473D80: Close
   Client::System::File::FileHandle:
     funcs:
       0x1404760F0: Reset
@@ -5669,6 +5681,14 @@ classes:
       0x1400D5310: Copy
       0x140095F10: SetPathUtf8String
       0x1400956E0: dtor
+  Client::System::File::SqPackManager:
+    funcs:
+      0x141882A90: ResolveSqPackPath
+      0x141882EC0: ctor
+      0x1418831F0: LoadSqPack
+      0x141883600: LoadDataFiles # inlined in LoadSqPack
+      0x141883760: TryGetOffsetFromIndex
+      0x1418839C0: TryGetOffsetFromIndex2
   Client::System::Resource::Handle::ResourceHandle:
     vtbls:
       - ea: 0x1421446A0
@@ -6509,6 +6529,7 @@ classes:
       11: OnLevelChange
       12: OnClassJobChange
     funcs:
+      0x1401E68C0: HideIfActive # static?!
       0x140482790: ctor
       0x1404827C0: Finalizer
       0x1404828E0: SetOpenerEventInterface
@@ -9078,6 +9099,7 @@ classes:
       0x1406710D0: GetScaledWidth
       0x140671110: GetScaledHeight
       0x140671150: CalculateBounds
+      0x140671290: GetCollisionNodeAtCoords
       0x140671A80: SetFlag
       0x140671B70: SetAddonParamUnknown1
       0x140671DE0: GetUnitBaseAttachmentPositionInfo
@@ -9109,6 +9131,8 @@ classes:
       0x1406752C0: FireCallback
       0x1406760D0: MoveDelta
       0x140678290: UpdateCollisionNodeList
+      0x1406793B0: PopulateCollisionNodeList
+      0x140679510: CountCollisionNodes
       0x140678ED0: SetOperationGuide
       0x140678CF0: SetOperationGuideEx
       0x140678F20: ClearOperationGuide
@@ -9131,6 +9155,7 @@ classes:
       14: GetAtkResNode
       15: GetFocusNode
       17: InitializeFromComponentData
+      18: GetCollisionNodeAtCoords
     funcs:
       0x14068C7A0: ctor
       0x14068CA20: GetOwnerNodePosition
@@ -9636,6 +9661,7 @@ classes:
       17: GetTransform
       18: SetTransform
       21: HavePrimary
+      22: IsPrimaryLoaded
       23: GetGraphics
       24: GetGraphics2
       25: SetGraphics
@@ -9663,6 +9689,8 @@ classes:
       70: GetTransformImpl
       71: SetTransformImpl
       72: GetBoundingSphereImpl
+    funcs:
+      0x1406FA0E0: IsPrimaryReady
   Client::LayoutEngine::LayoutWorld:
     instances:
       - ea: 0x142A8BB60
@@ -9870,6 +9898,10 @@ classes:
       0x1407077C0: InitAnimationHandlers
       0x1407071A0: InitTimelines
       0x1406FE9F0: ReapplyStain
+      0x1407065C0: IsTimelineIndexValid
+      0x140706420: PlayTimeline
+      0x140706520: StopTimeline
+      0x1407065F0: IsTimelinePlaying
       0x1407985B0: GetObjectStainColorByIndex # static
   Client::LayoutEngine::Layer::TreasureLayoutInstance:
     vtbls:
@@ -10106,6 +10138,7 @@ classes:
       # 0x1406416C0: ctor # inlined @ 0x14075CDAD
       0x14077E2D0: HandleInputUpdate
       0x14077EA80: DisablePadMouseMode
+      0x14077EE70: SetCutsceneSkipCallback
       0x14077F1B0: CanEnterIdleCam
       0x14077F210: CanEnterGPose
       0x14077FB40: CheckCastCancel
@@ -10198,6 +10231,8 @@ classes:
       84: GetLogFilterConfig
       86: EnableCutsceneInputMode
       87: DisableCutsceneInputMode
+      88: SetCutsceneSkipCallback
+      89: IsCutsceneSkipCallbackSet
       92: EnterGPose
       93: ExitGPose
       94: IsInGPose
@@ -11606,16 +11641,19 @@ classes:
       15: SetTargetStatus
       16: SetDistance
       17: SetDrawObject
+      20: PlayTimeline
+      21: StopTimeline
+      22: IsTimelinePlaying
       23: GetDrawObject
       24: GetCharacterBase
       25: UpdateRadius
       26: Highlight
-      #30: TryGetEventHandler
       30: GetEventHandlersImpl
       34: SetReadyToDraw
       36: Update
       47: GetCenterPosition
       48: GetNameId
+      49: UpdateSharedTimelineState
       54: GetTargetType
       55: PositionModified
       56: RotationModified
@@ -11641,10 +11679,12 @@ classes:
       0x1408985D0: UpdateVisualRotation
       0x140898780: UpdateVisualScale
       0x140898AB0: GetEventHandlers
+      0x1408991E0: IsSharedGroupLoaded
       0x140899230: IsReadyToDraw
       0x140899B70: SetEventId
       0x140899BE0: SetFateId
       0x140899C00: SetEventState
+      0x140899C80: SetVisibility
       0x14089A340: GetAsCharacter
       0x14089A370: GetAsBattleCharaMaybe # might be some other cast, or even Character too?
       0x14089A540: DistanceBetweenHitboxesXZ # static
@@ -12897,6 +12937,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140F5F4C0: ctor
+      0x140F5FAB0: OpenSkipDialog
   Client::UI::Agent::AgentCutsceneReplay:
     vtbls:
       - ea: 0x1421EE3C8
@@ -16034,6 +16075,8 @@ classes:
       232: GetOccupiedConditionId
       233: GetOccupiedPermissionId
       251: GetScriptVersion
+      253: UpdateSharedTimelineState
+      254: UpdateTimelinesByBitmask
       258: GetDescription
       259: GetReliefText
       260: GetTimeRemaining # pass current unix timestamp as a2
@@ -17990,6 +18033,7 @@ classes:
     funcs:
       0x140B6D8A0: ctor
       0x140B6F470: ApplyMapEffect
+      0x140B6F2E0: PlayMapEffectTimeline
       0x140B703F0: IsPlayCutscene
   Client::Game::InstanceContent::InstanceContentDirector:
     vtbls:
@@ -26219,7 +26263,10 @@ classes:
       - ea: 0x1422C4DB0
         base: Client::Game::Object::GameObject
     funcs:
+      0x140898A40: GetEventHandlers
+      0x14174DCC0: SetSharedTimelineState
       0x14174DE10: PlayAnimation
+      0x14174DF40: UpdateTimelinesByBitmask
   Client::Game::Object::Treasure:
     vtbls:
       - ea: 0x1422C5020
@@ -26386,6 +26433,7 @@ classes:
       30: GetInputDeltaHMultiplier
       31: GetInputDeltaVMultiplier
     funcs:
+      0x1418973E0: GetCameraInputSource # static
       0x14189DEF0: UpdateRotation
       0x1418A0F50: ctor
       0x1407915B0: WorldToViewportPoint
