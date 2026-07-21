@@ -2323,14 +2323,33 @@ classes:
       0x140E0E9B0: GetWeatherForDaytime
   Client::Game::FashionCheckManager: # Fashion Report
     instances:
-      - ea: 0x142AB4B88
+      - ea: 0x142AB4BA8
         pointer: true
     funcs:
       0x140B17C20: Initialize
       0x140B17CF0: Finalizer
       0x140B17D20: HasInstance
       0x140B17D40: GetInstance
-#oldfail       0x140A36C30: ctor  # inlined to Initialize (pre-7.0)
+      0x140B17D50: IsFashionReportUnlocked
+      0x140B17D80: GetRemainingFashionCheckTime
+      0x140B17DB0: RequestInfo
+      0x140B17DF0: SetPlayerInfo
+      0x140B17E00: SetThemeData
+      0x140B17E20: SetEquipEvaluations
+      0x140B17E30: SetHighScoreData
+      0x140B17FC0: GetHighScore
+      0x140B17FD0: GetRemaining
+      0x140B17FF0: GetEquipEvaluations
+      0x140B18000: GetHighScoreData
+      0x140B18010: SendAddEntryReward
+      0x140B18060: SendAddBonusReward
+      0x140B180B0: SendAddEntryAndBonusReward
+      0x140B18100: ResetCommandSent
+      0x140B18110: GetIsCommandSent
+      0x140B18120: GetRandomInteger
+      0x140B18130: GetIsCustomTalkActive
+      0x140B18140: SetCustomTalkActive
+      0x140B18150: UnsetCustomTalkActive
   Client::Game::CustomTodoManager: # Studium Deliveries
     vtbls:
       - ea: 0x142315A50
@@ -2423,7 +2442,7 @@ classes:
       0x1419696A0: dtor
   Client::Game::DawnManager:
     instances:
-      - ea: 0x142AB4B90
+      - ea: 0x142AB4B88
         pointer: true
     funcs:
       0x140AFE1A0: Initialize
@@ -17842,7 +17861,7 @@ classes:
       0x140E52CD0: ctor
   Client::Game::EurekaStoryProgressManager:
     instances:
-      - ea: 0x142AB4BA8
+      - ea: 0x142AB4B90
         pointer: true
     funcs:
       0x140B1B0E0: Initialize
