@@ -172,7 +172,7 @@ public unsafe partial struct ILayoutInstance {
 }
 
 [StructLayout(LayoutKind.Explicit, Size = 0x30)]
-public unsafe partial struct Transform {
+public partial struct Transform {
     [FieldOffset(0x00)] public Vector3 Translation;
     [FieldOffset(0x0C)] public int Type; // This is a padding field that in some contexts is used to store collider type
     [FieldOffset(0x10)] public Quaternion Rotation;
@@ -187,7 +187,7 @@ public unsafe partial struct Transform {
 }
 
 [StructLayout(LayoutKind.Explicit, Size = 0x68)]
-public unsafe partial struct AnalyticShapeData {
+public partial struct AnalyticShapeData {
     [FieldOffset(0x00)] public int NumRefs;
     [FieldOffset(0x04)] public uint Crc;
     //[FieldOffset(0x08)] public uint u8;
@@ -299,7 +299,7 @@ public enum InstanceType : byte {
     CullingBox = 90,
     Unk91 = 91,
     Unk92 = 92,
-    Unk93 = 93,
+    VolumetricCloud = 93,
 
     [Obsolete("Renamed to CullingBox")]
     Culling = 90,
