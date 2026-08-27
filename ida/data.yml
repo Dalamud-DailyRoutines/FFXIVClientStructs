@@ -115,6 +115,11 @@ globals:
   0x142A961A8: g_MacroTime
   0x142ACADC0: g_LogoutCountdownAddonId
   0x142ACADC6: g_LogoutShouldCloseGame
+  0x142AEAE10: g_nvapi_Library
+  0x142AEAE28: g_nvapi_pepQueryInterface
+  0x142AEAE20: g_nvapi_QueryInterface
+  0x142AEAE30: g_NvAPI_Diag_ReportCallStart
+  0x142AEAE38: g_NvAPI_Diag_ReportCallReturn
   0x142F566C0: ?hkaSkeletonMapperClass@@3VhkClass@@B
   0x142F56930: ?hkaAnimationContainerClass@@3VhkClass@@B
   0x142F571A0: ?hkReferencedObjectClass@@3VhkClass@@B
@@ -127,6 +132,7 @@ globals:
   0x142F7E520: ?s_instance@?$hkSingleton@VhkVtableClassRegistry@@@@2PEAVhkVtableClassRegistry@@EA
 
 functions:
+  0x140001370: GetOrInitNvAPI
   0x14005B120: VectorConstructorIterator
   0x14005B170: VectorDestructorIterator
   0x14005DC90: WinMain
@@ -320,7 +326,6 @@ functions:
   0x141C17880: lua_gethookmask
   0x141C17A70: lua_sethook
   0x141C17AA0: lua_setlocal
-  0x141CF2790: SupportDeskHttpCallback
   0x141C59F10: SupportDeskCreateConnection
   0x1418F20E0: luaL_openlibs
   0x1418F22D0: luaL_addlstring
@@ -1013,11 +1018,14 @@ classes:
         base: Client::SupportDesk::HttpConnection
     funcs:
       0x141CB27A0: Initialize
+      0x141CF2790: StatusCallback # static
   Client::SupportDesk::HttpRequest:
     vtbls:
       - ea: 0x142493A60
     vfuncs:
       0: dtor
+      1: Update
+      2: CloseHandle
   Client::SupportDesk::HttpRequestImpl:
     vtbls:
       - ea: 0x1424938C8
@@ -1237,9 +1245,13 @@ classes:
     funcs:
       0x1407A8920: ProcessNoun
   Component::Text::Localize::Noun:
+    vtbls:
+      - ea: 0x142186128
     vfuncs:
       0: dtor
       1: Resolve
+    funcs:
+      0x1407A7730: GetColumnOffset
   Component::Text::Localize::NounEn:
     vtbls:
       - ea: 0x1421879D0
@@ -3873,6 +3885,7 @@ classes:
       0x1408F2930: GetGroundPositionForCursor
       0x1408F2B70: GetCurrentCharges          # (this, actionId) -> uint
       0x1408F2CA0: GetMaxCharges2             # not static - calls static
+      0x1408F2DB0: GetHotbarCooldownInfo
       0x1408F2FF0: ResolveTarget
       0x1408F3230: StartAnimationLock
       0x1408F3250: IsActionUnlocked
@@ -9500,7 +9513,7 @@ classes:
       64: GetColorThemeTypeForUIScene
       66: OpenMapWithMapLink
       67: OnCursorTypeChange
-      75: SetScreenSizeScale
+      76: SetScreenSizeScale
     funcs:
       0x1406A9BA0: GetAddonIdByName
       0x1406ABB20: ctor
@@ -11391,7 +11404,8 @@ classes:
       0x1407D2DF0: ClearPetCrossHotbarSlot  # (this, slotId) -> nint
       0x1407D2E10: ExecutePetHotbarSlot       # (this, slotId) -> bool (?)
       0x1407D2E30: ExecutePetCrossHotbarSlot  # (this, slotId) -> bool (?)
-      0x1407D3480: PopulateIntermediateFromSlot  # (this, HotbarSlot*, HotbarUiIntermediate*)
+      0x1407D3480: PopulateIntermediateFromSlot  # (this, HotbarSlot*, HotbarUIIntermediate*)
+      0x1407D3280: PrepareSlotForRender  # (this, HotbarSlot*, HotbarUIIntermediate*)
       0x1407D7160: SetHotbarLocked
       0x1407D71A0: IsHotbarLocked
       0x1407D71E0: SetCrossHotbarLocked
@@ -11465,14 +11479,14 @@ classes:
       0x1407CFCA0: IsSlotActionTargetInRange2 # (this, HotbarSlotType, uint) -> bool
       0x1407CFC10: IsActionHighlighted               # (this, commandType, commandId) -> bool
       0x1407CFFC0: GetIntermediateActionType # (this) -> IntermediateActionType - ultimately passed to the NumberArray
-      0x1407D0680: PopulateIntermediateCooldownInfo # (this, HotbarUiIntermediate*)
+      0x1407D0680: PopulateIntermediateCooldownInfo # (this, HotbarUIIntermediate*)
       0x1407D0520: GetAdjustedCommandId  # ???
       0x1407D15B0: LoadMacroSlot
       0x1407D0820: GetSlotActionCooldownPercentage  # (this, out int, int) -> int
   Client::UI::Misc::RaptureHotbarModule::DutyActionSlot:
     funcs:
       0x1407D7D10: Initialize
-  Client::UI::Misc::RaptureHotbarModule::HotbarUiIntermediate:
+  Client::UI::Misc::RaptureHotbarModule::HotbarUIIntermediate:
     funcs:
       0x1407CE530: ctor
   Client::UI::Misc::HudLayoutAddon: # just a bunch of static functions
@@ -11782,6 +11796,8 @@ classes:
       - ea: 0x142410618
     funcs:
       0x141A42DD0: ctor
+    vfuncs:
+      0: dtor
   Client::UI::Misc::CharaViewPortrait:
     vtbls:
       - ea: 0x142198BA8
@@ -13754,6 +13770,13 @@ classes:
         base: Client::UI::Agent::AgentInventoryContext::InventoryContextEvent
     funcs:
       0x140CF2EC0: ctor
+      0x140CF3780: Open
+      0x140CF3A30: RefreshAddon
+      0x140CF4270: Confirm
+      0x140CF4530: AddItem
+      0x140CF4750: AddItemQuantity
+      0x140CF48D0: RemoveSlot
+      0x140CF4AC0: GetSlotsRemaining
   Client::UI::Agent::AgentRelicSphereUpgrade:
     vtbls:
       - ea: 0x1421BCDE8
@@ -15175,6 +15198,30 @@ classes:
         base: Client::UI::Agent::AgentInterface
       - ea: 0x14219AAA0
         base: Common::Component::Excel::ExcelSheetWaiter
+  Client::UI::Agent::AgentCuttingGrass:
+    vtbls:
+      - ea: 0x14219AB30
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x140A69E50: ctor
+  Client::UI::Agent::AgentKTGHud:
+    vtbls:
+      - ea: 0x1421F6F80
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410ED780: ctor
+  Client::UI::Agent::AgentKTGEnterDialogue:
+    vtbls:
+      - ea: 0x1421F70D8
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410F7620: ctor
+  Client::UI::Agent::AgentKTGResult:
+    vtbls:
+      - ea: 0x1421F6F00
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1410EBDF0: ctor
   Client::UI::Agent::AgentSpearFishing:
     vtbls:
       - ea: 0x1421BDD70
@@ -15239,10 +15286,18 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x1409E5780: ctor
+  Client::UI::Agent::AgentBannerGearsetLink:
+    vtbls:
+      - ea: 0x142199320
+        base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1409E51B0: ctor
   Client::UI::Agent::AgentBannerPreview:
     vtbls:
       - ea: 0x142199448
         base: Client::UI::Agent::AgentInterface
+    funcs:
+      0x1409E65C0: ctor
   Client::UI::Agent::AgentPvPMap:
     vtbls:
       - ea: 0x1421C1730
@@ -15716,10 +15771,10 @@ classes:
       0x140A03EB0: GetHoursSinceCycleStart
   Client::UI::Agent::AgentMJINekomimiRequest:
     vtbls:
-      - ea: 0x142199958
+      - ea: 0x142199B68
         base: Client::UI::Agent::AgentInterface
     funcs:
-      0x1409F79E0: ctor
+      0x140A07FB0: ctor
       0x140A08180: OpenUI
       0x140A08200: OpenUIFromCraftSchedule
       0x140A08280: ForceRequestFavorData
@@ -18078,14 +18133,16 @@ classes:
     vtbls:
       - ea: 0x142389238
         base: Client::Game::InstanceContent::ContentNpcEventHandler
+  Client::Game::Event::RetainerBuybackEventHandler::UIListener:
+    vtbls:
+      - ea: 0x1422CA3A8
+        base: Component::GUI::AtkModuleInterface::AtkEventInterface
   Client::Game::Event::RetainerBuybackEventHandler: # 0x31
     vtbls:
       - ea: 0x1422CA3C0
         base: Client::Game::Event::EventHandler
       - ea: 0x1422CAC58
         base: Client::UI::Agent::AgentContext::AgentContextUpdateChecker
-      - ea: 0x1422CA3A8
-        base: Component::GUI::AtkModuleInterface::AtkEventInterface
   Client::Game::Event::TopicSelectEventHandler: # 0x32
     vtbls:
       - ea: 0x142395F80
@@ -18266,7 +18323,7 @@ classes:
       0x140B82580: GetTripleTriadDirector
       0x140B82660: GetSkyIslandDirector
       0x140B825B0: GetInstanceContentDirectorType22 # related to XBM
-      0x140B825E0: GetInstanceContentDirectorType23
+      0x140B825E0: GetKeyboundBrawlerDirector
       0x140B82610: GetPvPInstanceContentDirector # either of: CrystallineConflict, Frontlines or RivalWing
       0x140B82690: GetPublicContentDirector
       0x140B826C0: GetPublicContentEureka
@@ -26675,6 +26732,7 @@ classes:
         base: Client::Game::Object::GameObject
     funcs:
       0x141C3DBB0: ctor
+      0x141C3DC60: SetBaseAndGimmickId
   #  Client::Game::Object::BKJObject:
   #    vtbls:
   #      - ea: 0x142442F18
