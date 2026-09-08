@@ -394,7 +394,7 @@ public unsafe partial struct RaptureHotbarModule {
     /// </summary>
     /// <param name="index">The index of the DutyAction slot to edit.</param>
     /// <param name="actionId">The ID of the action to set in this slot.</param>
-    [MemberFunction("E8 ?? ?? ?? ?? FF C3 83 FB 05 72 C2")]
+    [MemberFunction("E8 ?? ?? ?? ?? FF C3 83 FB 02 7C ?? 49 8B 8E")]
     public partial void SetDutyActionSlot(uint index, uint actionId);
 
     /// <summary>
@@ -404,6 +404,21 @@ public unsafe partial struct RaptureHotbarModule {
     /// <returns>Returns true always (?)</returns>
     [MemberFunction("48 83 EC 28 85 D2 78 25 83 FA 02")]
     public partial bool ExecuteDutyActionSlot(uint index);
+
+    /// <summary>
+    /// Sets the specified PhantomAction slot to hold the target action ID. Only takes effect if index is 0 to 4.
+    /// </summary>
+    /// <param name="index">The index of the PhantomAction slot to edit.</param>
+    /// <param name="actionId">The ID of the action to set in this slot.</param>
+    [MemberFunction("E8 ?? ?? ?? ?? FF C3 83 FB 05 72 C2")]
+    public partial void SetPhantomActionSlot(uint index, uint actionId);
+
+    /// <summary>
+    /// Sets the value of <see cref="PhantomActionsPresent"/>.
+    /// </summary>
+    /// <param name="present">Whether to show/enable phantom actions or not.</param>
+    [MemberFunction("E9 ?? ?? ?? ?? FF D2 0F B6 D3 48 8B C8 E8 ?? ?? ?? ??", 14)]
+    public partial void SetPhantomActionsPresent(bool present);
 }
 
 [Flags]
