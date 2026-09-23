@@ -1090,7 +1090,18 @@ classes:
       3: Deinitialize
       4: GetNumberOfDevices
       5: GetData
+      6: SetActiveDevice
+      7: GetActiveDeviceIndex
+      8: ApplyForceFeedback
+      9: ApplySettings
+      10: LoadInputMapping
+      11: ResetInputMapping
+      12: ClearPadData
       13: SetVibration
+      14: SetPovInputDisabled
+      15: GetPovInputDisabled
+      25: IsDualSense
+      26: IsDualShock4
   Client::System::Input::PadDevice:
     vtbls:
       - ea: 0x142126A98
@@ -1101,6 +1112,18 @@ classes:
         base: Client::System::Input::RepeatCounter
     funcs:
       0x1400C3240: ctor
+      0x1400C9D50: ReadPadSettings
+      0x14047EAD0: ToggleForceFeedback
+      0x1400C7BF0: ResetAllInputMappings
+      0x1400C7C80: ResetInputMappingForDevice
+      0x1400C7E90: ApplyAllInputMappings
+      0x1400C7F20: ApplyInputMappingForDevice
+      0x14047F850: GetPlayStationController
+  Client::System::Input::PadDevice::GamepadDevice:
+    funcs:
+      0x14047F8E0: IsPlayStationController
+      0x1400C9270: IsDualShock4
+      0x1400C9220: IsDualSense
   Client::System::Input::MouseDeviceInterface:
     vtbls:
       - ea: 0x1422D6C98
@@ -3294,6 +3317,8 @@ classes:
       0x140BE6710: UpdateTrackedStatus
       0x140BE6760: InvalidateTrackedUnlocks
       0x140BE82E0: IsTraitUnlocked # (this, traitId, outOptTraitRow, allowPVP, level)
+      0x140BE47E0: GetCurrentClassJobContentMaxLevel
+      0x140BE48A0: GetCurrentClassJobMaxLevel
   Client::Game::UI::Revive:
     instances:
       - ea: 0x142ACD280
@@ -4068,6 +4093,10 @@ classes:
     vtbls:
       - ea: 0x142197E68
         base: Client::Game::Gauge::JobGauge
+  Client::Game::Gauge::BeastmasterGauge:
+    vtbls:
+      - ea: 0x142197ED8
+        base: Client::Game::Gauge::JobGauge
   Common::Configuration::ConfigEntry:
     funcs:
       0x140097150: SetEmpty
@@ -4092,6 +4121,8 @@ classes:
       0x140099230: SetConfigOption
       0x140099770: RegisterChangeEvent
       0x1400997E0: UnregisterChangeEvent
+      0x14009AB80: ParseGUID
+      0x14009AD30: FormatGUID
   Common::Configuration::UIConfig:
     vtbls:
       - ea: 0x142125CC0
@@ -5759,6 +5790,9 @@ classes:
       1: Cleanup # this is called by DecRef when there are no refs left, before the dtor is called
       2: IncRef
       3: DecRef
+  Client::Graphics::Environment::EnvColorFilterParameters:
+    funcs:
+      0x1400669A0: BuildMatrix
   Client::Graphics::Environment::EnvSoundState:
     vtbls:
       - ea: 0x14211CC78
@@ -7200,6 +7234,7 @@ classes:
         base: Client::Graphics::Singleton
     funcs:
         0x14025DC80: ctor
+        0x14025E580: Update
         0x1400CE830: SetShadowVisibilityType
   Client::Graphics::Render::Camera:
     vtbls:
@@ -7441,6 +7476,8 @@ classes:
       0x1402B7B90: Terminate
       0x1402B8EC0: CreateCamera
       0x1402B93C0: CreateModel
+      0x1402BA1F0: Render
+      0x1402BABD0: RenderView
   Client::Graphics::Render::ShadowManager:
     instances:
       - ea: 0x1428F6480
@@ -7484,6 +7521,13 @@ classes:
       0x1402D4EE0: ctor
       0x1402D52E0: Initialize
       0x14026AA10: GetCharaViewTexture
+  Client::Graphics::PostEffect::PostEffectPart:
+    vtbls:
+      - ea: 0x14215AE90
+    vfuncs:
+      3: Resolve
+      4: IsValid
+      5: Draw
   Client::Graphics::PostEffect::PostEffectChain:
     vtbls:
       - ea: 0x14215AEC0
@@ -7507,6 +7551,28 @@ classes:
         base: Client::Graphics::Kernel::Notifier
     funcs:
       0x1403521D0: ctor
+      0x14035C240: SetEffectEnabled
+      0x14035C330: Prepare
+      0x14035E430: Submit
+  Client::Graphics::PostEffect::PostEffectColorFilterDarkBlend:
+    vtbls:
+      - ea: 0x14215B160
+        base: Client::Graphics::PostEffect::PostEffectPart
+    funcs:
+      0x14036D0E0: UpdateLut
+  Client::Graphics::PostEffect::PostEffectResources:
+    instances:
+      - ea: 0x142A8F048
+        pointer: true
+  Client::Graphics::PostEffect::PostEffectDepthOfFieldCocLut:
+    vtbls:
+      - ea: 0x14215B0D0
+        base: Client::Graphics::PostEffect::PostEffectPart
+    vfuncs:
+      3: Resolve
+      5: Draw
+    funcs:
+      0x14036B460: UpdateParameters
   Client::Graphics::JobSystem<Apricot::Engine::Core>:
     instances:
       - ea: 0x142A8FD80
