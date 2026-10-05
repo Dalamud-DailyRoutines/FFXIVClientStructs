@@ -2369,6 +2369,10 @@ classes:
       0x140E366A0: GetPlotIcon # (this, plotIndex)  # inlined @ 140D1ECF0
       0x140E33FA0: IsEstateShared # (this, plotIndex)
       0x140E33E80: IsEstateResident # (this, plotIndex)
+  Client::Game::IndoorTerritory::OutdoorTerritoryUIEventListener:
+    vtbls:
+      - ea: 0x1421CEC88
+        base: Component::GUI::AtkModuleInterface::AtkEventInterface # technically Client::Game::HousingUIEventListener<Client::Game::OutdoorTerritory>
   Client::Game::IndoorTerritory::IndoorTerritoryUIEventListener:
     vtbls:
       - ea: 0x1421CECA0
@@ -5408,6 +5412,7 @@ classes:
     vtbls:
       - ea: 0x1421344A0
         base: Client::UI::RaptureAtkModule::ItemCache
+        size: 4 # script detects this as 1 due to xref to vfunc 1
   Client::UI::RaptureAtkModule::CrystalCache:
     vtbls:
       - ea: 0x1421344C0
@@ -5415,6 +5420,7 @@ classes:
   Component::GUI::AtkModuleInterface::AtkHistoryInterface:
     vtbls:
       - ea: 0x1421340B0
+        size: 6 # script detects this as 8 due to following vtbl with no xref
     vfuncs:
       0: dtor
       1: Previous
@@ -7162,6 +7168,17 @@ classes:
     vtbls:
       - ea: 0x142142670
         base: Client::Graphics::Kernel::Resource
+  Client::Graphics::Kernel::VertexBuffer:
+    vtbls:
+      - ea: 0x142142A48
+        base: Client::Graphics::Kernel::Buffer
+  Client::Graphics::Kernel::IndexBuffer:
+    vtbls:
+      - ea: 0x142142B08
+        base: Client::Graphics::Kernel::Buffer
+    funcs:
+      0x14021DF90: Unmap
+      0x14021EAB0: Map
   Client::Graphics::Kernel::ConstantBuffer:
     vtbls:
       - ea: 0x142142BB0
@@ -7194,7 +7211,10 @@ classes:
       0x140222F30: ctor
       0x140222FE0: Initialize
       0x140224730: CreateTexture2D
+      0x140225F20: CreateVertexBuffer
+      0x140226170: CreateIndexBuffer
       0x1402262B0: CreateConstantBuffer
+      0x1402263A0: CreateVertexDeclaration
 #oldfail       0x1403570D0: PreTick
       0x140226870: PostTick
   Client::Graphics::Kernel::Context:
@@ -7257,6 +7277,7 @@ classes:
     funcs:
       0x1402369A0: ctor
       0x140236A20: Initialize
+      0x140236BE0: GetHandleByName
   Client::Graphics::Render::Skeleton:
     vtbls:
       - ea: 0x14214C100
@@ -8874,9 +8895,12 @@ classes:
       0: dtor
     funcs:
       0x140639990: ctor
+      0x140639CF0: Initialize
+      0x14063A550: Terminate
+      0x14063ACE0: Begin
       0x14063B000: Draw
-      0x1406E5480: ProcessUICommands
-      0x1406E6020: ProcessUICommandsAlt
+      0x1406E5480: ProcessUICommands16  # index size of buffer
+      0x1406E6020: ProcessUICommands32
   Component::GUI::AtkEventTarget:
     vtbls:
       - ea: 0x14217C128
@@ -13072,6 +13096,8 @@ classes:
   Client::UI::Agent::HudStatus:
     funcs:
       0x1410A0670: Update
+      0x1410A2000: UpdateCharacter
+      0x1410A22A0: UpdateCharacterRecorded
   Client::UI::Agent::AgentChatLog::LinkedInventoryItem:
     vtbls:
       - ea: 0x1421F6A10
@@ -17817,6 +17843,7 @@ classes:
     vtbls:
       - ea: 0x1421DE420
         base: Client::Game::Event::GatheringEventHandler
+        size: 291 # base class for an AtkModuleInterface::AtkEventInterface child for specific handler with no xrefs after this
     funcs:
       0x140E97DE0: ctor # not used due to being inlined
   Client::Game::Event::SpearFishingEventHandler:
@@ -17945,6 +17972,7 @@ classes:
     vtbls:
       - ea: 0x1421DD1F0
         base: Client::Game::Event::EventHandler
+        size: 291 # base class for an AtkModuleInterface::AtkEventInterface child for specific handler with no xrefs after this
     funcs:
       0x140E90680: ctor
       0x140E8E000: Setup
@@ -18260,6 +18288,7 @@ classes:
     vtbls:
       - ea: 0x142394E90
         base: Client::Game::Event::LuaEventHandler
+        size: 278 # base class for an AtkModuleInterface::AtkEventInterface child for specific handler with no xrefs after this
     funcs:
       0x1419F4910: GetChocoboTaxiStandId
       0x1419F49B0: GetFare
@@ -18530,6 +18559,7 @@ classes:
     vtbls:
       - ea: 0x142419130
         base: Client::Game::Event::CustomTalkResidentEventHandler
+        size: 286 # base class for an AtkModuleInterface::AtkEventInterface child for specific handler with no xrefs after this
   Client::Game::Event::JournalCallback:
     vtbls:
       - ea: 0x1421CC3C8
@@ -27015,6 +27045,42 @@ classes:
     vtbls:
       - ea: 0x1422A0488
         base: Client::UI::AddonJobHudWHM0::HealingGauge
+  Client::UI::AddonJobHudXBM0:
+    vtbls:
+      - ea: 0x1422A2F08
+        base: Client::UI::AddonJobHud
+    funcs:
+      0x1415DAA40: ctor
+  Client::UI::AddonJobHudXBM0::TPGaugeData:
+    vtbls:
+      - ea: 0x1422A2E78
+        base: Client::UI::AddonJobHud::AddonJobHudGaugeData
+  Client::UI::AddonJobHudXBM0::TPGauge:
+    vtbls:
+      - ea: 0x1422A2E88
+        base: Client::UI::AddonJobHud::AddonJobHudGauge
+  Client::UI::AddonJobHudXBM0::TPGaugeSimple:
+    vtbls:
+      - ea: 0x1422A2EC8
+        base: Client::UI::AddonJobHud::AddonJobHudGauge
+  Client::UI::AddonJobHudXBM1:
+    vtbls:
+      - ea: 0x1422A3378
+        base: Client::UI::AddonJobHud
+    funcs:
+      0x1415DD910: ctor
+  Client::UI::AddonJobHudXBM1::AffinityData:
+    vtbls:
+      - ea: 0x1422A3198
+        base: Client::UI::AddonJobHud::AddonJobHudGaugeData
+  Client::UI::AddonJobHudXBM1::AffinityGauge:
+    vtbls:
+      - ea: 0x1422A3250
+        base: Client::UI::AddonJobHud::AddonJobHudGauge
+  Client::UI::AddonJobHudXBM1::AffinityGaugeSimple:
+    vtbls:
+      - ea: 0x1422A3338
+        base: Client::UI::AddonJobHud::AddonJobHudGauge
   Client::Game::Fate::FateDirector:
     vtbls:
       - ea: 0x1422D4728
