@@ -19,6 +19,7 @@ public unsafe partial struct Device {
     [FieldOffset(0x38)] private CallbackManager* Unk38;
     [FieldOffset(0x40)] public CallbackManager* OnResizeDestroy;
     [FieldOffset(0x48)] public CallbackManager* OnResizeCreate;
+    [FieldOffset(0x6C)] public uint ContextCount; // entries of ContextArray, 0x2F78 bytes each
     [FieldOffset(0x70)] public SwapChain* SwapChain;
     [FieldOffset(0x7A)] public byte RequestResolutionChange;
     [FieldOffset(0x7C)] public byte LastResolutionChangeRequest;
@@ -78,6 +79,10 @@ public unsafe partial struct Device {
 
     [MemberFunction("E8 ?? ?? ?? ?? 48 89 07 48 8D 7F 20")]
     public partial Texture* CreateTexture2D(int* size, byte mipLevel, TextureFormat textureFormat, TextureFlags flags, uint unk);
+
+    /// <summary> Collects command list <paramref name="list"/> of every context into <paramref name="cursor"/>, each sorted by key. </summary>
+    [MemberFunction("4C 89 4C 24 20 4C 89 44 24 18 89 54 24 10 48 89 4C 24 08 48 83 EC 48 48 8B 44 24 50")]
+    public partial void GatherCommands(uint list, byte** cursor, uint* remainingBytes, byte** contextResults, uint* contextCounts, uint* totalCount);
 
     // /// <summary>
     // /// A collection of the render command buffer array.
@@ -140,14 +145,14 @@ public enum RenderCommandType : int {
     CopySubresourceRegion = 11, // DX11 call
     CopyTexture = 12, // uses the Copy shaders, see ImmediateContext
     CopyResource = 13, // DX11 call
-    // ??? = 14,
-    // ??? = 15,
+    Callback = 14, // runs a function on the render thread
+    Query = 15, // begins or ends a Kernel::Query
     None2 = 16, // ditto None above
     SaveTextureToFile = 17,
     SetSaveTextureFilePath = 18, // for screenshots
-    // Begin??? = 19, debug
-    // End??? = 20, debug
-    // SetRenderTarget2 = 21,
+    ExecuteSubCommandList = 19,
+    SaveRenderTargets = 20,
+    RestoreRenderTargets = 21,
 }
 
 [GenerateInterop(isInherited: true)]
@@ -248,6 +253,32 @@ public unsafe partial struct RenderCommandClear {
 [StructLayout(LayoutKind.Explicit, Size = 0x10)]
 public unsafe partial struct RenderCommandSetSaveTextureFilePath {
     [FieldOffset(0x8)] public byte* FilePath;
+}
+
+[GenerateInterop]
+[Inherits<RenderCommand>]
+[StructLayout(LayoutKind.Explicit, Size = 0x20)]
+public unsafe partial struct RenderCommandCallback {
+    [FieldOffset(0x8)] public delegate* unmanaged<void*, void> Function;
+    [FieldOffset(0x10)] public void* Argument;
+    /// <remarks> Bit 0 resets the device state to its defaults before and after the call. </remarks>
+    [FieldOffset(0x18)] public uint Flags;
+}
+
+[GenerateInterop]
+[Inherits<RenderCommand>]
+[StructLayout(LayoutKind.Explicit, Size = 0x18)]
+public unsafe partial struct RenderCommandQuery {
+    [FieldOffset(0x8)] public void* Query; // Client::Graphics::Kernel::Query
+    [FieldOffset(0x10)] public uint Action; // 2 begins the query, anything else ends it
+}
+
+/// <summary> Runs one of the device's sub command lists in place, picked by <see cref="ListIndex"/>. </summary>
+[GenerateInterop]
+[Inherits<RenderCommand>]
+[StructLayout(LayoutKind.Explicit, Size = 0x8)]
+public partial struct RenderCommandExecuteSubCommandList {
+    [FieldOffset(0x4)] public uint ListIndex;
 }
 
 [Flags]
