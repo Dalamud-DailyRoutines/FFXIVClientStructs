@@ -4264,7 +4264,7 @@ classes:
       16: GetSpeed
       17: SetSpeed
       36: Stop
-      37: IsPlaying
+      38: IsPlaying
       40: GetIsFadingOut
       41: GetFadeInEnabled
       42: GetIsAutoReleaseEnabled
@@ -4323,7 +4323,7 @@ classes:
       0x140061050: AddTask
       0x1400610C0: ExecuteAllTasks
       0x140061110: ExecuteJobList
-      0x140061310: EeecuteJobList2
+      0x140061310: ExecuteJobList2
   Client::System::Framework::TaskManager::JobPool:
     funcs:
       0x1400600F0: ctor
@@ -6623,6 +6623,12 @@ classes:
   Client::Graphics::IAllocator:
     vtbls:
       - ea: 0x142127248
+    vfuncs:
+      0: dtor
+      1: Cleanup
+      2: Allocate
+      3: Reallocate
+      4: Free
   Client::Graphics::AllocatorLowLevel:
     vtbls:
       - ea: 0x1421566E8
@@ -6634,8 +6640,12 @@ classes:
     vtbls:
       - ea: 0x1421272C0
         base: Client::Graphics::Singleton
+    vfuncs:
+      0: dtor
+      1: Cleanup
     funcs:
       0x140337210: ctor
+      0x140337280: Initialize
   Client::Network::NetworkModuleProxy:
     vtbls:
       - ea: 0x14216EA00
@@ -8094,6 +8104,11 @@ classes:
     funcs:
       0x14044CCF0: ctor
       0x14044CD50: SetupFromData
+  Client::Graphics::Scene::Monster::DrawData:
+    funcs:
+      0x14044CC70: ctor
+      0x14044CC90: SetLoadMountAnimations
+      0x14044CCB0: SetLoadOrnamentAnimations
   Client::Graphics::Scene::BGManager:
     vtbls:
       - ea: 0x14216D4B8
@@ -9103,6 +9118,7 @@ classes:
   Component::GUI::AtkUIColorHolder:
     funcs:
       # 0x1405286A0: ctor # INLINED IN 7.0
+      0x14065C650: SetActiveColorThemeType
       0x14065C840: GetColor
   Component::GUI::AtkStage:
     instances:
@@ -9696,6 +9712,14 @@ classes:
       0x140691A70: ctor # no xrefs, inlined @ 0x14064B78B
       0x140691B70: Finalizer # no xrefs
       #0x140599CC0: RemoveAllEvents # 7.0: no longer exists. instead there is a new function to remove individual events - see 0x140671AFA
+      0x140693C60: InitializeCollisionNodeList
+      0x140693D00: GetOriginalPosition
+      0x140693D20: GetOriginalSize
+      0x140694AE0: SetStopNavigationAtEnd
+      0x140695590: PopulateCollisionNodeList
+      0x1406956B0: CountCollisionNodes
+      0x1406956C0: CountCollisionNodesRecursive
+      0x1406957E0: GetCollisionNode
       0x140696470: StartDragDrop
   Component::GUI::AtkComponentList:
     vtbls:
@@ -9741,6 +9765,7 @@ classes:
       0x14069A030: FireHoveredItemRollOver
       0x14069A0C0: FireHoveredItemRollOut
       0x14069A0E0: ToggleDroppingDisabled
+      0x14069A1F0: SetItemRendererDragDropEnabled
       0x14069A360: SetDragDropPayloadData
       0x14069A3D0: CancelDragDrop
       0x14069CC50: HandleFocusStop
@@ -15052,6 +15077,7 @@ classes:
         base: Client::UI::Agent::AgentInterface
     funcs:
       0x140F82A40: ctor
+      0x140F82E40: RefreshAddon
   Client::UI::Agent::AgentAozNoteBook:
     vtbls:
       - ea: 0x1421F6F38
@@ -21274,6 +21300,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1412647E0: ctor
+      0x141267630: ShowHoveredItemTooltip
       0x140C37850: SetJoinInProgress
       0x140C378A0: SetIsUnrestrictedParty
       0x140C378E0: SetIsMinimalIL
@@ -24165,6 +24192,7 @@ classes:
         base: Component::GUI::AtkUnitBase
     funcs:
       0x1412C8760: ctor
+      0x1412C94E0: RefreshItemList
   Client::UI::AddonMountainClimbingResult: # 677
     vtbls:
       - ea: 0x1422C8EE8
@@ -28441,6 +28469,10 @@ classes:
       0x141F26030: ??0hkaAnimationControl@@QEAA@PEBVhkaAnimationBinding@@@Z
       0x141F263A0: ?removeAnimationControlListener@hkaAnimationControl@@QEAAXPEAVhkaAnimationControlListener@@@Z
       0x141F26230: ?sampleTracks@hkaAnimationControl@@UEBAXPEAVhkQsTransformf@@PEAM@Z
+  hkaAnimationControlListener:
+    vfuncs:
+      0: ControlDeletedCallback
+      1: dtor
   hkaBlender:
     funcs:
       0x141F04F00: ?blend@hkaBlender@@YAXPEIAM0PEIBM111AEBVhkSimdFloat32@@HW4BLEND_MODE@1@@Z
@@ -28452,6 +28484,13 @@ classes:
       0x141F008A0: ??0hkaDefaultAnimationControl@@QEAA@AEBV0@@Z
       0x141F00F60: ?setSkeletonMapper@hkaDefaultAnimationControl@@QEAAXPEBVhkaSkeletonMapper@@@Z
       0x141F01020: ?getNumberOfTransformTracks@hkaDefaultAnimationControl@@UEBAHXZ
+  hkaDefaultAnimationControlListener:
+    vfuncs:
+      0: LoopOverflowCallback
+      1: LoopUnderflowCallback
+      2: EasedInCallback
+      3: EasedOutCallback
+      4: dtor
   hkaLookAtIkSolver:
     funcs:
       0x141F0D510: ?solve@hkaLookAtIkSolver@@SA?AVhkBool@@AEBUSetup@1@AEBVhkVector4f@@MAEAVhkQsTransformf@@PEBURangeLimits@1@@Z
