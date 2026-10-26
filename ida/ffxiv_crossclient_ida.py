@@ -47,6 +47,27 @@ class ImportDeclarations(ast.NodeTransformer):
                 node.right = ast.Constant(" ")
         return node
 
+    def visit_AugAssign(self, node):
+        if (
+            isinstance(node.target, ast.Name)
+            and node.target.id == "cur_size"
+            and isinstance(node.op, ast.Add)
+            and isinstance(node.value, ast.Name)
+            and node.value.id == "field_size"
+        ):
+            return ast.copy_location(
+                ast.Assign(
+                    targets=[node.target],
+                    value=ast.BinOp(
+                        left=ast.Name(id="offset", ctx=ast.Load()),
+                        op=ast.Add(),
+                        right=node.value,
+                    ),
+                ),
+                node,
+            )
+        return node
+
     def visit_Subscript(self, node):
         self.generic_visit(node)
         if (
@@ -162,6 +183,46 @@ def verify_target(manifest):
         raise ValueError("生成数据与当前 IDA 数据库的输入文件不匹配")
 
 
+def normalize_primary_bases(definitions, classes):
+    virtual = {
+        definition.type
+        for definition in definitions.structs
+        if definition.virtual_functions is not None
+        or any(
+            member.name == "_vtable" and member.offset == 0
+            for member in definition.fields
+        )
+        or (classes.get(definition.type) or {}).get("vtbls")
+    }
+    while True:
+        inherited = {
+            definition.type
+            for definition in definitions.structs
+            if definition.type not in virtual
+            and any(
+                member.base and member.offset == 0 and member.type in virtual
+                for member in definition.fields
+            )
+        }
+        if not inherited:
+            break
+        virtual.update(inherited)
+    for definition in definitions.structs:
+        if definition.union or definition.type not in virtual:
+            continue
+        if any(member.base and member.offset == 0 for member in definition.fields):
+            continue
+        candidates = [
+            member
+            for member in definition.fields
+            if member.offset == 0
+            and member.type in virtual
+            and not hasattr(member, "size")
+        ]
+        if len(candidates) == 1:
+            candidates[0].base = True
+
+
 def configure_native(api, manifest, image_base):
     import ida_bytes
     import ida_funcs
@@ -171,6 +232,7 @@ def configure_native(api, manifest, image_base):
     resolved = manifest["resolved_signatures"]
     delta = image_base - manifest["image_base"]
     read_yaml = api.get_yaml
+    preprocess = api.preprocess_yaml
 
     def get_yaml():
         definitions = read_yaml()
@@ -181,15 +243,33 @@ def configure_native(api, manifest, image_base):
         return definitions
 
     api.get_yaml = get_yaml
+
+    def preprocess_yaml(definitions):
+        if api.srclang_importer:
+            for definition in definitions.structs:
+                if definition.union or definition.virtual_functions is not None:
+                    continue
+                info = ida_typeinf.tinfo_t()
+                if not info.get_named_type(
+                    None, api.clean_struct_name(definition.type)
+                ):
+                    continue
+                members = ida_typeinf.udt_type_data_t()
+                if info.get_udt_details(members) and any(
+                    member.offset == 0 and member.is_vftable() for member in members
+                ):
+                    definition.virtual_functions = []
+        normalize_primary_bases(definitions, (api.data_yaml or {}).get("classes", {}))
+        preprocess(definitions)
+
+    api.preprocess_yaml = preprocess_yaml
     api.get_func_ea_by_sig = lambda signature: (
         resolved[signature]["address"] + delta
         if signature in resolved and resolved[signature]["function"]
         else ida_idaapi.BADADDR
     )
 
-    def apply_function(member, definition, target):
-        if target in (0, ida_idaapi.BADADDR):
-            return
+    def function_type(member):
         function = ida_typeinf.func_type_data_t()
         function.cc = ida_typeinf.CM_CC_FASTCALL
         function.rettype = api.get_tinfo_from_type(member.return_type)
@@ -199,10 +279,92 @@ def configure_native(api, manifest, image_base):
             argument.name = parameter.name
             function.push_back(argument)
         type_info = ida_typeinf.tinfo_t()
-        if not type_info.create_func(function) or not ida_typeinf.apply_tinfo(
-            target, type_info, ida_typeinf.TINFO_DEFINITE
+        if not type_info.create_func(function):
+            raise RuntimeError(f"无法创建函数类型：{member.name}")
+        return type_info
+
+    def apply_function(member, definition, target):
+        if target in (0, ida_idaapi.BADADDR):
+            return
+        if not ida_typeinf.apply_tinfo(
+            target, function_type(member), ida_typeinf.TINFO_DEFINITE
         ):
             raise RuntimeError(f"无法应用函数类型：{definition.type}.{member.name}")
+
+    def create_vtable(definition):
+        name = api.clean_struct_name(definition.type) + "_vtbl"
+        table = ida_typeinf.tinfo_t()
+        if not table.get_named_type(None, name):
+            raise RuntimeError(f"找不到虚表类型：{name}")
+        members = ida_typeinf.udt_type_data_t()
+        if not table.get_udt_details(members):
+            raise RuntimeError(f"无法读取虚表成员：{name}")
+        existing = {}
+        for member in members:
+            if member.is_gap() or (
+                member.name.startswith("gap") and member.type.is_array()
+            ):
+                continue
+            if member.offset % 64 or member.size != 64:
+                raise RuntimeError(f"虚表成员未按槽位排列：{name}.{member.name}")
+            existing[member.offset // 8] = ida_typeinf.udm_t(member)
+        functions = {
+            member.offset: member
+            for member in definition.virtual_functions
+            if member is not None
+        }
+        size = max(
+            definition.vtable_size or 0,
+            members.total_size,
+            max(functions, default=-8) + 8,
+        )
+        if size % 8 or any(offset < 0 or offset % 8 for offset in functions):
+            raise RuntimeError(f"虚表大小或函数偏移未按槽位对齐：{name}")
+        slots = []
+        for offset in range(0, size, 8):
+            member = existing.get(offset)
+            if member is None:
+                member = ida_typeinf.udm_t()
+                member.offset = offset * 8
+                member.size = 64
+                member.type = api.get_tinfo_from_type("__int64")
+                member.name = (
+                    api.get_fallback_vfunc_name(definition.type, offset // 8)
+                    or f"vf{offset // 8}"
+                )
+            function = functions.get(offset)
+            if function is not None:
+                member.name = function.name
+                if function.return_type is not None and function.parameters is not None:
+                    pointer = ida_typeinf.tinfo_t()
+                    if not pointer.create_ptr(function_type(function)):
+                        raise RuntimeError(
+                            f"无法创建虚函数指针：{name}.{function.name}"
+                        )
+                    member.type = pointer
+            slots.append(member)
+        reserved = {member.name for member in slots}
+        used = set()
+        members.clear()
+        for index, member in enumerate(slots):
+            if member.name in used:
+                unique = f"{member.name}_vf{index}"
+                while unique in reserved or unique in used:
+                    unique += "_"
+                member.name = unique
+            used.add(member.name)
+            members.push_back(member)
+        members.total_size = size
+        members.unpadded_size = size
+        members.set_vftable()
+        result = ida_typeinf.tinfo_t()
+        if not result.create_udt(members, ida_typeinf.BTF_STRUCT):
+            raise RuntimeError(f"无法创建虚表类型：{name}")
+        error = result.set_named_type(None, name, ida_typeinf.NTF_REPLACE)
+        if error != ida_typeinf.TERR_OK:
+            raise RuntimeError(
+                f"无法保存虚表类型：{name}：{ida_typeinf.tinfo_errstr(error)}"
+            )
 
     def update_member(member, definition):
         apply_function(member, definition, api.get_func_ea_by_sig(member.signature))
@@ -215,9 +377,19 @@ def configure_native(api, manifest, image_base):
 
     def update_virtual(member, definition):
         target = get_virtual(definition.type, member.offset)
+        if target in (0, ida_idaapi.BADADDR):
+            return
+        function = ida_funcs.get_func(target)
+        if function is None or function.start_ea != target:
+            print(
+                f"跳过虚函数类型：{definition.type}.{member.name}，"
+                f"槽位 {member.offset // 8} 的目标 {target:#x} 不是已识别的函数入口"
+            )
+            return
         name = ida_funcs.get_func_name(target)
-        for prefix in ("j_", "thunk_"):
-            name = name.removeprefix(prefix)
+        if name is not None:
+            for prefix in ("j_", "thunk_"):
+                name = name.removeprefix(prefix)
         if name != "_purecall":
             apply_function(member, definition, target)
 
@@ -235,6 +407,7 @@ def configure_native(api, manifest, image_base):
             raise RuntimeError(f"无法应用静态成员类型：{definition.type}.{member.name}")
 
     api.update_static_member = update_static
+    api.create_vtable = create_vtable
     api.update_member_func = update_member
     api.get_vfunc_ea_from_data = get_virtual
     api.update_virt_func = update_virtual
@@ -266,6 +439,11 @@ def import_expansion(payload, data, directory, image_base):
         if definition["type"] not in payload["expansion_enums"]
         and ida_typeinf.tinfo_t().get_named_type(None, definition["type"])
     )
+    if api.srclang_importer:
+        for definition in definitions["structs"]:
+            if definition["type"] not in reused:
+                name = api.clean_struct_name(definition["type"])
+                api.srclang_types[name] = api.generate_hashed_type_name(name)
     for name in (
         "delete_struct",
         "create_struct_members",
@@ -289,9 +467,9 @@ def import_expansion(payload, data, directory, image_base):
     pending = {}
 
     def create_struct(definition):
-        if definition.type in reused:
-            if not api.srclang_importer:
-                return
+        if definition.type in reused and not api.srclang_importer:
+            return
+        if api.srclang_importer:
             pending[definition.type] = definition
         create(definition)
 
@@ -326,7 +504,10 @@ def import_expansion(payload, data, directory, image_base):
                 continue
             notes = [field["comment"]] if field.get("comment") else []
             for bit in field.get("bits", []):
-                name, start, length = bit["arguments"]
+                if "arguments" in bit:
+                    name, start, length = bit["arguments"]
+                else:
+                    name, start, length = bit["name"], bit["offset"], bit["size"]
                 notes.append(
                     f"{name}：第 {start} 位起，共 {length} 位，类型 {bit['type']}"
                 )
