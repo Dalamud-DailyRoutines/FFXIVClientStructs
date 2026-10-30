@@ -435,3 +435,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+ida/crossclient.generated.json
+ida/crossclient.report.json
+ida/data.generated.yml
