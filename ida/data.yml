@@ -9088,10 +9088,11 @@ classes:
       0x1405F4300: GetRowCountBySheetName  # (ExdModule* this, char* pcszName) -> int
       0x1405F4350: GetRowCountBySheet  # (ExdModule* this, ExcelSheet* pShet) -> int
       0x1405F4370: GetRowCountBySheetIndex  # (ExdModule* this, int nSheetIndex) -> int
-      0x1409AC620: IsColumnRsv  # (ExdModule* this, int nSheetIndex, int nRowId, int nSubRowId, int nColumnIndex) -> bool
       0x140836600: GetItemRowById
       0x140837CD0: GetRoleForClassJobId
       0x1408428B0: GetBannerConditionByIndex
+      0x1408435E0: GetMirageStoreSetItemRowByItemId
+      0x1409AC620: IsColumnRsv  # (ExdModule* this, int nSheetIndex, int nRowId, int nSubRowId, int nColumnIndex) -> bool
   Component::Exd::Sheets::BannerCondition:
     funcs:
       0x140BC5930: GetUnlockState # In CS as ExdModule.GetBannerConditionUnlockState
@@ -15362,6 +15363,7 @@ classes:
       0x140DB7200: OpenPreview
       0x140DB85A0: PopulateHandInItem
       0x140DB9070: ValidateItems
+      0x140DB9090: UpdateAddon
   Client::UI::Agent::AgentMiragePrismPrismSetConvert::AgentData:
     funcs:
 #fail       0x140C36B10: ctor # inlined (7.3)
@@ -16229,7 +16231,9 @@ classes:
       0x140C8FC60: SearchRecipeByItemId
       0x140C94470: CanCraft
       0x140C95E90: IsNoteBookDivisionUnlocked
+      0x140C95F30: AddRecipeSearchHistoryTerm
       0x140C95FB0: SearchRecipe
+      0x140D1D590: ClearStdDequeUtf8String # std::deque<Client::System::String::Utf8String>::clear() ?!
   Client::UI::Agent::RecipeSearchContext:
     vtbls:
       - ea: 0x1421C6018
