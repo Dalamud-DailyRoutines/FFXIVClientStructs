@@ -526,7 +526,7 @@ classes:
       0x140602F80: Update
       0x140603750: StartTerritoryTransition
       0x140603B80: QueueActiveFestivals
-      0x140604330: LoadCutscene
+      0x140604580: LoadCutscene
       0x140605300: IsInGPose  # (probably) static
       0x140605340: IsInIdleCam  # static
       0x140605570: IsInInstanceArea
@@ -1739,6 +1739,11 @@ classes:
         base: Client::Game::Event::GoldSaucerDirector
     funcs:
       0x140E5B9A0: ctor
+      0x140E5CBF0: UseItem
+      0x140E5CC10: UseAbility
+      0x140E5CC70: CanUseItem
+      0x140E5CCC0: CanUseAbility
+      0x140E5EE10: HandleInput
   Client::Game::GoldSaucer::GFateClimbingDirector: # Cliffhanger
     vtbls:
       - ea: 0x1421D53C0
@@ -1796,6 +1801,7 @@ classes:
       - ea: 0x142AFE878
     funcs:
       0x140E54A40: ctor
+      0x140E54A90: GetDirector
       0x140E54A70: dtor
       0x140E54B70: RequestParameters
       0x140E55300: GetAbility #(this,index)
@@ -6369,6 +6375,9 @@ classes:
     vtbls:
       - ea: 0x142150DF0
         base: Client::System::Resource::Handle::DefaultResourceHandle
+    funcs:
+      0x14030F890: GetFinalAnimationPack
+      0x140311050: MakeAnimationPackPath
   Client::System::Resource::Handle::PapLoadTableResourceHandleFactory:
     vtbls:
       - ea: 0x142150F58
@@ -6639,6 +6648,9 @@ classes:
     vtbls:
       - ea: 0x1421535A8
         base: Client::System::Resource::Handle::DefaultResourceHandle
+    funcs:
+      0x140327300: HasLookAtData
+      0x140327320: HasSlopeData
   Client::System::Resource::Handle::SkeletonParamResourceHandleFactory:
     vtbls:
       - ea: 0x142153710
@@ -7306,6 +7318,8 @@ classes:
   Component::GUI::AtkMessageBoxManager::AtkMessageBoxEvent:
     vtbls:
       - ea: 0x1421709E0
+    vfuncs:
+      0: OnDismissed
   Application::Network::LogoutCallbackInterface:
     vtbls:
       - ea: 0x1421710E0
@@ -7348,6 +7362,7 @@ classes:
       0x1404E0DE0: ShowCharacterNotFoundWarning
       0x1404E1560: GetLobbyText
       0x1404E6E00: UpdateLoginPosition
+      0x1404E7AC0: ShowLobbyStatusDialog
       0x1405C1460: SetupLobbyCamera
   Client::UI::Agent::LobbyData:
     funcs:
@@ -7483,6 +7498,7 @@ classes:
       0x140200560: RemoveController
       0x1402005A0: Pause
       0x140200660: Unpause
+      0x1401FF730: Stop
       0x1401FF530: ctor
       0x1402147E0: dtor
   Client::Graphics::Animation::IAnimationControllerListener:
@@ -7499,6 +7515,8 @@ classes:
     vtbls:
       - ea: 0x142141568
         base: Client::Graphics::Animation::IAnimationControllerListener
+    funcs:
+      0x14020B490: GetSkeletonParameterResourceHandle
   Client::Graphics::Kernel::Resource:
     vtbls:
       - ea: 0x142143348
@@ -7672,6 +7690,36 @@ classes:
       0x140258300: Finalizer
       0x140259090: FinishAnimation
       0x14025C8E0: UpdateAnimations
+      0x140259BB0: CreateLookAtIkModule
+      0x14025A490: CreateChainIkModule
+      0x14025A6E0: CreateSlopeIkModule
+      0x140258E70: UpdateIk
+  Client::Graphics::Animation::LookAtIkModule:
+    funcs:
+      0x140203180: dtor
+      0x140203130: ctor
+      0x1402031C0: Create
+      0x1402048B0: FindGroup
+      0x1402035B0: Solve
+      0x1402036A0: SolveSingleGroup
+      0x140204960: InvokeFinishedCallback
+  Client::Graphics::Animation::LookAtIkModule::LookAtGroupJob:
+    funcs:
+      0x140202E30: Solve
+  Client::Graphics::Animation::LookAtIkModule::LookAtBone:
+    funcs:
+      0x140205200: Solve
+  Client::Graphics::Animation::ChainIkModule:
+    funcs:
+      0x140200F80: dtor
+      0x140200F10: ctor
+      0x140200FA0: Create
+      0x140200FC0: Solve
+  Client::Graphics::Animation::SlopeIkModule:
+    funcs:
+      0x140210F90: dtor
+      0x140210F60: ctor
+      0x140210FF0: Create
   Client::Graphics::Render::SkeletonHelper:
     funcs:
       0x14025D030: SyncModelSpacePoses
@@ -8474,6 +8522,16 @@ classes:
       0x14046A6D0: Destroy
       0x1408D3C00: Create
       0x1404492A0: CreateSlotStorage
+      0x140433790: IsLookAtEnabled
+      0x140433770: EnableLookAt
+      0x1404337B0: DisableLookAt
+      0x1404336B0: SetLookAtTargetPosition
+      0x1404337F0: SetLookAtInfluence
+      0x140433750: GetLookAtGroupCount
+      0x1404339B0: GetLookAtGroupTransform
+      0x140433A70: TransformLookAtModelSpaceToWorldSpace
+      0x140433B60: FindLookAtGroup
+      0x140433B40: SetupLookAtCallbacks
   Client::Graphics::Scene::Human:
     vtbls:
       - ea: 0x14216D098
@@ -8583,11 +8641,15 @@ classes:
       0x140451240: ctor
       0x140799380: Create
       0x1404537F0: LoadAnimationData
+      0x1404552A0: PlayAnimation
       0x1404512E0: ResetFlags
       0x140451700: SetModel
   Client::Graphics::Scene::BgObjectStainBuffer:
     funcs:
       0x140277570: Initialize
+      0x1402778F0: Update
+      0x1402777A0: SetCustomMaterialResource
+      0x140277730: Dispose
   Client::Graphics::Scene::EnvScene:
     vtbls:
       - ea: 0x14216E678
@@ -9299,7 +9361,10 @@ classes:
       0x140634CB0: IsInputIdDown
       0x140634DD0: IsInputIdPressed
       0x140634F30: IsInputIdHeld
+      0x140635050: IsInputIdDownIgnoreGamepadModifier
+      0x140635140: IsInputIdPressedIgnoreGamepadModifier
       0x140635320: IsInputIdReleased
+      0x1406354D0: GetAxisInput
       0x1406355F0: HasCursorPositionChanged
       0x140635600: HasGamepadInputs2ButtonsChanged
       0x140635610: HasKeyboardInputsChanged
@@ -15366,7 +15431,7 @@ classes:
       0x140DB7200: OpenPreview
       0x140DB85A0: PopulateHandInItem
       0x140DB9070: ValidateItems
-      0x140DB9090: UpdateAddon
+      0x140DB9670: UpdateAddon
   Client::UI::Agent::AgentMiragePrismPrismSetConvert::AgentData:
     funcs:
 #fail       0x140C36B10: ctor # inlined (7.3)
@@ -16234,9 +16299,9 @@ classes:
       0x140C8FC60: SearchRecipeByItemId
       0x140C94470: CanCraft
       0x140C95E90: IsNoteBookDivisionUnlocked
-      0x140C95F30: AddRecipeSearchHistoryTerm
+      0x140C96520: AddRecipeSearchHistoryTerm
       0x140C95FB0: SearchRecipe
-      0x140D1D590: ClearStdDequeUtf8String # std::deque<Client::System::String::Utf8String>::clear() ?!
+      0x140D1DB80: ClearStdDequeUtf8String # std::deque<Client::System::String::Utf8String>::clear() ?!
   Client::UI::Agent::RecipeSearchContext:
     vtbls:
       - ea: 0x1421C6018
@@ -17304,6 +17369,7 @@ classes:
       0x140B55B80: ctor
       0x140B5A160: QueueFormatStringCallback
       0x140B5A210: QueueActionTimelineCallback
+      0x140B5AB30: SendEventCommand
       0x140B5B460: DispatchEvent
       0x140B59D50: LoadCustomDefineSheet
     vfuncs:
@@ -18863,6 +18929,7 @@ classes:
         276: PlayAnimation
     funcs:
       0x140E91E10: ctor
+      0x140E97AB0: CheckCastSurface
       0x140E98040: Create
   Client::Game::Event::GCShopEventHandler: # 0x16
     vtbls:
@@ -28592,6 +28659,9 @@ classes:
       35: GetReleaseFadeTicks
       36: SetReleaseVolume
   SQEX::Sd::Driver::WASAPI::DeviceEventHandler: # SQEX::Sd::SeadObject<1,8>, struct IMMNotificationClient, struct IUnknown
+  SQEX::Sd::Driver::WASAPI::AudioDevice:
+    vtbls:
+      - ea: 0x142547458
   SQEX::Sd::Driver::WASAPI::WASAPIDevice: # SQEX::Sd::Driver::WASAPI::AudioDevice, SQEX::Sd::SeadObject<1,8>
     vtbls:
       - ea: 0x1425474B8
